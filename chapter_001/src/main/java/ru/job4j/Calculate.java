@@ -1,15 +1,24 @@
-package ru.job4j
+package ru.job4j;
 /**
-*Class Calculate задание #141
+*Class Calculate Р·Р°РґР°РЅРёРµ #141
 *@author Kuzmin Danila
 *@since 10.10.2017
 */
 public class Calculate {
 /**
-*Метод для вывода сообщения Hello World!
-*@return сообщение в консоль
+*РњРµС‚РѕРґ РґР»СЏ РІС‹РІРѕРґР° СЃРѕРѕР±С‰РµРЅРёСЏ Hello World!
+*@return СЃРѕРѕР±С‰РµРЅРёРµ РІ РєРѕРЅСЃРѕР»СЊ
 */
     public static void main(String[] args) {
         System.out.println("Hello World!");
         }
+		
+	public String echo(String name) {
+    return "Echo, echo, echo : " + name;
 }
+}
+/**
+* Method echo.
+* @param name Your name.
+* @return Echo plus your name.
+*/
