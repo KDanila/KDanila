@@ -1,6 +1,6 @@
-package ru.job4j;
+package ru.job4j.calculate;
 /**
-*Class Calculate задание #141.
+*Class calculate задание #141.
 *@author Kuzmin Danila
 *@since 10.10.2017
 */
