@@ -37,7 +37,6 @@ public class MaxTest {
 
     /**
      * Test maximum of -100 and -50.
-     *
      */
     @Test
     public void whenFirstIsMinusLessSecondMinus() {
