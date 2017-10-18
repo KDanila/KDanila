@@ -10,7 +10,7 @@ package ru.job4j.max;
 
 public class Max {
     /**
-     * Method add.
+     * Method max.
      *
      * @param first  number.
      * @param second number.
@@ -18,5 +18,17 @@ public class Max {
      */
     public int max(int first, int second) {
         return (first > second) ? first : second;
+    }
+
+    /**
+     * Method max.
+     *
+     * @param first  number.
+     * @param second number.
+     * @param third  number.
+     * @return maximum of three numbers
+     */
+    public int max(int first, int second, int third) {
+        return max(max(first, second), third);
     }
 }
