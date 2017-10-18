@@ -12,12 +12,7 @@ public class Point {
     /**
      * x and y.
      */
-    private int x;
-    /**
-     * y.
-     */
-    private int y;
-
+    private int x, y;
     /**
      *
      * @param x -Ox

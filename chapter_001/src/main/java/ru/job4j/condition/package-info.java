@@ -1,5 +1,5 @@
 /**
-* Package for Point class.
+* Package for Triangle class.
 *
 * @author Danila Kuzmin (mailto:bus1d0@mail.ru)
 * @version $Id$
