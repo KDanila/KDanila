@@ -1,4 +1,5 @@
 package ru.job4j.condition;
+
 /**
  * Triangle class.
  *
@@ -85,7 +86,7 @@ public class Triangle {
      * @return true or false.
      */
     private boolean exist(double ab, double ac, double bc) {
-        return ((ab == 0 || ac == 0 || bc == 0) ? false : true);
+        return ((ab + ac > bc || ab + bc > ac || ac + bc > ab) ? true : false);
     }
 }
 

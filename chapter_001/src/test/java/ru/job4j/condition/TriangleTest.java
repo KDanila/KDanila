@@ -1,8 +1,10 @@
 package ru.job4j.condition;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.number.IsCloseTo.closeTo;
+
 /**
  * Triangle Test.
  *
@@ -24,17 +26,18 @@ public class TriangleTest {
         double expected = 2D;
         assertThat(result, closeTo(expected, 0.1));
     }
+
     /**
-     * Triangle test with false.
+     * Triangle test with true.
      */
     @Test
-    public void whenTwoPointsAreTheSameThenAreaMinusOne() {
+    public void whenTwoPointsAreTheSameThenAreaZero() {
         Point a = new Point(0, 0);
         Point b = new Point(0, 0);
         Point c = new Point(2, 0);
         Triangle triangle = new Triangle(a, b, c);
         double result = triangle.area();
-        double expected = -1D;
+        double expected = 0D;
         assertThat(result, closeTo(expected, 0.1));
     }
 
