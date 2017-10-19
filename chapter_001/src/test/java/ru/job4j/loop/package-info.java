@@ -1,5 +1,5 @@
 /**
-* Package for CounterTest.
+* Package for loop.
 *
 * @author Danila Kuzmin (mailto:bus1d0@mail.ru)
 * @version $Id$
