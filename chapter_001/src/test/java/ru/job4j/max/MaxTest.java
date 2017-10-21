@@ -5,14 +5,14 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-
 /**
- * Max Test.
+ * MaxTest.
  *
  * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
  * @version $Id$
  * @since 0.1
  */
+
 public class MaxTest {
     /**
      * Test maximum of 1 and 2.
