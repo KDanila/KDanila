@@ -1,5 +1,7 @@
 package ru.job4j.array;
 
+import java.util.Arrays;
+
 /**
  * RotateArray class.
  *
@@ -17,12 +19,9 @@ public class RotateArray {
     public int[][] rotate(int[][] arrayToChange) {
         int lengthOfLine;
         int lengthOfArray = arrayToChange[0].length;
-        //Как сократить 21-26. Есть же метод, который копирует значения ячеек?
         int[][] changedArray = new int[lengthOfArray][lengthOfArray];
         for (int i = 0; i < lengthOfArray; i++) {
-            for (int j = 0; j < lengthOfArray; j++) {
-                changedArray[i][j] = arrayToChange[i][j];
-            }
+            changedArray[i] = Arrays.copyOf(arrayToChange[i], lengthOfArray);
         }
         for (int i = 0; i < lengthOfArray; i++) {
             lengthOfLine = lengthOfArray - 1 - 2 * i;
