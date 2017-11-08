@@ -14,7 +14,7 @@ import static org.junit.Assert.assertThat;
  */
 public class StringContainTest {
     /**
-     * Привет содержит иве
+     * Привет содержит иве.
      */
     @Test
     public void whenPrivetAndIveThenTrue() {
@@ -25,7 +25,7 @@ public class StringContainTest {
     }
 
     /**
-     * Приветприветпока содержит ока
+     * Приветприветпока содержит ока.
      */
     @Test
     public void whenPrivetPrivetPokaAndOkaThenTrue() {
@@ -36,7 +36,7 @@ public class StringContainTest {
     }
 
     /**
-     * Привет содержит ока
+     * Привет содержит ока.
      */
     @Test
     public void whenPrivetAndOkaThenFalse() {
