@@ -3,6 +3,9 @@ package main.java.ru.job4j.tracker;
 import java.util.Random;
 
 /**
+ * Tracker класс.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
  * @version $Id$
  * @since 0.1
  */
@@ -18,25 +21,28 @@ public class Tracker {
     private int position = 0;
 
     /**
-     * Метод реализаущий добавление заявки в хранилище
-     *
-     * @param item новая заявка
+     * Переменная для генерации уникального id.
      */
     public static final Random RN = new Random(1000);
 
-    /*
-    1. Метод public Item add(Item) добавляет заявку, переданную в аргументах в массив заявок this.items;
+    /**
+     * Метод public Item add(Item) добавляет заявку, переданную в аргументах в массив заявок this.items.
+     *
+     * @param item
+     * @return item
      */
     public Item add(Item item) {
         item.setId(this.generateId());
         this.items[this.position++] = item;
+
         return item;
     }
 
-    /*
-    2. Метод public void update(Item) должен заменить ячейку в массиве this.items. Для этого необходимо найти
-     ячейку в массиве по id (id у Item можно получить с помощью метода getId). Обязательно принимать один
-     параметр Item, а не список полей;
+    /**
+     * Метод public void update(Item) должен заменить ячейку в массиве this.items.
+     * Для этого находит ячейку в массиве по id.
+     *
+     * @param item - текущая заявка.
      */
     public void update(Item item) {
         String id = item.getId();
@@ -47,9 +53,14 @@ public class Tracker {
         }
     }
 
-    /* Метод public void delete(Item) должен удалить ячейку в массиве this.items. Для этого необходимо найти
-     ячейку в массиве по id. После этого присвоить ей null, либо сместить все значения справа от удаляемого
-     элемента - на одну ячейку влево с помощью System.arrayCopy();*/
+
+    /**
+     * Метод public void delete(Item) должен удалить ячейку в массиве this.items.
+     * Для этого находит ячейку в массиве по id и после этого присвавивает ей null и смещает
+     * все значения справа от удаляемого элемента - на одну ячейку влево с помощью System.arrayCopy().
+     *
+     * @param item
+     */
     public void delete(Item item) {
         String id = item.getId();
         for (int i = 0; i < position; i++) {
@@ -60,11 +71,12 @@ public class Tracker {
                 position--;
             }
         }
-
     }
 
-    /*
-    4. Метод public Item[] findAll() возвращает копию массива this.items без null элементов;
+    /**
+     * Метод public Item[] findAll() возвращает копию массива this.items без null элементов.
+     *
+     * @return массив item без пустых элементов
      */
     public Item[] findAll() {
         Item[] toReturn = new Item[this.position];
@@ -74,10 +86,13 @@ public class Tracker {
         return toReturn;
     }
 
-    /*
-    5. Метод public Item[] findByName(String key) проверяет в цикле все элементы массива this.items,
-    сравнивая name (используя метод getName класса Item) с аргументом метода String key. Элементы, у
-    которых совпадает name, копирует в результирующий массив и возвращает его;
+    /**
+     * Метод public Item[] findByName(String key) проверяет в цикле все элементы массива this.items.
+     * Происходит сравнение name (используя метод getName класса Item) с аргументом метода String key.
+     * Если Item не найден - возвращает null.
+     *
+     * @param key - имя заявки
+     * @return item - заявка
      */
     public Item findByName(String key) {
         Item result = null;
@@ -90,9 +105,13 @@ public class Tracker {
         return result;
     }
 
-    /*
-    6. Метод public Item findById(String id) проверяет в цикле все элементы массива this.items,
-    сравнивая id с аргументом String id и возвращает найденный Item. Если Item не найден - возвращает null.
+    /**
+     * Метод public Item findById(String id) проверяет в цикле все элементы массива this.items.
+     * Просиходит сравнение id с аргументом String id и возвращает найденный Item.
+     * Если Item не найден - возвращает null.
+     *
+     * @param id - требуемый id.
+     * @return item - искомая завяка.
      */
     public Item findById(String id) {
 
@@ -108,8 +127,6 @@ public class Tracker {
 
     /**
      * Метод генерирует уникальный ключ для заявки.
-     * Генерация идет простым добавлением единицы каждой новой заявки. Сделал так для избежания возможного
-     * совпадения числа при генерации случайным образом.
      *
      * @return Уникальный ключ.
      */
@@ -117,12 +134,3 @@ public class Tracker {
         return String.valueOf(System.currentTimeMillis() + RN.nextInt());
     }
 }
-    /*
-
-
-
-
-
-
-     */
-
