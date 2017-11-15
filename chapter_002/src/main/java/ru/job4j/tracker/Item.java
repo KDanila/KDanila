@@ -1,4 +1,5 @@
-package main.java.ru.job4j.tracker;
+package ru.job4j.tracker;
+
 /**
  * Item класс.
  *
@@ -16,7 +17,7 @@ public class Item {
      */
     private String description;
     /**
-     * create - ???.
+     * create - время создания в милисекундах.
      */
     private long create;
     /**
@@ -33,9 +34,9 @@ public class Item {
     /**
      * Конструктор.
      *
-     * @param name
-     * @param description
-     * @param create
+     * @param name - имя.
+     * @param description - описание.
+     * @param create - ид.
      */
     public Item(String name, String description, long create) {
         this.name = name;
@@ -46,7 +47,7 @@ public class Item {
     /**
      * getter.
      *
-     * @return id.
+     * @return id - ид.
      */
     public String getId() {
         return this.id;
@@ -62,9 +63,8 @@ public class Item {
     }
 
     /**
-     * setter.
      *
-     * @param id.
+     * @param id -ид.
      */
     public void setId(String id) {
         this.id = id;

@@ -1,4 +1,4 @@
-package main.java.ru.job4j.tracker;
+package ru.job4j.tracker;
 
 import java.util.Random;
 
@@ -28,13 +28,12 @@ public class Tracker {
     /**
      * Метод public Item add(Item) добавляет заявку, переданную в аргументах в массив заявок this.items.
      *
-     * @param item
-     * @return item
+     * @param item - заявка.
+     * @return item - заявка.
      */
     public Item add(Item item) {
         item.setId(this.generateId());
         this.items[this.position++] = item;
-
         return item;
     }
 
@@ -59,7 +58,7 @@ public class Tracker {
      * Для этого находит ячейку в массиве по id и после этого присвавивает ей null и смещает
      * все значения справа от удаляемого элемента - на одну ячейку влево с помощью System.arrayCopy().
      *
-     * @param item
+     * @param item - заявка.
      */
     public void delete(Item item) {
         String id = item.getId();
