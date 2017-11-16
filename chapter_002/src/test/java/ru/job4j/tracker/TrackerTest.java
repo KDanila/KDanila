@@ -29,7 +29,7 @@ public class TrackerTest {
     }
 
     /**
-     * Тест delete and finAll.
+     * Тест delete and finAll().
      */
     @Test
     public void whenDeleteOneItemThenWithoutOne() {
@@ -46,7 +46,7 @@ public class TrackerTest {
         assertThat(result, is(expected));
     }
     /**
-     * Тест find by name.
+     * Тест find by name().
      */
     @Test
     public void whenSearchByNameThenFindOne() {
