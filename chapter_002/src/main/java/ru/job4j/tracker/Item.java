@@ -34,9 +34,9 @@ public class Item {
     /**
      * Конструктор.
      *
-     * @param name - имя.
+     * @param name        - имя.
      * @param description - описание.
-     * @param create - ид.
+     * @param create      - ид.
      */
     public Item(String name, String description, long create) {
         this.name = name;
@@ -63,10 +63,30 @@ public class Item {
     }
 
     /**
-     *
      * @param id -ид.
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    /**
+     * @param name -имя.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return String - описание.
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description -описание.
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

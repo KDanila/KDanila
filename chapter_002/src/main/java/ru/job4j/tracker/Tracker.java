@@ -65,7 +65,7 @@ public class Tracker {
         for (int i = 0; i < position; i++) {
             if (items[i].getId().equals(id)) {
                 items[i] = null;
-                System.arraycopy(items, i, items, i + 1, position - i - 1);
+                System.arraycopy(items, i + 1, items, i, position - i - 1);
                 items[position - 1] = null;
                 position--;
             }
@@ -80,7 +80,9 @@ public class Tracker {
     public Item[] findAll() {
         Item[] toReturn = new Item[this.position];
         for (int i = 0; i != position; i++) {
-            toReturn[i] = this.items[i];
+            if (this.items[i] != null) {
+                toReturn[i] = this.items[i];
+            }
         }
         return toReturn;
     }
