@@ -9,39 +9,8 @@ package ru.job4j.tracker;
  */
 
 public class StartUI {
-
-
     /**
-     * Константа меню для добавления новой заявки.
-     */
-    private static final String ADD = "0";
-    /**
-     * Константа меню для показа всех заявок.
-     */
-    private static final String SHOW = "1";
-    /**
-     * Константа меню для редактирования заявки.
-     */
-    private static final String EDIT = "2";
-    /**
-     * Константа меню для удаления заявки.
-     */
-    private static final String DELETE = "3";
-    /**
-     * Константа меню для нахождения заявки по id.
-     */
-    private static final String FINDID = "4";
-    /**
-     * Константа меню для нахождения заявки по имени.
-     */
-    private static final String FINDNAME = "5";
-
-    /**
-     * Константа для выхода из цикла.
-     */
-    private static final String EXIT = "6";
-    /**
-     * Получение данных от пользователя.
+     * Input.
      */
     private final Input input;
 
@@ -69,19 +38,19 @@ public class StartUI {
         while (!exit) {
             this.showMenu();
             String answer = this.input.ask("Введите пункт меню : ");
-            if (ADD.equals(answer)) {
+            if (ListOfMenu.ADD.toString().equals(answer)) {
                 this.createItem();
-            } else if (SHOW.equals(answer)) {
+            } else if (ListOfMenu.SHOW.toString().equals(answer)) {
                 this.findAll();
-            } else if (EDIT.equals(answer)) {
+            } else if (ListOfMenu.EDIT.toString().equals(answer)) {
                 this.edit();
-            } else if (DELETE.equals(answer)) {
+            } else if (ListOfMenu.DELETE.toString().equals(answer)) {
                 this.delete();
-            } else if (FINDID.equals(answer)) {
+            } else if (ListOfMenu.FINDID.toString().equals(answer)) {
                 this.findById();
-            } else if (FINDNAME.equals(answer)) {
+            } else if (ListOfMenu.FINDNAME.toString().equals(answer)) {
                 this.findByName();
-            } else if (EXIT.equals(answer)) {
+            } else if (ListOfMenu.EXIT.toString().equals(answer)) {
                 exit = true;
             }
         }
