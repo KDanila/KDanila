@@ -77,7 +77,7 @@ public class MenuTracker {
          */
         @Override
         public int key() {
-            return 0;
+            return Integer.valueOf(ListOfMenu.ADD.toString());
         }
 
         /**
@@ -110,7 +110,7 @@ public class MenuTracker {
          */
         @Override
         public int key() {
-            return 1;
+            return Integer.valueOf(ListOfMenu.SHOW.toString());
         }
 
         /**
@@ -155,7 +155,7 @@ class EditItem implements UserAction {
      */
     @Override
     public int key() {
-        return 2;
+        return Integer.valueOf(ListOfMenu.EDIT.toString());
     }
 
     /**
@@ -189,7 +189,7 @@ class DeleteItem implements UserAction {
      */
     @Override
     public int key() {
-        return 3;
+        return Integer.valueOf(ListOfMenu.DELETE.toString());
     }
 
     /**
@@ -221,7 +221,7 @@ class FindItemByID implements UserAction {
      */
     @Override
     public int key() {
-        return 4;
+        return Integer.valueOf(ListOfMenu.FINDID.toString());
     }
 
     /**
@@ -254,7 +254,7 @@ class FindItemByName implements UserAction {
      */
     @Override
     public int key() {
-        return 5;
+        return Integer.valueOf(ListOfMenu.FINDNAME.toString());
     }
 
     /**
@@ -286,7 +286,7 @@ class EndAction implements UserAction {
      */
     @Override
     public int key() {
-        return 6;
+        return Integer.valueOf(ListOfMenu.EXIT.toString());
     }
 
     /**
