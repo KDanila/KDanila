@@ -40,9 +40,9 @@ public class StartUI {
         int key;
         do {
             menu.show();
-            key = Integer.parseInt(input.ask("Select: "));
+            key = input.ask("Select: ", menu.getPossibleVariety());
             menu.select(key);
-        } while (key != 6);
+        } while (key != menu.getPossibleVariety().length - 1);
     }
 
     /**
@@ -51,7 +51,7 @@ public class StartUI {
      * @param args - args.
      */
     public static void main(String[] args) {
-        new StartUI(new ConsoleInput(), new Tracker()).init();
+        new StartUI(new ValidateInput(), new Tracker()).init();
     }
 }
 

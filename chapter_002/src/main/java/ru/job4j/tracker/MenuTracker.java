@@ -21,6 +21,10 @@ public class MenuTracker {
      * actions - массив возможных действий.
      */
     private UserAction[] actions = new UserAction[7];
+    /**
+     * possibleVariety - массив возможных значений.
+     */
+    private int[] possibleVariety;
 
     /**
      * Конструктор.
@@ -128,6 +132,17 @@ public class MenuTracker {
         public String info() {
             return String.format("%s %s", this.key(), "Show all items. ");
         }
+    }
+
+    /**
+     * @return - возвращаем массив возможных значений.
+     */
+    public int[] getPossibleVariety() {
+        int[] intToReturn = new int[actions.length];
+        for (int i = 0; i < actions.length; i++) {
+            intToReturn[i] = i;
+        }
+        return intToReturn;
     }
 }
 
@@ -290,4 +305,6 @@ class EndAction implements UserAction {
     public String info() {
         return String.format("%s %s", this.key(), "Exit Program. ");
     }
+
+
 }

@@ -13,4 +13,13 @@ public interface Input {
      * @return String - полученный ответ от пользователя.
      */
     String ask(String question);
+
+    /**
+     *
+     * @param question -текст запроса.
+     * @param range - допустимые значения.
+     * @return int - допустимое число.
+     */
+    int ask(String question, int[] range);
+
 }
