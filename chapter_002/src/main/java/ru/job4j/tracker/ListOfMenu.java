@@ -17,24 +17,24 @@ public enum ListOfMenu {
     /**
      * @return Строку со значением варианта.
      */
-    public String toString() {
+    public int toInteger() {
         switch (this) {
             case ADD:
-                return "0";
+                return 0;
             case SHOW:
-                return "1";
+                return 1;
             case EDIT:
-                return "2";
+                return 2;
             case DELETE:
-                return "3";
+                return 3;
             case FINDID:
-                return "4";
+                return 4;
             case FINDNAME:
-                return "5";
+                return 5;
             case EXIT:
-                return "6";
+                return 6;
             default:
-                return "Unspecified";
+                return -1;
         }
     }
 }

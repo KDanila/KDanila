@@ -117,7 +117,7 @@ class AddItem extends BaseAction {
      */
     @Override
     public int key() {
-        return Integer.valueOf(ListOfMenu.ADD.toString());
+        return ListOfMenu.ADD.toInteger();
     }
 
     /**
@@ -142,7 +142,7 @@ class ShowItem extends BaseAction {
      */
     @Override
     public int key() {
-        return Integer.valueOf(ListOfMenu.SHOW.toString());
+        return ListOfMenu.SHOW.toInteger();
     }
 
     /**
@@ -167,7 +167,7 @@ class EditItem extends BaseAction {
      */
     @Override
     public int key() {
-        return Integer.valueOf(ListOfMenu.EDIT.toString());
+        return ListOfMenu.EDIT.toInteger();
     }
 
     /**
@@ -194,7 +194,7 @@ class DeleteItem extends BaseAction {
      */
     @Override
     public int key() {
-        return Integer.valueOf(ListOfMenu.DELETE.toString());
+        return ListOfMenu.DELETE.toInteger();
     }
 
     /**
@@ -218,7 +218,7 @@ class FindItemByID extends BaseAction {
      */
     @Override
     public int key() {
-        return Integer.valueOf(ListOfMenu.FINDID.toString());
+        return ListOfMenu.FINDID.toInteger();
     }
 
     /**
@@ -244,7 +244,7 @@ class FindItemByName extends BaseAction {
      */
     @Override
     public int key() {
-        return Integer.valueOf(ListOfMenu.FINDNAME.toString());
+        return ListOfMenu.FINDNAME.toInteger();
     }
 
     /**
@@ -268,7 +268,7 @@ class EndAction extends BaseAction {
      */
     @Override
     public int key() {
-        return Integer.valueOf(ListOfMenu.EXIT.toString());
+        return ListOfMenu.EXIT.toInteger();
     }
 
     /**
