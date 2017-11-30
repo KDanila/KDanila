@@ -38,20 +38,20 @@ class Pawn extends Figure {
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         Cell[] wayToreturn = new Cell[2];
-        if (source.y < 8 || source.y > 0 || dest.x < 8 || dest.y > 0) {
+        if (source.y < 8 || source.y > 0 || dest.x < 8 || dest.y > 0||!source.equals(dest)) {
             if (isWhite) {
-                if (!source.equals(dest) && firstStep) {
+                if (firstStep) {
                     wayToreturn[0] = new Cell(source.x, source.y + 1);
                     wayToreturn[1] = new Cell(source.x, source.y + 2);
 
-                } else if (!source.equals(dest) && !firstStep) {
+                } else  {
                     wayToreturn[0] = new Cell(source.x, source.y + 1);
                 }
             } else {
-                if (!source.equals(dest) && firstStep) {
+                if (firstStep) {
                     wayToreturn[0] = new Cell(source.x, source.y - 1);
                     wayToreturn[1] = new Cell(source.x, source.y - 2);
-                } else if (!source.equals(dest) && !firstStep) {
+                } else  {
                     wayToreturn[0] = new Cell(source.x, source.y - 1);
                 }
             }
