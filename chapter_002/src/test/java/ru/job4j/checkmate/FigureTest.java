@@ -68,5 +68,37 @@ public class FigureTest {
         assertThat(resultInt, is(expected));
     }
 
+    /**
+     * Ладья ходит по вертикали вверх.
+     */
+    @Test
+    public void whenRockUseWatToUpThenCorrectCellArray() {
+        Cell first = new Cell(0, 0);
+        Cell dist = new Cell(0, 7);
+        Rook rook = new Rook(first);
+        Cell[] result = rook.way(first, dist);
+        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y,
+                result[2].x, result[2].y, result[3].x, result[3].y, result[4].x, result[4].y,
+                result[5].x, result[5].y, result[6].x, result[6].y,};
+        int[] expected = {0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7};
+        assertThat(resultInt, is(expected));
+
+    }
+
+    /**
+     * Ладья ходит по вертикали вниз(Массив выдается по возрастанию).
+     */
+    @Test
+    public void whenRockUseWatToDownThenCorrectCellArray() {
+        Cell first = new Cell(8, 0);
+        Cell dist = new Cell(6, 0);
+        Rook rook = new Rook(first);
+        Cell[] result = rook.way(first, dist);
+        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y};
+        int[] expected = {6, 0, 7, 0};
+        assertThat(resultInt, is(expected));
+
+    }
+
 }
 

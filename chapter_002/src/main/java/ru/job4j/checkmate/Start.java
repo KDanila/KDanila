@@ -2,18 +2,21 @@ package ru.job4j.checkmate;
 
 public class Start {
     public static void main(String[] args) {
-        Cell first = new Cell(6,7);
-        Cell dist = new Cell(6,5);
-        Pawn pawn = new Pawn(first);
-        pawn.isWhite=false;
-     //   pawn.firstStep=false;
-        Cell[] result = pawn.way(first,dist);
-        int[] resultInt = {result[0].x,result[0].y,result[1].x,result[1].y};
-        for (int toShow:resultInt
-             ) {
-            System.out.println(toShow);
+        Cell first = new Cell(0,0);
+        Cell dist = new Cell(0,5);
+        int length=(first.x-dist.x==0)?Math.abs(first.y-dist.y):Math.abs(first.x-dist.x);
 
+        Rook rook = new Rook(first);
+             Cell[] result=rook.way(first,dist);
+        for (int i = 0; i < length; i++) {
+            System.out.println(result[i].x+"  "+result[i].y);
         }
+
+
+
+
+
+
     }
 }
 /*

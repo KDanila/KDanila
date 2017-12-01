@@ -13,17 +13,6 @@ public abstract class Figure {
 
     abstract Cell[] way(Cell source, Cell dest) throws ImposibleMoveException;
 
-   /* int findNumberOfCellInPull(Cell toFind){
-       Cell[] pull = this.pullOfCells;
-       int number=0;
-        for (int j = 0; j < 84; j++) {
-            if(pull[j].equals(toFind)) {
-                number=j;
-                break;
-            }
-        }
-        return number;
-    }*/
 
 }
 
@@ -37,21 +26,22 @@ class Pawn extends Figure {
 
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
-        Cell[] wayToreturn = new Cell[2];
-        if (source.y < 8 || source.y > 0 || dest.x < 8 || dest.y > 0||!source.equals(dest)) {
+        int length = Math.abs(source.y - dest.y);
+        Cell[] wayToreturn = new Cell[length];
+        if (source.y < 8 || source.y > 0 || dest.x < 8 || dest.y > 0 || !source.equals(dest)) {
             if (isWhite) {
                 if (firstStep) {
                     wayToreturn[0] = new Cell(source.x, source.y + 1);
                     wayToreturn[1] = new Cell(source.x, source.y + 2);
 
-                } else  {
+                } else {
                     wayToreturn[0] = new Cell(source.x, source.y + 1);
                 }
             } else {
                 if (firstStep) {
                     wayToreturn[0] = new Cell(source.x, source.y - 1);
                     wayToreturn[1] = new Cell(source.x, source.y - 2);
-                } else  {
+                } else {
                     wayToreturn[0] = new Cell(source.x, source.y - 1);
                 }
             }
@@ -68,7 +58,31 @@ class Rook extends Figure {
 
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
-        return new Cell[0];
+        int length = (source.x - dest.x == 0) ? Math.abs(source.y - dest.y) : Math.abs(source.x - dest.x);
+        Cell[] toReturn = new Cell[length + 1];
+        int tempY = (source.y < dest.y) ? source.y : dest.y;
+        int tempX = (source.x < dest.x) ? source.x : dest.x;
+        if (source.x - dest.x == 0 && source.y - dest.y != 0) {
+            for (int i = 0; i < length; i++) {
+                if (source.y < dest.y) {
+                    toReturn[i] = new Cell(source.x, source.y + 1 + i);
+                } else {
+                    toReturn[i] = new Cell(source.x, tempY + i);
+                }
+            }
+        } else if (source.x - dest.x != 0 && source.y - dest.y == 0) {
+            for (int i = 0; i < length; i++) {
+                if (source.x < dest.x) {
+                    toReturn[i] = new Cell(source.x + 1 + i, source.y);
+                } else {
+                    toReturn[i] = new Cell(tempX + i, source.y);
+                }
+
+            }
+        } else {
+            throw new ImposibleMoveException();
+        }
+        return toReturn;
     }
 }
 
