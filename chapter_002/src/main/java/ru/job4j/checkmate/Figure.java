@@ -86,6 +86,16 @@ class Rook extends Figure {
     }
 }
 
+/**
+ * x  x  x  x  x  x  x
+ * x  x  x  x  x  x  x
+ * x  x  8  x  1  x  x
+ * x  7  x  x  x  2  x
+ * x  x  x  0  x  x  x
+ * x  6  x  x  x  3  x
+ * x  x  5  x  4  x  x
+ * x  x  x  x  x  x  x
+ */
 class Knight extends Figure {
 
     protected Knight(Cell position) {
@@ -94,7 +104,54 @@ class Knight extends Figure {
 
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
-        return new Cell[0];
+        Cell[] possiblePosition = new Cell[8];
+        Cell[] toReturn = new Cell[1];
+        if (source.x + 1 < 8) {
+            if (source.y + 2 < 8) {
+                possiblePosition[0] = new Cell(source.x + 1, source.y + 2);
+            }
+            if (source.y - 2 >= 0) {
+                possiblePosition[1] = new Cell(source.x + 1, source.y - 2);
+            }
+        }
+        if (source.x + 2 < 8) {
+            if (source.y + 1 < 8) {
+                possiblePosition[2] = new Cell(source.x + 2, source.y + 1);
+            }
+            if (source.y - 1 >= 0) {
+                possiblePosition[3] = new Cell(source.x + 2, source.y - 1);
+            }
+        }
+        if (source.x - 1 >= 0) {
+            if (source.y + 2 < 8) {
+                possiblePosition[4] = new Cell(source.x - 1, source.y + 2);
+            }
+            if (source.y - 2 >= 0) {
+                possiblePosition[5] = new Cell(source.x - 1, source.y - 2);
+            }
+        }
+        if (source.x - 2 >= 0) {
+            if (source.y + 1 < 8) {
+                possiblePosition[6] = new Cell(source.x - 2, source.y + 1);
+            }
+            if (source.y - 1 >= 0) {
+                possiblePosition[7] = new Cell(source.x - 2, source.y - 1);
+            }
+        }
+
+
+        for (int i = 0; i < 8; i++) {
+            if (possiblePosition[i] != null && possiblePosition[i].equals(dest)) {
+                toReturn[0] = possiblePosition[i];
+                break;
+            }
+        }
+        if (toReturn[0] != null) {
+            return toReturn;
+        } else {
+            throw new ImposibleMoveException();
+        }
+
     }
 }
 

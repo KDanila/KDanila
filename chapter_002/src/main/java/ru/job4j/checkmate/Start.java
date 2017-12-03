@@ -4,6 +4,8 @@ public class Start {
     public static void main(String[] args) {
         Cell first = new Cell(0,0);
         Cell dist = new Cell(0,5);
+
+/*
         int length=(first.x-dist.x==0)?Math.abs(first.y-dist.y):Math.abs(first.x-dist.x);
 
         Rook rook = new Rook(first);
@@ -11,9 +13,45 @@ public class Start {
         for (int i = 0; i < length; i++) {
             System.out.println(result[i].x+"  "+result[i].y);
         }
+*/
 
-
-
+        Cell[] possiblePosition = new Cell[8];
+        Cell[] toReturn = new Cell[1];
+        if (first.x + 1 < 8) {
+            if (first.y + 2 < 8) {
+                possiblePosition[0] = new Cell(first.x + 1, first.y + 2);
+            }
+            if (first.y - 2 >= 0) {
+                possiblePosition[1] = new Cell(first.x + 1, first.y - 2);
+            }
+        }
+        if (first.x + 2 < 8) {
+            if (first.y + 1 < 8) {
+                possiblePosition[2] = new Cell(first.x + 2, first.y + 1);
+            }
+            if (first.y - 1 >= 0) {
+                possiblePosition[3] = new Cell(first.x + 2, first.y - 1);
+            }
+        }
+        if (first.x - 1 >= 0) {
+            if (first.y + 2 < 8) {
+                possiblePosition[4] = new Cell(first.x - 1, first.y + 2);
+            }
+            if (first.y - 2 >= 0) {
+                possiblePosition[5] = new Cell(first.x - 1, first.y - 2);
+            }
+        }
+        if (first.x - 2 >= 0) {
+            if (first.y + 1 < 8) {
+                possiblePosition[6] = new Cell(first.x - 2, first.y + 1);
+            }
+            if (first.y - 1 >= 0) {
+                possiblePosition[7] = new Cell(first.x - 2, first.y - 1);
+            }
+        }
+        for (int i = 0; i <8 ; i++) {
+            System.out.println(possiblePosition[i]);
+        }
 
 
 

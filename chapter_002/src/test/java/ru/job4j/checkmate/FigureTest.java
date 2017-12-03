@@ -100,5 +100,35 @@ public class FigureTest {
 
     }
 
+    /**
+     * Конь ходит Г
+     */
+    @Test
+    public void whenKnightMoveThenCorrectCellArray() {
+        Cell first = new Cell(0, 0);
+        Cell dist = new Cell(1, 2);
+        Knight knight = new Knight(first);
+        Cell[] result = knight.way(first, dist);
+        int[] resultInt = {result[0].x, result[0].y};
+        int[] expected = {1, 2};
+        assertThat(resultInt, is(expected));
+
+    }
+    /**
+     * Конь ходит 2.
+     *
+     */
+    @Test
+    public void whenKnightMoveSecondThenCorrectCellArray() {
+        Cell first = new Cell(3, 4);
+        Cell dist = new Cell(2, 2);
+        Knight knight = new Knight(first);
+        Cell[] result = knight.way(first, dist);
+        int[] resultInt = {result[0].x, result[0].y};
+        int[] expected = {2, 2};
+        assertThat(resultInt, is(expected));
+
+    }
+
 }
 
