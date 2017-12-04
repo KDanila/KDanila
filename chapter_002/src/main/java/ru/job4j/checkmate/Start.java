@@ -2,60 +2,66 @@ package ru.job4j.checkmate;
 
 public class Start {
     public static void main(String[] args) {
-        Cell first = new Cell(0,0);
-        Cell dist = new Cell(0,5);
+        Cell first = new Cell(3, 1);
+        Cell dist = new Cell(1, 3);
 
-/*
-        int length=(first.x-dist.x==0)?Math.abs(first.y-dist.y):Math.abs(first.x-dist.x);
-
-        Rook rook = new Rook(first);
-             Cell[] result=rook.way(first,dist);
-        for (int i = 0; i < length; i++) {
-            System.out.println(result[i].x+"  "+result[i].y);
-        }
-*/
-
-        Cell[] possiblePosition = new Cell[8];
-        Cell[] toReturn = new Cell[1];
-        if (first.x + 1 < 8) {
-            if (first.y + 2 < 8) {
-                possiblePosition[0] = new Cell(first.x + 1, first.y + 2);
+        Cell[] possiblePosition = new Cell[13];
+        Cell[] toReturn = new Cell[13];
+        int temp = 0;
+        for (int i = 1; i < 8; i++) {
+            if (first.x + i < 8 && first.y + i < 8) {
+                possiblePosition[temp] = new Cell(first.x + i, first.y + i);
+                temp++;
             }
-            if (first.y - 2 >= 0) {
-                possiblePosition[1] = new Cell(first.x + 1, first.y - 2);
+            if (first.x + i < 8 && first.y - i >= 0) {
+                possiblePosition[temp] = new Cell(first.x + i, first.y - i);
+                temp++;
             }
-        }
-        if (first.x + 2 < 8) {
-            if (first.y + 1 < 8) {
-                possiblePosition[2] = new Cell(first.x + 2, first.y + 1);
+            if (first.x - i >= 0 && first.y - i >= 0) {
+                possiblePosition[temp] = new Cell(first.x - i, first.y - i);
+                temp++;
             }
-            if (first.y - 1 >= 0) {
-                possiblePosition[3] = new Cell(first.x + 2, first.y - 1);
+            if (first.x - i >= 0 && first.y + i < 8) {
+                possiblePosition[temp] = new Cell(first.x - i, first.y + i);
+                temp++;
             }
-        }
-        if (first.x - 1 >= 0) {
-            if (first.y + 2 < 8) {
-                possiblePosition[4] = new Cell(first.x - 1, first.y + 2);
-            }
-            if (first.y - 2 >= 0) {
-                possiblePosition[5] = new Cell(first.x - 1, first.y - 2);
-            }
-        }
-        if (first.x - 2 >= 0) {
-            if (first.y + 1 < 8) {
-                possiblePosition[6] = new Cell(first.x - 2, first.y + 1);
-            }
-            if (first.y - 1 >= 0) {
-                possiblePosition[7] = new Cell(first.x - 2, first.y - 1);
-            }
-        }
-        for (int i = 0; i <8 ; i++) {
-            System.out.println(possiblePosition[i]);
         }
 
+        for (int i = 0; i < 13; i++) {
+            if (possiblePosition[i] != null && possiblePosition[i].equals(dist)) {
+                System.out.println(possiblePosition[i].x + " " + possiblePosition[i].y);
+                System.out.println("!!!!!!!!");
+                int x = possiblePosition[i].x;
+                int y = possiblePosition[i].y;
+                for (int j = 0; j < 4; j++) {
+                    if (!first.equals(possiblePosition[i])) {
+                    if (first.x > possiblePosition[i].x && first.y > possiblePosition[i].y) {
+                        toReturn[j] = new Cell(x + j, y + j);
+                    }
+                    if (first.x > possiblePosition[i].x && first.y < possiblePosition[i].y) {
+                        toReturn[j] = new Cell(x + j, y - j);
+                    }
+                    if (first.x < possiblePosition[i].x && first.y > possiblePosition[i].y) {
+                        toReturn[j] = new Cell(x - j, y + j);
+                    }
+                    if (first.x < possiblePosition[i].x && first.y < possiblePosition[i].y) {
+                        toReturn[j] = new Cell(x - j, y - j);
+                    }
+
+                }
+                          }
+
+        }
+        for (Cell toShow : toReturn) {
+
+            System.out.println(toShow.x + " " + toShow.y);
+
+        }
 
 
     }
+
+
 }
 /*
 1. реализовать шахматную доску.

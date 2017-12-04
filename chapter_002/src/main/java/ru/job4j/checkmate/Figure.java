@@ -139,7 +139,6 @@ class Knight extends Figure {
             }
         }
 
-
         for (int i = 0; i < 8; i++) {
             if (possiblePosition[i] != null && possiblePosition[i].equals(dest)) {
                 toReturn[0] = possiblePosition[i];
@@ -163,7 +162,55 @@ class Bishop extends Figure {
 
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
-        return new Cell[0];
+        Cell[] possiblePosition = new Cell[13];
+        Cell[] toReturn = new Cell[13];
+        int temp = 0;
+        for (int i = 1; i < 8; i++) {
+            if (source.x + i < 8 && source.y + i < 8) {
+                possiblePosition[temp] = new Cell(source.x + i, source.y + i);
+                temp++;
+            }
+            if (source.x + i < 8 && source.y - i >= 0) {
+                possiblePosition[temp] = new Cell(source.x + i, source.y - i);
+                temp++;
+            }
+            if (source.x - i >= 0 && source.y - i >= 0) {
+                possiblePosition[temp] = new Cell(source.x - i, source.y - i);
+                temp++;
+            }
+            if (source.x - i >= 0 && source.y + i < 8) {
+                possiblePosition[temp] = new Cell(source.x + i, source.y - i);
+                temp++;
+            }
+        }
+
+        for (int i = 0; i < 13; i++) {
+            if (possiblePosition[i] != null && possiblePosition[i].equals(dest)) {
+                int x = possiblePosition[i].x;
+                int y = possiblePosition[i].y;
+                for (int j = 0; j < 4; j++) {
+                    if (!source.equals(possiblePosition[i])) {
+                        if (source.x > possiblePosition[i].x && source.y > possiblePosition[i].y) {
+                            toReturn[j] = new Cell(x + j, y + j);
+                        }
+                        if (source.x > possiblePosition[i].x && source.y < possiblePosition[i].y) {
+                            toReturn[j] = new Cell(x + j, y - j);
+                        }
+                        if (source.x < possiblePosition[i].x && source.y > possiblePosition[i].y) {
+                            toReturn[j] = new Cell(x - j, y + j);
+                        }
+                        if (source.x < possiblePosition[i].x && source.y < possiblePosition[i].y) {
+                            toReturn[j] = new Cell(x - j, y - j);
+                        }
+                    }
+                }
+            }
+        }
+        if (toReturn[0] != null) {
+            return toReturn;
+        } else {
+            throw new ImposibleMoveException();
+        }
     }
 }
 
