@@ -188,8 +188,9 @@ class Bishop extends Figure {
             if (possiblePosition[i] != null && possiblePosition[i].equals(dest)) {
                 int x = possiblePosition[i].x;
                 int y = possiblePosition[i].y;
-                for (int j = 0; j < 4; j++) {
-                    if (!source.equals(possiblePosition[i])) {
+                int length = Math.max(x, y) - Math.min(source.x, source.y);
+                for (int j = 0; j < length; j++) {
+                    if (source.x != possiblePosition[i].x && source.y != possiblePosition[i].y) {
                         if (source.x > possiblePosition[i].x && source.y > possiblePosition[i].y) {
                             toReturn[j] = new Cell(x + j, y + j);
                         }
@@ -206,11 +207,9 @@ class Bishop extends Figure {
                 }
             }
         }
-        if (toReturn[0] != null) {
+
             return toReturn;
-        } else {
-            throw new ImposibleMoveException();
-        }
+
     }
 }
 

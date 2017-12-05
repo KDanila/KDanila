@@ -154,7 +154,7 @@ public class FigureTest {
         Bishop bishop = new Bishop(first);
         Cell[] result = bishop.way(first, dist);
         int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y,
-                result[2].x, result[2].y, result[3].x, result[3].y};
+                result[2].x, result[2].y};
         int[] expected = {0, 1, 1, 2, 2, 3, 3, 4};
         assertThat(resultInt, is(expected));
     }
@@ -176,12 +176,12 @@ public class FigureTest {
      * Слон с 3 1 ----> 1 3.
      */
     @Test
-    public void whenBishopMoveFouthThenCorrectCellArray() {
+    public void whenBishopMoveFourthThenCorrectCellArray() {
         Cell first = new Cell(3, 1);
         Cell dist = new Cell(1, 3);
         Bishop bishop = new Bishop(first);
         Cell[] result = bishop.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y};
+        int[] resultInt = {result[0].x, result[0].y};
         int[] expected = {2, 2, 1, 3};
         assertThat(resultInt, is(expected));
     }

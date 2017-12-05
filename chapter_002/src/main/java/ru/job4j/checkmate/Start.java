@@ -2,8 +2,8 @@ package ru.job4j.checkmate;
 
 public class Start {
     public static void main(String[] args) {
-        Cell first = new Cell(3, 1);
-        Cell dist = new Cell(1, 3);
+        Cell first = new Cell(1, 6);
+        Cell dist = new Cell(3, 4);
 
         Cell[] possiblePosition = new Cell[13];
         Cell[] toReturn = new Cell[13];
@@ -33,36 +33,40 @@ public class Start {
                 System.out.println("!!!!!!!!");
                 int x = possiblePosition[i].x;
                 int y = possiblePosition[i].y;
-                for (int j = 0; j < 4; j++) {
-                    if (!first.equals(possiblePosition[i])) {
-                    if (first.x > possiblePosition[i].x && first.y > possiblePosition[i].y) {
-                        toReturn[j] = new Cell(x + j, y + j);
-                    }
-                    if (first.x > possiblePosition[i].x && first.y < possiblePosition[i].y) {
-                        toReturn[j] = new Cell(x + j, y - j);
-                    }
-                    if (first.x < possiblePosition[i].x && first.y > possiblePosition[i].y) {
-                        toReturn[j] = new Cell(x - j, y + j);
-                    }
-                    if (first.x < possiblePosition[i].x && first.y < possiblePosition[i].y) {
-                        toReturn[j] = new Cell(x - j, y - j);
-                    }
+                int length = Math.max(x, y) - Math.min(first.x, first.y);
+                for (int j = 0; j < length; j++) {
+                    if (first.x != possiblePosition[i].x && first.y != possiblePosition[i].y) {
+                        if (first.x > possiblePosition[i].x && first.y > possiblePosition[i].y) {
+                            toReturn[j] = new Cell(x + j, y + j);
+                        }
+                        if (first.x > possiblePosition[i].x && first.y < possiblePosition[i].y) {
+                            toReturn[j] = new Cell(x + j, y - j);
+                        }
+                        if (first.x < possiblePosition[i].x && first.y > possiblePosition[i].y) {
+                            toReturn[j] = new Cell(x - j, y + j);
+                        }
+                        if (first.x < possiblePosition[i].x && first.y < possiblePosition[i].y) {
+                            toReturn[j] = new Cell(x - j, y - j);
+                        }
 
+                    }
                 }
-                          }
+
+            }
+
 
         }
-        for (Cell toShow : toReturn) {
-
-            System.out.println(toShow.x + " " + toShow.y);
-
+        for (int i = 0; i < toReturn.length; i++) {
+            if (toReturn[i] != null) {
+                System.out.println(toReturn[i].x + " " + toReturn[i].y);
+            }
         }
-
-
     }
 
-
 }
+
+
+
 /*
 1. реализовать шахматную доску.
 
