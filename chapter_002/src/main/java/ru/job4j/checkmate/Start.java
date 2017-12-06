@@ -2,10 +2,89 @@ package ru.job4j.checkmate;
 
 public class Start {
     public static void main(String[] args) {
-        Cell source = new Cell(7, 7);
-        Cell dest = new Cell(0, 0);
+        Cell source = new Cell(5, 5);
+        Cell dest = new Cell(4, 4);
 
-        Cell[] possiblePosition = new Cell[13];
+
+        int position = 0;
+        Cell[] possiblePosition = new Cell[12];
+        Cell[] toReturn = new Cell[1];
+        if (source.x + 1 < 8) {
+            possiblePosition[position++] = new Cell(source.x + 1, source.y);
+            if (source.y + 1 < 8) {
+                possiblePosition[position++] = new Cell(source.x + 1, source.y + 1);
+            }
+            if (source.y - 1 >= 0) {
+                possiblePosition[position++] = new Cell(source.x + 1, source.y - 1);
+            }
+        }
+        if (source.x - 1 >= 0) {
+            possiblePosition[position++] = new Cell(source.x - 1, source.y);
+            if (source.y + 1 < 8) {
+                possiblePosition[position++] = new Cell(source.x - 1, source.y + 1);
+            }
+            if (source.y - 1 >= 0) {
+                possiblePosition[position++] = new Cell(source.x - 1, source.y - 1);
+            }
+        }
+        if (source.y + 1 < 8) {
+            possiblePosition[position++] = new Cell(source.x, source.y + 1);
+            if (source.x + 1 < 8) {
+                possiblePosition[position++] = new Cell(source.x + 1, source.y + 1);
+            }
+            if (source.x - 1 >= 0) {
+                possiblePosition[position++] = new Cell(source.x - 1, source.y + 1);
+            }
+        }
+        if (source.y - 1 >= 0) {
+            possiblePosition[position++] = new Cell(source.x, source.y - 1);
+            if (source.x + 1 < 8) {
+                possiblePosition[position++] = new Cell(source.x + 1, source.y - 1);
+            }
+            if (source.x - 1 >= 0) {
+                possiblePosition[position++] = new Cell(source.x - 1, source.y - 1);
+            }
+        }
+
+        for (Cell toFind : possiblePosition) {
+            if (toFind != null && toFind.equals(dest)) {
+                toReturn[0] = toFind;
+                break;
+            }
+        }
+        System.out.println(toReturn[0].x+"  "+toReturn[0].y);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ /*       Cell[] possiblePosition = new Cell[13];
         Cell[] toReturn = new Cell[Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y))];
         int temp = 0;
         for (int i = 1; i < 8; i++) {
@@ -59,7 +138,7 @@ public class Start {
     }
 
 }
-
+*/
 
 
 /*

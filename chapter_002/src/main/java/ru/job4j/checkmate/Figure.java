@@ -1,7 +1,8 @@
 package ru.job4j.checkmate;
 
 public abstract class Figure {
-    final Cell position;
+
+    private final Cell position;
 
     boolean isWhite = true;
 
@@ -13,12 +14,16 @@ public abstract class Figure {
 
     abstract Cell[] way(Cell source, Cell dest) throws ImposibleMoveException;
 
+    public Cell getPosition() {
+        return position;
+    }
 
 }
 
 class Pawn extends Figure {
 
     boolean firstStep = true;
+
 
     protected Pawn(Cell position) {
         super(position);
@@ -185,7 +190,7 @@ class Bishop extends Figure {
         }
 
 
-        for (int i = 0; i <Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y)); i++) {
+        for (int i = 0; i < Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y)); i++) {
             if (possiblePosition[i] != null && possiblePosition[i].equals(dest)) {
                 int x = possiblePosition[i].x;
                 int y = possiblePosition[i].y;
@@ -210,9 +215,7 @@ class Bishop extends Figure {
         }
 
 
-
-
-            return toReturn;
+        return toReturn;
 
 
     }
@@ -226,7 +229,58 @@ class King extends Figure {
 
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
-        return new Cell[0];
+        int position = 0;
+        Cell[] possiblePosition = new Cell[12];
+        Cell[] toReturn = new Cell[1];
+
+        if (source.x + 1 < 8) {
+            possiblePosition[position++] = new Cell(source.x + 1, source.y);
+            if (source.y + 1 < 8) {
+                possiblePosition[position++] = new Cell(source.x + 1, source.y + 1);
+            }
+            if (source.y - 1 >= 0) {
+                possiblePosition[position++] = new Cell(source.x + 1, source.y - 1);
+            }
+        }
+        if (source.x - 1 >= 0) {
+            possiblePosition[position++] = new Cell(source.x - 1, source.y);
+            if (source.y + 1 < 8) {
+                possiblePosition[position++] = new Cell(source.x - 1, source.y + 1);
+            }
+            if (source.y - 1 >= 0) {
+                possiblePosition[position++] = new Cell(source.x - 1, source.y - 1);
+            }
+        }
+        if (source.y + 1 < 8) {
+            possiblePosition[position++] = new Cell(source.x, source.y + 1);
+            if (source.x + 1 < 8) {
+                possiblePosition[position++] = new Cell(source.x + 1, source.y + 1);
+            }
+            if (source.x - 1 >= 0) {
+                possiblePosition[position++] = new Cell(source.x - 1, source.y + 1);
+            }
+        }
+        if (source.y - 1 >= 0) {
+            possiblePosition[position++] = new Cell(source.x, source.y - 1);
+            if (source.x + 1 < 8) {
+                possiblePosition[position++] = new Cell(source.x + 1, source.y - 1);
+            }
+            if (source.x - 1 >= 0) {
+                possiblePosition[position++] = new Cell(source.x - 1, source.y - 1);
+            }
+        }
+
+        for (Cell toFind : possiblePosition) {
+            if (toFind != null && toFind.equals(dest)) {
+                toReturn[0] = toFind;
+                break;
+            }
+        }
+        if (toReturn[0] != null) {
+            return toReturn;
+        } else {
+            throw new ImposibleMoveException();
+        }
     }
 }
 
@@ -238,6 +292,32 @@ class Queen extends Figure {
 
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
+
+        int length = (source.x - dest.x == 0) ? Math.abs(source.y - dest.y) : Math.abs(source.x - dest.x);
+        Cell[] toReturn = new Cell[length + 1];
+        int tempY = (source.y < dest.y) ? source.y : dest.y;
+        int tempX = (source.x < dest.x) ? source.x : dest.x;
+        if (source.x - dest.x == 0 && source.y - dest.y != 0) {
+            for (int i = 0; i < length; i++) {
+                if (source.y < dest.y) {
+                    toReturn[i] = new Cell(source.x, source.y + 1 + i);
+                } else {
+                    toReturn[i] = new Cell(source.x, tempY + i);
+                }
+            }
+        } else if (source.x - dest.x != 0 && source.y - dest.y == 0) {
+            for (int i = 0; i < length; i++) {
+                if (source.x < dest.x) {
+                    toReturn[i] = new Cell(source.x + 1 + i, source.y);
+                } else {
+                    toReturn[i] = new Cell(tempX + i, source.y);
+                }
+            }
+        } else {
+            throw new ImposibleMoveException();
+        }
+
+
         return new Cell[0];
     }
 }

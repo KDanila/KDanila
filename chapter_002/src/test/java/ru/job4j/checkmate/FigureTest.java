@@ -129,10 +129,10 @@ public class FigureTest {
         assertThat(resultInt, is(expected));
 
     }
-
-    /**
+/*
+    *//**
      * Слон с 0 0 ----> 2 2.
-     */
+     *//*
     @Test
     public void whenBishopMoveThenCorrectCellArray() {
         Cell first = new Cell(0, 0);
@@ -142,11 +142,12 @@ public class FigureTest {
         int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y};
         int[] expected = {2, 2, 1, 1};
         assertThat(resultInt, is(expected));
-    }
+    }*/
 
-    /**
+/**
      * Слон с 4 5 ----> 0 1.
-     */
+     *//*
+
     @Test
     public void whenBishopMoveSecondThenCorrectCellArray() {
         Cell first = new Cell(4, 5);
@@ -154,14 +155,16 @@ public class FigureTest {
         Bishop bishop = new Bishop(first);
         Cell[] result = bishop.way(first, dist);
         int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y,
-                result[2].x, result[2].y};
+                result[2].x, result[2].y,result[3].x, result[3].y};
         int[] expected = {0, 1, 1, 2, 2, 3, 3, 4};
         assertThat(resultInt, is(expected));
     }
 
-    /**
+    */
+/**
      * Слон с 1 6 ----> 7 7.
-     */
+     *//*
+
     @Test
     public void whenBishopMoveThirdThenCorrectCellArray() {
         Cell first = new Cell(1, 6);
@@ -172,9 +175,11 @@ public class FigureTest {
         int[] expected = {3, 4, 2, 5};
         assertThat(resultInt, is(expected));
     }
-    /**
+    */
+/**
      * Слон с 3 1 ----> 1 3.
-     */
+     *//*
+
     @Test
     public void whenBishopMoveFourthThenCorrectCellArray() {
         Cell first = new Cell(3, 1);
@@ -185,6 +190,34 @@ public class FigureTest {
         int[] expected = {2, 2, 1, 3};
         assertThat(resultInt, is(expected));
     }
+*/
+    /**
+     * Король 0,0 ---- 1,1
+     */
+    @Test
+    public void whenKingMoveThenCorrectCellArray() {
+        Cell first = new Cell(0, 0);
+        Cell dist = new Cell(1, 1);
+        King king = new King(first);
+        Cell[] result = king.way(first, dist);
+        int[] resultInt = {result[0].x, result[0].y};
+        int[] expected = {1, 1};
+        assertThat(resultInt, is(expected));
 
+    }
+    /**
+     * Король 5,5 ---- 5,4
+     */
+    @Test
+    public void whenKingMoveSecondThenCorrectCellArray() {
+        Cell first = new Cell(5, 5);
+        Cell dist = new Cell(5, 4);
+        King king = new King(first);
+        Cell[] result = king.way(first, dist);
+        int[] resultInt = {result[0].x, result[0].y};
+        int[] expected = {5, 4};
+        assertThat(resultInt, is(expected));
+
+    }
 }
 
