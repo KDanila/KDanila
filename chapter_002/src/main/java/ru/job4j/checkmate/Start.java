@@ -2,59 +2,54 @@ package ru.job4j.checkmate;
 
 public class Start {
     public static void main(String[] args) {
-        Cell first = new Cell(1, 6);
-        Cell dist = new Cell(3, 4);
+        Cell source = new Cell(7, 7);
+        Cell dest = new Cell(0, 0);
 
         Cell[] possiblePosition = new Cell[13];
-        Cell[] toReturn = new Cell[13];
+        Cell[] toReturn = new Cell[Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y))];
         int temp = 0;
         for (int i = 1; i < 8; i++) {
-            if (first.x + i < 8 && first.y + i < 8) {
-                possiblePosition[temp] = new Cell(first.x + i, first.y + i);
+            if (source.x + i < 8 && source.y + i < 8) {
+                possiblePosition[temp] = new Cell(source.x + i, source.y + i);
                 temp++;
             }
-            if (first.x + i < 8 && first.y - i >= 0) {
-                possiblePosition[temp] = new Cell(first.x + i, first.y - i);
+            if (source.x + i < 8 && source.y - i >= 0) {
+                possiblePosition[temp] = new Cell(source.x + i, source.y - i);
                 temp++;
             }
-            if (first.x - i >= 0 && first.y - i >= 0) {
-                possiblePosition[temp] = new Cell(first.x - i, first.y - i);
+            if (source.x - i >= 0 && source.y - i >= 0) {
+                possiblePosition[temp] = new Cell(source.x - i, source.y - i);
                 temp++;
             }
-            if (first.x - i >= 0 && first.y + i < 8) {
-                possiblePosition[temp] = new Cell(first.x - i, first.y + i);
+            if (source.x - i >= 0 && source.y + i < 8) {
+                possiblePosition[temp] = new Cell(source.x - i, source.y + i);
                 temp++;
             }
         }
 
-        for (int i = 0; i < 13; i++) {
-            if (possiblePosition[i] != null && possiblePosition[i].equals(dist)) {
-                System.out.println(possiblePosition[i].x + " " + possiblePosition[i].y);
-                System.out.println("!!!!!!!!");
+
+        for (int i = 0; i <Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y)); i++) {
+            if (possiblePosition[i] != null && possiblePosition[i].equals(dest)) {
                 int x = possiblePosition[i].x;
                 int y = possiblePosition[i].y;
-                int length = Math.max(x, y) - Math.min(first.x, first.y);
-                for (int j = 0; j < length; j++) {
-                    if (first.x != possiblePosition[i].x && first.y != possiblePosition[i].y) {
-                        if (first.x > possiblePosition[i].x && first.y > possiblePosition[i].y) {
+                int length = Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y));
+                for (int j = 1; j < length; j++) {
+                    if (source.x != possiblePosition[i].x && source.y != possiblePosition[i].y) {
+                        if (source.x > possiblePosition[i].x && source.y > possiblePosition[i].y) {
                             toReturn[j] = new Cell(x + j, y + j);
                         }
-                        if (first.x > possiblePosition[i].x && first.y < possiblePosition[i].y) {
+                        if (source.x > possiblePosition[i].x && source.y < possiblePosition[i].y) {
                             toReturn[j] = new Cell(x + j, y - j);
                         }
-                        if (first.x < possiblePosition[i].x && first.y > possiblePosition[i].y) {
+                        if (source.x < possiblePosition[i].x && source.y > possiblePosition[i].y) {
                             toReturn[j] = new Cell(x - j, y + j);
                         }
-                        if (first.x < possiblePosition[i].x && first.y < possiblePosition[i].y) {
+                        if (source.x < possiblePosition[i].x && source.y < possiblePosition[i].y) {
                             toReturn[j] = new Cell(x - j, y - j);
                         }
-
                     }
                 }
-
             }
-
-
         }
         for (int i = 0; i < toReturn.length; i++) {
             if (toReturn[i] != null) {

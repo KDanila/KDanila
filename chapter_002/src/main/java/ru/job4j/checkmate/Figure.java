@@ -163,7 +163,7 @@ class Bishop extends Figure {
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         Cell[] possiblePosition = new Cell[13];
-        Cell[] toReturn = new Cell[13];
+        Cell[] toReturn = new Cell[Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y))];
         int temp = 0;
         for (int i = 1; i < 8; i++) {
             if (source.x + i < 8 && source.y + i < 8) {
@@ -179,17 +179,18 @@ class Bishop extends Figure {
                 temp++;
             }
             if (source.x - i >= 0 && source.y + i < 8) {
-                possiblePosition[temp] = new Cell(source.x + i, source.y - i);
+                possiblePosition[temp] = new Cell(source.x - i, source.y + i);
                 temp++;
             }
         }
 
-        for (int i = 0; i < 13; i++) {
+
+        for (int i = 0; i <Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y)); i++) {
             if (possiblePosition[i] != null && possiblePosition[i].equals(dest)) {
                 int x = possiblePosition[i].x;
                 int y = possiblePosition[i].y;
-                int length = Math.max(x, y) - Math.min(source.x, source.y);
-                for (int j = 0; j < length; j++) {
+                int length = Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y));
+                for (int j = 1; j < length; j++) {
                     if (source.x != possiblePosition[i].x && source.y != possiblePosition[i].y) {
                         if (source.x > possiblePosition[i].x && source.y > possiblePosition[i].y) {
                             toReturn[j] = new Cell(x + j, y + j);
@@ -208,7 +209,11 @@ class Bishop extends Figure {
             }
         }
 
+
+
+
             return toReturn;
+
 
     }
 }
