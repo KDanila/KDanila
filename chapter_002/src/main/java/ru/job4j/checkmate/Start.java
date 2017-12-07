@@ -2,59 +2,100 @@ package ru.job4j.checkmate;
 
 public class Start {
     public static void main(String[] args) {
-        Cell source = new Cell(5, 5);
-        Cell dest = new Cell(4, 4);
+        Cell source = new Cell(5, 0);
+        Cell dest = new Cell(0, 0);
 
-
-        int position = 0;
-        Cell[] possiblePosition = new Cell[12];
-        Cell[] toReturn = new Cell[1];
-        if (source.x + 1 < 8) {
-            possiblePosition[position++] = new Cell(source.x + 1, source.y);
-            if (source.y + 1 < 8) {
-                possiblePosition[position++] = new Cell(source.x + 1, source.y + 1);
+        if (source.x - dest.x == 0 || source.y - dest.y == 0) {
+            int length = (source.x - dest.x == 0) ? Math.abs(source.y - dest.y) : Math.abs(source.x - dest.x);
+            Cell[] toReturn = new Cell[length + 1];
+            int tempY = (source.y < dest.y) ? source.y : dest.y;
+            int tempX = (source.x < dest.x) ? source.x : dest.x;
+            if (source.x - dest.x == 0 && source.y - dest.y != 0) {
+                for (int i = 0; i < length; i++) {
+                    if (source.y < dest.y) {
+                        toReturn[i] = new Cell(source.x, source.y + 1 + i);
+                    } else {
+                        toReturn[i] = new Cell(source.x, tempY + i);
+                    }
+                }
+            } else if (source.x - dest.x != 0 && source.y - dest.y == 0) {
+                for (int i = 0; i < length; i++) {
+                    if (source.x < dest.x) {
+                        toReturn[i] = new Cell(source.x + 1 + i, source.y);
+                    } else {
+                        toReturn[i] = new Cell(tempX + i, source.y);
+                    }
+                }
+            } else {
+                throw new ImposibleMoveException();
             }
-            if (source.y - 1 >= 0) {
-                possiblePosition[position++] = new Cell(source.x + 1, source.y - 1);
+            for (int i = 0; i < toReturn.length; i++) {
+                if (toReturn[i] != null) {
+                    System.out.println(toReturn[i].x + " " + toReturn[i].y);
+                }
+            }
+            /*if (toReturn[0] != null) {
+                return toReturn;
+            } else {
+                throw new ImposibleMoveException();
+            }*/
+        } else {
+            Cell[] possiblePosition = new Cell[13];
+            Cell[] toReturn = new Cell[Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y))];
+            int temp = 0;
+            int tempTwo = 0;
+            for (int i = 1; i < 8; i++) {
+                if (source.x + i < 8 && source.y + i < 8) {
+                    possiblePosition[temp] = new Cell(source.x + i, source.y + i);
+                    temp++;
+                }
+                if (source.x + i < 8 && source.y - i >= 0) {
+                    possiblePosition[temp] = new Cell(source.x + i, source.y - i);
+                    temp++;
+                }
+                if (source.x - i >= 0 && source.y - i >= 0) {
+                    possiblePosition[temp] = new Cell(source.x - i, source.y - i);
+                    temp++;
+                }
+                if (source.x - i >= 0 && source.y + i < 8) {
+                    possiblePosition[temp] = new Cell(source.x - i, source.y + i);
+                    temp++;
+                }
+            }
+
+            for (int i = 0; i < possiblePosition.length; i++) {
+                if (possiblePosition[i] != null && possiblePosition[i].equals(dest)) {
+                    int x = possiblePosition[i].x;
+                    int y = possiblePosition[i].y;
+                    for (int j = 0; j < Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y)); j++) {
+
+
+                        if (source.x > x && source.y > y) {
+                            toReturn[tempTwo++] = new Cell(source.x - j - 1, source.y - j - 1);
+                        }
+                        if (source.x > x && source.y < y) {
+                            toReturn[tempTwo++] = new Cell(source.x - j - 1, source.y + j + 1);
+                        }
+                        if (source.x < x && source.y < y) {
+                            toReturn[tempTwo++] = new Cell(source.x + j + 1, source.y + j + 1);
+                        }
+                        if (source.x < x && source.y > y) {
+                            toReturn[tempTwo++] = new Cell(source.x + 1 + j, source.y - j - 1);
+                        }
+                    }
+                }
+            }
+         /*   if (toReturn[0] != null) {
+                return toReturn;
+            } else {
+                throw new ImposibleMoveException();
+            }*/
+            for (int i = 0; i < toReturn.length; i++) {
+                if (toReturn[i] != null) {
+                    System.out.println(toReturn[i].x + " " + toReturn[i].y);
+                }
             }
         }
-        if (source.x - 1 >= 0) {
-            possiblePosition[position++] = new Cell(source.x - 1, source.y);
-            if (source.y + 1 < 8) {
-                possiblePosition[position++] = new Cell(source.x - 1, source.y + 1);
-            }
-            if (source.y - 1 >= 0) {
-                possiblePosition[position++] = new Cell(source.x - 1, source.y - 1);
-            }
-        }
-        if (source.y + 1 < 8) {
-            possiblePosition[position++] = new Cell(source.x, source.y + 1);
-            if (source.x + 1 < 8) {
-                possiblePosition[position++] = new Cell(source.x + 1, source.y + 1);
-            }
-            if (source.x - 1 >= 0) {
-                possiblePosition[position++] = new Cell(source.x - 1, source.y + 1);
-            }
-        }
-        if (source.y - 1 >= 0) {
-            possiblePosition[position++] = new Cell(source.x, source.y - 1);
-            if (source.x + 1 < 8) {
-                possiblePosition[position++] = new Cell(source.x + 1, source.y - 1);
-            }
-            if (source.x - 1 >= 0) {
-                possiblePosition[position++] = new Cell(source.x - 1, source.y - 1);
-            }
-        }
-
-        for (Cell toFind : possiblePosition) {
-            if (toFind != null && toFind.equals(dest)) {
-                toReturn[0] = toFind;
-                break;
-            }
-        }
-        System.out.println(toReturn[0].x+"  "+toReturn[0].y);
-    }
-}
 
 
 
@@ -84,9 +125,14 @@ public class Start {
 
 
 
- /*       Cell[] possiblePosition = new Cell[13];
+
+
+
+        /*
+        Cell[] possiblePosition = new Cell[13];
         Cell[] toReturn = new Cell[Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y))];
         int temp = 0;
+        int tempTwo = 0;
         for (int i = 1; i < 8; i++) {
             if (source.x + i < 8 && source.y + i < 8) {
                 possiblePosition[temp] = new Cell(source.x + i, source.y + i);
@@ -106,13 +152,73 @@ public class Start {
             }
         }
 
+        for (int i = 0; i < possiblePosition.length; i++) {
+            if (possiblePosition[i] != null && possiblePosition[i].equals(dest)) {
+                int x = possiblePosition[i].x;
+                int y = possiblePosition[i].y;
+                for (int j = 0; j < Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y)); j++) {
 
+
+                    if (source.x > x && source.y > y) {
+                        toReturn[tempTwo++] = new Cell(source.x - j, source.y - j);
+                    }
+                    if (source.x > x && source.y < y) {
+                        toReturn[tempTwo++] = new Cell(source.x - j - 1, source.y + j + 1);
+                    }
+                    if (source.x < x && source.y < y) {
+                        toReturn[tempTwo++] = new Cell(source.x + j, source.y + j);
+                    }
+                    if (source.x < x && source.y > y) {
+                        toReturn[tempTwo++] = new Cell(source.x + +1 + j, source.y - j - 1);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < toReturn.length; i++) {
+            if (toReturn[i] != null) {
+                System.out.println(toReturn[i].x + " " + toReturn[i].y);
+            }
+        }
+
+
+
+
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
         for (int i = 0; i <Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y)); i++) {
             if (possiblePosition[i] != null && possiblePosition[i].equals(dest)) {
                 int x = possiblePosition[i].x;
                 int y = possiblePosition[i].y;
                 int length = Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y));
-                for (int j = 1; j < length; j++) {
+                for (int j = 0; j < length; j++) {
                     if (source.x != possiblePosition[i].x && source.y != possiblePosition[i].y) {
                         if (source.x > possiblePosition[i].x && source.y > possiblePosition[i].y) {
                             toReturn[j] = new Cell(x + j, y + j);
@@ -129,16 +235,12 @@ public class Start {
                     }
                 }
             }
-        }
-        for (int i = 0; i < toReturn.length; i++) {
-            if (toReturn[i] != null) {
-                System.out.println(toReturn[i].x + " " + toReturn[i].y);
-            }
-        }
+        }*/
+
     }
 
 }
-*/
+
 
 
 /*

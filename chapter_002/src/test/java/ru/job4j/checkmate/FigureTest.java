@@ -129,10 +129,11 @@ public class FigureTest {
         assertThat(resultInt, is(expected));
 
     }
-/*
-    *//**
-     * Слон с 0 0 ----> 2 2.
-     *//*
+
+    /**
+     * Слон с 0 0---->2 2.
+     */
+
     @Test
     public void whenBishopMoveThenCorrectCellArray() {
         Cell first = new Cell(0, 0);
@@ -140,13 +141,13 @@ public class FigureTest {
         Bishop bishop = new Bishop(first);
         Cell[] result = bishop.way(first, dist);
         int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y};
-        int[] expected = {2, 2, 1, 1};
+        int[] expected = {1, 1, 2, 2};
         assertThat(resultInt, is(expected));
-    }*/
+    }
 
-/**
+    /**
      * Слон с 4 5 ----> 0 1.
-     *//*
+     */
 
     @Test
     public void whenBishopMoveSecondThenCorrectCellArray() {
@@ -155,15 +156,15 @@ public class FigureTest {
         Bishop bishop = new Bishop(first);
         Cell[] result = bishop.way(first, dist);
         int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y,
-                result[2].x, result[2].y,result[3].x, result[3].y};
-        int[] expected = {0, 1, 1, 2, 2, 3, 3, 4};
+                result[2].x, result[2].y, result[3].x, result[3].y};
+        int[] expected = {3, 4, 2, 3, 1, 2, 0, 1};
         assertThat(resultInt, is(expected));
     }
 
-    */
-/**
+
+    /**
      * Слон с 1 6 ----> 7 7.
-     *//*
+     */
 
     @Test
     public void whenBishopMoveThirdThenCorrectCellArray() {
@@ -172,13 +173,13 @@ public class FigureTest {
         Bishop bishop = new Bishop(first);
         Cell[] result = bishop.way(first, dist);
         int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y};
-        int[] expected = {3, 4, 2, 5};
+        int[] expected = {2, 5, 3, 4};
         assertThat(resultInt, is(expected));
     }
-    */
-/**
+
+    /**
      * Слон с 3 1 ----> 1 3.
-     *//*
+     */
 
     @Test
     public void whenBishopMoveFourthThenCorrectCellArray() {
@@ -186,11 +187,11 @@ public class FigureTest {
         Cell dist = new Cell(1, 3);
         Bishop bishop = new Bishop(first);
         Cell[] result = bishop.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y};
+        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y};
         int[] expected = {2, 2, 1, 3};
         assertThat(resultInt, is(expected));
     }
-*/
+
     /**
      * Король 0,0 ---- 1,1
      */
@@ -205,6 +206,7 @@ public class FigureTest {
         assertThat(resultInt, is(expected));
 
     }
+
     /**
      * Король 5,5 ---- 5,4
      */
@@ -216,6 +218,53 @@ public class FigureTest {
         Cell[] result = king.way(first, dist);
         int[] resultInt = {result[0].x, result[0].y};
         int[] expected = {5, 4};
+        assertThat(resultInt, is(expected));
+
+    }
+
+    /**
+     * Ферзь 3,3 ---- 0,3
+     */
+    @Test
+    public void whenQueenMoveThenCorrectCellArray() {
+        Cell first = new Cell(3, 3);
+        Cell dist = new Cell(0, 3);
+        Queen queen = new Queen(first);
+        Cell[] result = queen.way(first, dist);
+        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y, result[2].x, result[2].y};
+        int[] expected = {0, 3, 1, 3, 2, 3};
+        assertThat(resultInt, is(expected));
+
+    }
+
+    /**
+     * Ферзь 0,7 ---- 0,0
+     */
+    @Test
+    public void whenQueenMoveSecondThenCorrectCellArray() {
+        Cell first = new Cell(0, 7);
+        Cell dist = new Cell(0, 0);
+        Queen queen = new Queen(first);
+        Cell[] result = queen.way(first, dist);
+        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y, result[2].x, result[2].y
+                , result[3].x, result[3].y, result[4].x, result[4].y, result[5].x, result[5].y,
+                result[6].x, result[6].y};
+        int[] expected = {0, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6};
+        assertThat(resultInt, is(expected));
+
+    }
+
+    /**
+     * Ферзь 0,7 ---- 0,0
+     */
+    @Test
+    public void whenQueenMoveThirdThenCorrectCellArray() {
+        Cell first = new Cell(3, 3);
+        Cell dist = new Cell(0, 0);
+        Queen queen = new Queen(first);
+        Cell[] result = queen.way(first, dist);
+        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y, result[2].x, result[2].y};
+        int[] expected = {2, 2, 1, 1, 0, 0};
         assertThat(resultInt, is(expected));
 
     }
