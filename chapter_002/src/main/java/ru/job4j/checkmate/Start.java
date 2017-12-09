@@ -2,7 +2,25 @@ package ru.job4j.checkmate;
 
 public class Start {
     public static void main(String[] args) {
-        Cell source = new Cell(5, 0);
+
+      Board board = new Board();
+      board.setFirstPosition();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      /*  Cell source = new Cell(5, 0);
         Cell dest = new Cell(0, 0);
 
         if (source.x - dest.x == 0 || source.y - dest.y == 0) {
@@ -34,11 +52,11 @@ public class Start {
                     System.out.println(toReturn[i].x + " " + toReturn[i].y);
                 }
             }
-            /*if (toReturn[0] != null) {
+            *//*if (toReturn[0] != null) {
                 return toReturn;
             } else {
                 throw new ImposibleMoveException();
-            }*/
+            }*//*
         } else {
             Cell[] possiblePosition = new Cell[13];
             Cell[] toReturn = new Cell[Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y))];
@@ -85,11 +103,11 @@ public class Start {
                     }
                 }
             }
-         /*   if (toReturn[0] != null) {
+         *//*   if (toReturn[0] != null) {
                 return toReturn;
             } else {
                 throw new ImposibleMoveException();
-            }*/
+            }*//*
             for (int i = 0; i < toReturn.length; i++) {
                 if (toReturn[i] != null) {
                     System.out.println(toReturn[i].x + " " + toReturn[i].y);
@@ -118,7 +136,7 @@ public class Start {
 
 
 
-
+*/
 
 
 

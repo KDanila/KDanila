@@ -4,6 +4,10 @@ public abstract class Figure {
 
     private final Cell position;
 
+
+
+    private Cell currentPosition;
+
     boolean isWhite = true;
 
     // Cell [] pullOfCells = Cell.fillPull();
@@ -16,6 +20,13 @@ public abstract class Figure {
 
     public Cell getPosition() {
         return position;
+    }
+    public Cell getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(Cell currentPosition) {
+        this.currentPosition = currentPosition;
     }
 
 }
