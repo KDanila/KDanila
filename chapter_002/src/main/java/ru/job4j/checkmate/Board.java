@@ -16,30 +16,45 @@ public class Board {
         Cell[] way;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                Cell currentPosition = figures[i][j].getPosition();
-                if (currentPosition.equals(source)) {
-
-                    way = figures[i][j].way(source, dest);
-                    for (Cell cell : way) {
-                        if (cell.equals(dest)) {
-                            isPossibleToMove = true;
-                            break;
-                        } else {
+                if (figures[i][j] != null) {
+                    Cell currentPosition = figures[i][j].getPosition();
+                    if (currentPosition.equals(source)) {
+                        way = figures[i][j].way(source, dest);
+                        for (Cell cell : way) {
+                            if (cell.equals(dest)) {
+                                isPossibleToMove = true;
+                                break;
+                            }
+                        }
+                        if (!isPossibleToMove) {
                             throw new ImposibleMoveException();
                         }
-                    }
+                        for (int k = 0; k < 8; k++) {
+                            for (int l = 0; l < 8; l++) {
+                                for (int m = 0; m < way.length-1; m++) {
+                                    if (figures[k][l] != null) {
+                                        if (way[m].equals(figures[k][l].getCurrentPosition()) && !way[m].equals(dest)) {
+                                            isPossibleToMove = false;
+                                            throw new OccupiedWayException();
+                                        }
+                                    }
+                                }
+                            }
 
-                } else {
-                    throw new FigureNotFoundException();
+                        }
+
+                    }
                 }
             }
         }
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                Cell currentPosition = figures[i][j].getPosition();
-                if(currentPosition.equals(dest)){
-                    isPossibleToMove=false;
-                    throw new OccupiedWayException();
+                if (figures[i][j] != null) {
+                    Cell currentPosition = figures[i][j].getPosition();
+                    if (currentPosition.equals(dest)) {
+                        isPossibleToMove = false;
+                        throw new OccupiedWayException();
+                    }
                 }
             }
 

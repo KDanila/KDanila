@@ -2,9 +2,13 @@ package ru.job4j.checkmate;
 
 public class Start {
     public static void main(String[] args) {
+        Board board = new Board();
+        board.setFirstPosition();
+        Cell a1= new Cell(1,0);
+        Cell a4= new Cell(2,2);
+        boolean result= board.move(a1,a4);
+        System.out.println(result);
 
-      Board board = new Board();
-      board.setFirstPosition();
 
 
 
