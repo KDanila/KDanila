@@ -5,6 +5,13 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+/**
+ * Figure test class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.3
+ */
 
 public class FigureTest {
 
@@ -79,7 +86,7 @@ public class FigureTest {
         Cell[] result = rook.way(first, dist);
         int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y,
                 result[2].x, result[2].y, result[3].x, result[3].y, result[4].x, result[4].y,
-                result[5].x, result[5].y, result[6].x, result[6].y,};
+                result[5].x, result[5].y, result[6].x, result[6].y};
         int[] expected = {0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7};
         assertThat(resultInt, is(expected));
 
@@ -101,7 +108,7 @@ public class FigureTest {
     }
 
     /**
-     * Конь ходит Г
+     * Конь ходит Г.
      */
     @Test
     public void whenKnightMoveThenCorrectCellArray() {
@@ -193,7 +200,7 @@ public class FigureTest {
     }
 
     /**
-     * Король 0,0 ---- 1,1
+     * Король 0,0 ---- 1,1.
      */
     @Test
     public void whenKingMoveThenCorrectCellArray() {
@@ -208,7 +215,7 @@ public class FigureTest {
     }
 
     /**
-     * Король 5,5 ---- 5,4
+     * Король 5,5 ---- 5,4.
      */
     @Test
     public void whenKingMoveSecondThenCorrectCellArray() {
@@ -223,7 +230,7 @@ public class FigureTest {
     }
 
     /**
-     * Ферзь 3,3 ---- 0,3
+     * Ферзь 3,3 ---- 0,3.
      */
     @Test
     public void whenQueenMoveThenCorrectCellArray() {
@@ -238,7 +245,7 @@ public class FigureTest {
     }
 
     /**
-     * Ферзь 0,7 ---- 0,0
+     * Ферзь 0,7 ---- 0,0.
      */
     @Test
     public void whenQueenMoveSecondThenCorrectCellArray() {
@@ -246,8 +253,8 @@ public class FigureTest {
         Cell dist = new Cell(0, 0);
         Queen queen = new Queen(first);
         Cell[] result = queen.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y, result[2].x, result[2].y
-                , result[3].x, result[3].y, result[4].x, result[4].y, result[5].x, result[5].y,
+        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y, result[2].x, result[2].y,
+                result[3].x, result[3].y, result[4].x, result[4].y, result[5].x, result[5].y,
                 result[6].x, result[6].y};
         int[] expected = {0, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6};
         assertThat(resultInt, is(expected));
@@ -255,7 +262,7 @@ public class FigureTest {
     }
 
     /**
-     * Ферзь 0,7 ---- 0,0
+     * Ферзь 0,7 ---- 0,0.
      */
     @Test
     public void whenQueenMoveThirdThenCorrectCellArray() {

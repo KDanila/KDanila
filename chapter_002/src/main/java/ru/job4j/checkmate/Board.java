@@ -1,28 +1,38 @@
 package ru.job4j.checkmate;
 
+/**
+ * Board class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.3
+ */
 public class Board {
+    /**
+     * figures array.
+     */
     Figure[][] figures = new Figure[8][8];
 
-
-    /*
-    Метод должен проверить
-   - Что в заданной ячейки есть фигура. если нет. то выкинуть исключение
-   - Если фигура есть. Проверить может ли она так двигаться. Если нет то упадет исключение
-   - Проверить что полученный путь. не занят фигурами. Если занят выкинуть исключение
-   - Если все отлично. Записать в ячейку новое новое положение Figure figure.clone(Cell dest)
+    /**
+     * @param source from.
+     * @param dest   to.
+     * @return possibility of move.
+     * @throws ImposibleMoveException - ImposibleMoveException.
+     * @throws OccupiedWayException - OccupiedWayException.
+     * @throws FigureNotFoundException - FigureNotFoundException.
      */
     boolean move(Cell source, Cell dest) throws ImposibleMoveException, OccupiedWayException, FigureNotFoundException {
         boolean isPossibleToMove = false;
         Cell[] way;
-        int xOfFigure=0;
-        int yOfFigure=0;
+        int xOfFigure = 0;
+        int yOfFigure = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (figures[i][j] != null) {
                     Cell currentPosition = figures[i][j].getCurrentPosition();
                     if (currentPosition.equals(source)) {
-                        xOfFigure=i;
-                        yOfFigure=j;
+                        xOfFigure = i;
+                        yOfFigure = j;
                         way = figures[i][j].way(source, dest);
                         for (Cell cell : way) {
                             if (cell.equals(dest)) {
@@ -35,7 +45,7 @@ public class Board {
                         }
                         for (int k = 0; k < 8; k++) {
                             for (int l = 0; l < 8; l++) {
-                                for (int m = 0; m < way.length-1; m++) {
+                                for (int m = 0; m < way.length - 1; m++) {
                                     if (figures[k][l] != null) {
                                         if (way[m].equals(figures[k][l].getCurrentPosition()) && !way[m].equals(dest)) {
                                             isPossibleToMove = false;
@@ -63,19 +73,16 @@ public class Board {
             }
 
         }
-        if(isPossibleToMove){
+        if (isPossibleToMove) {
             figures[xOfFigure][yOfFigure].setCurrentPosition(dest);
         }
         return isPossibleToMove;
     }
 
-    /*
-    Отображаем доску
-     */
-    public void showBoard() {
-        /* ToDo */
-    }
 
+    /**
+     * Set first position of figures.
+     */
     public void setFirstPosition() {
         for (int i = 0; i < 8; i++) {
             figures[i][1] = new Pawn(new Cell(i, 1));

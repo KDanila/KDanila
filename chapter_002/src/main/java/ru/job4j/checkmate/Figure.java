@@ -1,43 +1,89 @@
 package ru.job4j.checkmate;
 
+/**
+ * Figure class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.3
+ */
 public abstract class Figure {
-
+    /**
+     * Cell position.
+     */
     private final Cell position;
-
-
+    /**
+     * Current position of Figure.
+     */
     private Cell currentPosition;
-
+    /**
+     * Color of figure.
+     */
     boolean isWhite = true;
 
-    // Cell [] pullOfCells = Cell.fillPull();
-
+    /**
+     * Constructor.
+     *
+     * @param position - cell position.
+     */
     protected Figure(Cell position) {
         this.position = position;
         this.currentPosition = position;
     }
 
+    /**
+     * @param source - cell from.
+     * @param dest   -cell to.
+     * @return cell array with posibble move.
+     * @throws ImposibleMoveException - throw if move is imposible.
+     */
     abstract Cell[] way(Cell source, Cell dest) throws ImposibleMoveException;
 
+    /**
+     * getter.
+     *
+     * @return current position.
+     */
 
     public Cell getCurrentPosition() {
         return currentPosition;
     }
 
+    /**
+     * setter.
+     *
+     * @param currentPosition -set.
+     */
     public void setCurrentPosition(Cell currentPosition) {
         this.currentPosition = currentPosition;
     }
 
 }
 
+/**
+ * Pawn class.
+ */
 class Pawn extends Figure {
-
+    /**
+     * first step.
+     */
     boolean firstStep = true;
 
-
+    /**
+     * constructor.
+     *
+     * @param position - position.
+     */
     protected Pawn(Cell position) {
         super(position);
     }
 
+    /**
+     * @param source - cell from.
+     * @param dest   -cell to.
+     * @return
+     * @throws ImposibleMoveException
+     */
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         int length = Math.abs(source.y - dest.y);
@@ -62,18 +108,33 @@ class Pawn extends Figure {
                     toReturn[0] = new Cell(source.x, source.y - 1);
                 }
             }
-        } else throw new ImposibleMoveException();
+        } else {
+            throw new ImposibleMoveException();
+        }
 
         return toReturn;
     }
 }
 
+/**
+ * Rook class.
+ */
 class Rook extends Figure {
-
+    /**
+     * constructor.
+     *
+     * @param position - position.
+     */
     protected Rook(Cell position) {
         super(position);
     }
 
+    /**
+     * @param source - cell from.
+     * @param dest   -cell to.
+     * @return
+     * @throws ImposibleMoveException
+     */
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         int length = (source.x - dest.x == 0) ? Math.abs(source.y - dest.y) : Math.abs(source.x - dest.x);
@@ -105,6 +166,7 @@ class Rook extends Figure {
 }
 
 /**
+ * Knight class.
  * x  x  x  x  x  x  x
  * x  x  x  x  x  x  x
  * x  x  8  x  1  x  x
@@ -115,11 +177,21 @@ class Rook extends Figure {
  * x  x  x  x  x  x  x
  */
 class Knight extends Figure {
-
+    /**
+     * Constructor.
+     *
+     * @param position - position.
+     */
     protected Knight(Cell position) {
         super(position);
     }
 
+    /**
+     * @param source - cell from.
+     * @param dest   -cell to.
+     * @return
+     * @throws ImposibleMoveException
+     */
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         Cell[] possiblePosition = new Cell[8];
@@ -172,12 +244,25 @@ class Knight extends Figure {
     }
 }
 
+/**
+ * Bishop class.
+ */
 class Bishop extends Figure {
-
+    /**
+     * Constructor.
+     *
+     * @param position - position.
+     */
     protected Bishop(Cell position) {
         super(position);
     }
 
+    /**
+     * @param source - cell from.
+     * @param dest   -cell to.
+     * @return
+     * @throws ImposibleMoveException
+     */
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         Cell[] possiblePosition = new Cell[13];
@@ -236,12 +321,25 @@ class Bishop extends Figure {
     }
 }
 
+/**
+ * King class.
+ */
 class King extends Figure {
-
+    /**
+     * Constructor.
+     *
+     * @param position - position.
+     */
     protected King(Cell position) {
         super(position);
     }
 
+    /**
+     * @param source - cell from.
+     * @param dest   -cell to.
+     * @return
+     * @throws ImposibleMoveException
+     */
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         int position = 0;
@@ -299,12 +397,25 @@ class King extends Figure {
     }
 }
 
+/**
+ * Queen class.
+ */
 class Queen extends Figure {
-
+    /**
+     * constructor.
+     *
+     * @param position - position.
+     */
     protected Queen(Cell position) {
         super(position);
     }
 
+    /**
+     * @param source - cell from.
+     * @param dest   -cell to.
+     * @return
+     * @throws ImposibleMoveException
+     */
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         if (source.x - dest.x == 0 || source.y - dest.y == 0) {
