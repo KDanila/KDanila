@@ -5,7 +5,6 @@ public abstract class Figure {
     private final Cell position;
 
 
-
     private Cell currentPosition;
 
     boolean isWhite = true;
@@ -14,14 +13,12 @@ public abstract class Figure {
 
     protected Figure(Cell position) {
         this.position = position;
-        this.currentPosition=position;
+        this.currentPosition = position;
     }
 
     abstract Cell[] way(Cell source, Cell dest) throws ImposibleMoveException;
 
-    public Cell getPosition() {
-        return position;
-    }
+
     public Cell getCurrentPosition() {
         return currentPosition;
     }
@@ -44,26 +41,30 @@ class Pawn extends Figure {
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         int length = Math.abs(source.y - dest.y);
-        Cell[] wayToreturn = new Cell[length];
+        Cell[] toReturn = new Cell[length];
         if (source.y < 8 || source.y > 0 || dest.x < 8 || dest.y > 0 || !source.equals(dest)) {
             if (isWhite) {
                 if (firstStep) {
-                    wayToreturn[0] = new Cell(source.x, source.y + 1);
-                    wayToreturn[1] = new Cell(source.x, source.y + 2);
-
+                    toReturn[0] = new Cell(source.x, source.y + 1);
+                    if (toReturn.length == 2) {
+                        toReturn[1] = new Cell(source.x, source.y + 2);
+                    }
                 } else {
-                    wayToreturn[0] = new Cell(source.x, source.y + 1);
+                    toReturn[0] = new Cell(source.x, source.y + 1);
                 }
             } else {
                 if (firstStep) {
-                    wayToreturn[0] = new Cell(source.x, source.y - 1);
-                    wayToreturn[1] = new Cell(source.x, source.y - 2);
+                    toReturn[0] = new Cell(source.x, source.y - 1);
+                    if (toReturn.length == 2) {
+                        toReturn[1] = new Cell(source.x, source.y - 2);
+                    }
                 } else {
-                    wayToreturn[0] = new Cell(source.x, source.y - 1);
+                    toReturn[0] = new Cell(source.x, source.y - 1);
                 }
             }
         } else throw new ImposibleMoveException();
-        return wayToreturn;
+
+        return toReturn;
     }
 }
 

@@ -4,11 +4,13 @@ public class Start {
     public static void main(String[] args) {
         Board board = new Board();
         board.setFirstPosition();
-        Cell a1= new Cell(1,0);
-        Cell a4= new Cell(2,2);
-        boolean result= board.move(a1,a4);
+        Cell d1= new Cell(3,1);
+        Cell d3= new Cell(3,3);
+        Cell c1= new Cell(2,0);
+        Cell d2= new Cell(3,1);
+        board.move(d1,d3);
+        boolean result= board.move(c1,d2);
         System.out.println(result);
-
 
 
 

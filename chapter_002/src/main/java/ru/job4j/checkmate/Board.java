@@ -14,11 +14,15 @@ public class Board {
     boolean move(Cell source, Cell dest) throws ImposibleMoveException, OccupiedWayException, FigureNotFoundException {
         boolean isPossibleToMove = false;
         Cell[] way;
+        int xOfFigure=0;
+        int yOfFigure=0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (figures[i][j] != null) {
-                    Cell currentPosition = figures[i][j].getPosition();
+                    Cell currentPosition = figures[i][j].getCurrentPosition();
                     if (currentPosition.equals(source)) {
+                        xOfFigure=i;
+                        yOfFigure=j;
                         way = figures[i][j].way(source, dest);
                         for (Cell cell : way) {
                             if (cell.equals(dest)) {
@@ -50,7 +54,7 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (figures[i][j] != null) {
-                    Cell currentPosition = figures[i][j].getPosition();
+                    Cell currentPosition = figures[i][j].getCurrentPosition();
                     if (currentPosition.equals(dest)) {
                         isPossibleToMove = false;
                         throw new OccupiedWayException();
@@ -58,6 +62,9 @@ public class Board {
                 }
             }
 
+        }
+        if(isPossibleToMove){
+            figures[xOfFigure][yOfFigure].setCurrentPosition(dest);
         }
         return isPossibleToMove;
     }
