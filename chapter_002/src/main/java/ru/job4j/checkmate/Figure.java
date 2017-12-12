@@ -86,26 +86,26 @@ class Pawn extends Figure {
      */
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
-        int length = Math.abs(source.y - dest.y);
+        int length = Math.abs(source.getY() - dest.getY());
         Cell[] toReturn = new Cell[length];
-        if (source.y < 8 || source.y > 0 || dest.x < 8 || dest.y > 0 || !source.equals(dest)) {
+        if (source.getY() < 8 || source.getY() > 0 || dest.getX() < 8 || dest.getY() > 0 || !source.equals(dest)) {
             if (isWhite) {
                 if (firstStep) {
-                    toReturn[0] = new Cell(source.x, source.y + 1);
+                    toReturn[0] = new Cell(source.getX(), source.getY() + 1);
                     if (toReturn.length == 2) {
-                        toReturn[1] = new Cell(source.x, source.y + 2);
+                        toReturn[1] = new Cell(source.getX(), source.getY() + 2);
                     }
                 } else {
-                    toReturn[0] = new Cell(source.x, source.y + 1);
+                    toReturn[0] = new Cell(source.getX(), source.getY() + 1);
                 }
             } else {
                 if (firstStep) {
-                    toReturn[0] = new Cell(source.x, source.y - 1);
+                    toReturn[0] = new Cell(source.getX(), source.getY() - 1);
                     if (toReturn.length == 2) {
-                        toReturn[1] = new Cell(source.x, source.y - 2);
+                        toReturn[1] = new Cell(source.getX(), source.getY() - 2);
                     }
                 } else {
-                    toReturn[0] = new Cell(source.x, source.y - 1);
+                    toReturn[0] = new Cell(source.getX(), source.getY() - 1);
                 }
             }
         } else {
@@ -137,24 +137,24 @@ class Rook extends Figure {
      */
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
-        int length = (source.x - dest.x == 0) ? Math.abs(source.y - dest.y) : Math.abs(source.x - dest.x);
+        int length = (source.getX() - dest.getX() == 0) ? Math.abs(source.getY() - dest.getY()) : Math.abs(source.getX() - dest.getX());
         Cell[] toReturn = new Cell[length + 1];
-        int tempY = (source.y < dest.y) ? source.y : dest.y;
-        int tempX = (source.x < dest.x) ? source.x : dest.x;
-        if (source.x - dest.x == 0 && source.y - dest.y != 0) {
+        int tempY = (source.getY() < dest.getY()) ? source.getY() : dest.getY();
+        int tempX = (source.getX() < dest.getX()) ? source.getX() : dest.getX();
+        if (source.getX() - dest.getX() == 0 && source.getY() - dest.getY() != 0) {
             for (int i = 0; i < length; i++) {
-                if (source.y < dest.y) {
-                    toReturn[i] = new Cell(source.x, source.y + 1 + i);
+                if (source.getY() < dest.getY()) {
+                    toReturn[i] = new Cell(source.getX(), source.getY() + 1 + i);
                 } else {
-                    toReturn[i] = new Cell(source.x, tempY + i);
+                    toReturn[i] = new Cell(source.getX(), tempY + i);
                 }
             }
-        } else if (source.x - dest.x != 0 && source.y - dest.y == 0) {
+        } else if (source.getX() - dest.getX() != 0 && source.getY() - dest.getY() == 0) {
             for (int i = 0; i < length; i++) {
-                if (source.x < dest.x) {
-                    toReturn[i] = new Cell(source.x + 1 + i, source.y);
+                if (source.getX() < dest.getX()) {
+                    toReturn[i] = new Cell(source.getX() + 1 + i, source.getY());
                 } else {
-                    toReturn[i] = new Cell(tempX + i, source.y);
+                    toReturn[i] = new Cell(tempX + i, source.getY());
                 }
 
             }
@@ -196,36 +196,36 @@ class Knight extends Figure {
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         Cell[] possiblePosition = new Cell[8];
         Cell[] toReturn = new Cell[1];
-        if (source.x + 1 < 8) {
-            if (source.y + 2 < 8) {
-                possiblePosition[0] = new Cell(source.x + 1, source.y + 2);
+        if (source.getX() + 1 < 8) {
+            if (source.getY() + 2 < 8) {
+                possiblePosition[0] = new Cell(source.getX() + 1, source.getY() + 2);
             }
-            if (source.y - 2 >= 0) {
-                possiblePosition[1] = new Cell(source.x + 1, source.y - 2);
-            }
-        }
-        if (source.x + 2 < 8) {
-            if (source.y + 1 < 8) {
-                possiblePosition[2] = new Cell(source.x + 2, source.y + 1);
-            }
-            if (source.y - 1 >= 0) {
-                possiblePosition[3] = new Cell(source.x + 2, source.y - 1);
+            if (source.getY() - 2 >= 0) {
+                possiblePosition[1] = new Cell(source.getX() + 1, source.getY() - 2);
             }
         }
-        if (source.x - 1 >= 0) {
-            if (source.y + 2 < 8) {
-                possiblePosition[4] = new Cell(source.x - 1, source.y + 2);
+        if (source.getX() + 2 < 8) {
+            if (source.getY() + 1 < 8) {
+                possiblePosition[2] = new Cell(source.getX() + 2, source.getY() + 1);
             }
-            if (source.y - 2 >= 0) {
-                possiblePosition[5] = new Cell(source.x - 1, source.y - 2);
+            if (source.getY() - 1 >= 0) {
+                possiblePosition[3] = new Cell(source.getX() + 2, source.getY() - 1);
             }
         }
-        if (source.x - 2 >= 0) {
-            if (source.y + 1 < 8) {
-                possiblePosition[6] = new Cell(source.x - 2, source.y + 1);
+        if (source.getX() - 1 >= 0) {
+            if (source.getY() + 2 < 8) {
+                possiblePosition[4] = new Cell(source.getX() - 1, source.getY() + 2);
             }
-            if (source.y - 1 >= 0) {
-                possiblePosition[7] = new Cell(source.x - 2, source.y - 1);
+            if (source.getY() - 2 >= 0) {
+                possiblePosition[5] = new Cell(source.getX() - 1, source.getY() - 2);
+            }
+        }
+        if (source.getX() - 2 >= 0) {
+            if (source.getY() + 1 < 8) {
+                possiblePosition[6] = new Cell(source.getX() - 2, source.getY() + 1);
+            }
+            if (source.getY() - 1 >= 0) {
+                possiblePosition[7] = new Cell(source.getX() - 2, source.getY() - 1);
             }
         }
 
@@ -265,59 +265,20 @@ class Bishop extends Figure {
      */
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
-        Cell[] possiblePosition = new Cell[13];
-        Cell[] toReturn = new Cell[Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y))];
-        int temp = 0;
-        int tempTwo = 0;
-        for (int i = 1; i < 8; i++) {
-            if (source.x + i < 8 && source.y + i < 8) {
-                possiblePosition[temp] = new Cell(source.x + i, source.y + i);
-                temp++;
-            }
-            if (source.x + i < 8 && source.y - i >= 0) {
-                possiblePosition[temp] = new Cell(source.x + i, source.y - i);
-                temp++;
-            }
-            if (source.x - i >= 0 && source.y - i >= 0) {
-                possiblePosition[temp] = new Cell(source.x - i, source.y - i);
-                temp++;
-            }
-            if (source.x - i >= 0 && source.y + i < 8) {
-                possiblePosition[temp] = new Cell(source.x - i, source.y + i);
-                temp++;
+        int xStep = Integer.compare(dest.getX(), source.getX());
+        int yStep = Integer.compare(dest.getY(), source.getY());
+        int length = Math.abs(dest.getX() - source.getX());
+        Cell[] toReturn = new Cell[length];
+        if(Math.abs(dest.getX() - source.getX())==Math.abs(dest.getY() - source.getY())) {
+            for (int i = 1; i <= length; i++) {
+                toReturn[i - 1] = new Cell(source.getX() + xStep * i, source.getY() + yStep * i);
             }
         }
-
-        for (int i = 0; i < possiblePosition.length; i++) {
-            if (possiblePosition[i] != null && possiblePosition[i].equals(dest)) {
-                int x = possiblePosition[i].x;
-                int y = possiblePosition[i].y;
-                for (int j = 0; j < Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y)); j++) {
-
-
-                    if (source.x > x && source.y > y) {
-                        toReturn[tempTwo++] = new Cell(source.x - j - 1, source.y - j - 1);
-                    }
-                    if (source.x > x && source.y < y) {
-                        toReturn[tempTwo++] = new Cell(source.x - j - 1, source.y + j + 1);
-                    }
-                    if (source.x < x && source.y < y) {
-                        toReturn[tempTwo++] = new Cell(source.x + j + 1, source.y + j + 1);
-                    }
-                    if (source.x < x && source.y > y) {
-                        toReturn[tempTwo++] = new Cell(source.x + 1 + j, source.y - j - 1);
-                    }
-                }
-            }
-        }
-
-        if (toReturn[0] != null) {
-            return toReturn;
-        } else {
+        else {
             throw new ImposibleMoveException();
         }
 
-
+        return toReturn;
     }
 }
 
@@ -346,40 +307,40 @@ class King extends Figure {
         Cell[] possiblePosition = new Cell[12];
         Cell[] toReturn = new Cell[1];
 
-        if (source.x + 1 < 8) {
-            possiblePosition[position++] = new Cell(source.x + 1, source.y);
-            if (source.y + 1 < 8) {
-                possiblePosition[position++] = new Cell(source.x + 1, source.y + 1);
+        if (source.getX() + 1 < 8) {
+            possiblePosition[position++] = new Cell(source.getX() + 1, source.getY());
+            if (source.getY() + 1 < 8) {
+                possiblePosition[position++] = new Cell(source.getX() + 1, source.getY() + 1);
             }
-            if (source.y - 1 >= 0) {
-                possiblePosition[position++] = new Cell(source.x + 1, source.y - 1);
-            }
-        }
-        if (source.x - 1 >= 0) {
-            possiblePosition[position++] = new Cell(source.x - 1, source.y);
-            if (source.y + 1 < 8) {
-                possiblePosition[position++] = new Cell(source.x - 1, source.y + 1);
-            }
-            if (source.y - 1 >= 0) {
-                possiblePosition[position++] = new Cell(source.x - 1, source.y - 1);
+            if (source.getY() - 1 >= 0) {
+                possiblePosition[position++] = new Cell(source.getX() + 1, source.getY() - 1);
             }
         }
-        if (source.y + 1 < 8) {
-            possiblePosition[position++] = new Cell(source.x, source.y + 1);
-            if (source.x + 1 < 8) {
-                possiblePosition[position++] = new Cell(source.x + 1, source.y + 1);
+        if (source.getX() - 1 >= 0) {
+            possiblePosition[position++] = new Cell(source.getX() - 1, source.getY());
+            if (source.getY() + 1 < 8) {
+                possiblePosition[position++] = new Cell(source.getX() - 1, source.getY() + 1);
             }
-            if (source.x - 1 >= 0) {
-                possiblePosition[position++] = new Cell(source.x - 1, source.y + 1);
+            if (source.getY() - 1 >= 0) {
+                possiblePosition[position++] = new Cell(source.getX() - 1, source.getY() - 1);
             }
         }
-        if (source.y - 1 >= 0) {
-            possiblePosition[position++] = new Cell(source.x, source.y - 1);
-            if (source.x + 1 < 8) {
-                possiblePosition[position++] = new Cell(source.x + 1, source.y - 1);
+        if (source.getY() + 1 < 8) {
+            possiblePosition[position++] = new Cell(source.getX(), source.getY() + 1);
+            if (source.getX() + 1 < 8) {
+                possiblePosition[position++] = new Cell(source.getX() + 1, source.getY() + 1);
             }
-            if (source.x - 1 >= 0) {
-                possiblePosition[position++] = new Cell(source.x - 1, source.y - 1);
+            if (source.getX() - 1 >= 0) {
+                possiblePosition[position++] = new Cell(source.getX() - 1, source.getY() + 1);
+            }
+        }
+        if (source.getY() - 1 >= 0) {
+            possiblePosition[position++] = new Cell(source.getX(), source.getY() - 1);
+            if (source.getX() + 1 < 8) {
+                possiblePosition[position++] = new Cell(source.getX() + 1, source.getY() - 1);
+            }
+            if (source.getX() - 1 >= 0) {
+                possiblePosition[position++] = new Cell(source.getX() - 1, source.getY() - 1);
             }
         }
 
@@ -418,25 +379,25 @@ class Queen extends Figure {
      */
     @Override
     Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
-        if (source.x - dest.x == 0 || source.y - dest.y == 0) {
-            int length = (source.x - dest.x == 0) ? Math.abs(source.y - dest.y) : Math.abs(source.x - dest.x);
+        if (source.getX() - dest.getX() == 0 || source.getY() - dest.getY() == 0) {
+            int length = (source.getX() - dest.getX() == 0) ? Math.abs(source.getY() - dest.getY()) : Math.abs(source.getX() - dest.getX());
             Cell[] toReturn = new Cell[length + 1];
-            int tempY = (source.y < dest.y) ? source.y : dest.y;
-            int tempX = (source.x < dest.x) ? source.x : dest.x;
-            if (source.x - dest.x == 0 && source.y - dest.y != 0) {
+            int tempY = (source.getY() < dest.getY()) ? source.getY() : dest.getY();
+            int tempX = (source.getX() < dest.getX()) ? source.getX() : dest.getX();
+            if (source.getX() - dest.getX() == 0 && source.getY() - dest.getY() != 0) {
                 for (int i = 0; i < length; i++) {
-                    if (source.y < dest.y) {
-                        toReturn[i] = new Cell(source.x, source.y + 1 + i);
+                    if (source.getY() < dest.getY()) {
+                        toReturn[i] = new Cell(source.getX(), source.getY() + 1 + i);
                     } else {
-                        toReturn[i] = new Cell(source.x, tempY + i);
+                        toReturn[i] = new Cell(source.getX(), tempY + i);
                     }
                 }
-            } else if (source.x - dest.x != 0 && source.y - dest.y == 0) {
+            } else if (source.getX() - dest.getX() != 0 && source.getY() - dest.getY() == 0) {
                 for (int i = 0; i < length; i++) {
-                    if (source.x < dest.x) {
-                        toReturn[i] = new Cell(source.x + 1 + i, source.y);
+                    if (source.getX() < dest.getX()) {
+                        toReturn[i] = new Cell(source.getX() + 1 + i, source.getY());
                     } else {
-                        toReturn[i] = new Cell(tempX + i, source.y);
+                        toReturn[i] = new Cell(tempX + i, source.getY());
                     }
                 }
             } else {
@@ -449,46 +410,46 @@ class Queen extends Figure {
             }
         } else {
             Cell[] possiblePosition = new Cell[13];
-            Cell[] toReturn = new Cell[Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y))];
+            Cell[] toReturn = new Cell[Math.abs(Math.max(source.getX(), source.getY()) - Math.min(dest.getX(), dest.getY()))];
             int temp = 0;
             int tempTwo = 0;
             for (int i = 1; i < 8; i++) {
-                if (source.x + i < 8 && source.y + i < 8) {
-                    possiblePosition[temp] = new Cell(source.x + i, source.y + i);
+                if (source.getX() + i < 8 && source.getY() + i < 8) {
+                    possiblePosition[temp] = new Cell(source.getX() + i, source.getY() + i);
                     temp++;
                 }
-                if (source.x + i < 8 && source.y - i >= 0) {
-                    possiblePosition[temp] = new Cell(source.x + i, source.y - i);
+                if (source.getX() + i < 8 && source.getY() - i >= 0) {
+                    possiblePosition[temp] = new Cell(source.getX() + i, source.getY() - i);
                     temp++;
                 }
-                if (source.x - i >= 0 && source.y - i >= 0) {
-                    possiblePosition[temp] = new Cell(source.x - i, source.y - i);
+                if (source.getX() - i >= 0 && source.getY() - i >= 0) {
+                    possiblePosition[temp] = new Cell(source.getX() - i, source.getY() - i);
                     temp++;
                 }
-                if (source.x - i >= 0 && source.y + i < 8) {
-                    possiblePosition[temp] = new Cell(source.x - i, source.y + i);
+                if (source.getX() - i >= 0 && source.getY() + i < 8) {
+                    possiblePosition[temp] = new Cell(source.getX() - i, source.getY() + i);
                     temp++;
                 }
             }
 
             for (int i = 0; i < possiblePosition.length; i++) {
                 if (possiblePosition[i] != null && possiblePosition[i].equals(dest)) {
-                    int x = possiblePosition[i].x;
-                    int y = possiblePosition[i].y;
-                    for (int j = 0; j < Math.abs(Math.max(source.x, source.y) - Math.min(dest.x, dest.y)); j++) {
+                    int x = possiblePosition[i].getX();
+                    int y = possiblePosition[i].getY();
+                    for (int j = 0; j < Math.abs(Math.max(source.getX(), source.getY()) - Math.min(dest.getX(), dest.getY())); j++) {
 
 
-                        if (source.x > x && source.y > y) {
-                            toReturn[tempTwo++] = new Cell(source.x - j - 1, source.y - j - 1);
+                        if (source.getX() > x && source.getY() > y) {
+                            toReturn[tempTwo++] = new Cell(source.getX() - j - 1, source.getY() - j - 1);
                         }
-                        if (source.x > x && source.y < y) {
-                            toReturn[tempTwo++] = new Cell(source.x - j - 1, source.y + j + 1);
+                        if (source.getX() > x && source.getY() < y) {
+                            toReturn[tempTwo++] = new Cell(source.getX() - j - 1, source.getY() + j + 1);
                         }
-                        if (source.x < x && source.y < y) {
-                            toReturn[tempTwo++] = new Cell(source.x + j + 1, source.y + j + 1);
+                        if (source.getX() < x && source.getY() < y) {
+                            toReturn[tempTwo++] = new Cell(source.getX() + j + 1, source.getY() + j + 1);
                         }
-                        if (source.x < x && source.y > y) {
-                            toReturn[tempTwo++] = new Cell(source.x + 1 + j, source.y - j - 1);
+                        if (source.getX() < x && source.getY() > y) {
+                            toReturn[tempTwo++] = new Cell(source.getX() + 1 + j, source.getY() - j - 1);
                         }
                     }
                 }

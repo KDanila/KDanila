@@ -24,7 +24,7 @@ public class FigureTest {
         Cell dist = new Cell(0, 3);
         Pawn pawn = new Pawn(first);
         Cell[] result = pawn.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y};
+        int[] resultInt = {result[0].getX(), result[0].getY(), result[1].getX(), result[1].getY()};
         int[] expected = {0, 2, 0, 3};
         assertThat(resultInt, is(expected));
     }
@@ -39,7 +39,7 @@ public class FigureTest {
         Pawn pawn = new Pawn(first);
         pawn.firstStep = false;
         Cell[] result = pawn.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y};
+        int[] resultInt = {result[0].getX(), result[0].getY()};
         int[] expected = {1, 2};
         assertThat(resultInt, is(expected));
     }
@@ -55,7 +55,7 @@ public class FigureTest {
         pawn.isWhite = false;
         pawn.firstStep = false;
         Cell[] result = pawn.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y};
+        int[] resultInt = {result[0].getX(), result[0].getY()};
         int[] expected = {7, 6};
         assertThat(resultInt, is(expected));
     }
@@ -70,7 +70,7 @@ public class FigureTest {
         Pawn pawn = new Pawn(first);
         pawn.isWhite = false;
         Cell[] result = pawn.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y};
+        int[] resultInt = {result[0].getX(), result[0].getY(), result[1].getX(), result[1].getY()};
         int[] expected = {6, 6, 6, 5};
         assertThat(resultInt, is(expected));
     }
@@ -84,9 +84,9 @@ public class FigureTest {
         Cell dist = new Cell(0, 7);
         Rook rook = new Rook(first);
         Cell[] result = rook.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y,
-                result[2].x, result[2].y, result[3].x, result[3].y, result[4].x, result[4].y,
-                result[5].x, result[5].y, result[6].x, result[6].y};
+        int[] resultInt = {result[0].getX(), result[0].getY(), result[1].getX(), result[1].getY(),
+                result[2].getX(), result[2].getY(), result[3].getX(), result[3].getY(), result[4].getX(), result[4].getY(),
+                result[5].getX(), result[5].getY(), result[6].getX(), result[6].getY()};
         int[] expected = {0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7};
         assertThat(resultInt, is(expected));
 
@@ -97,12 +97,12 @@ public class FigureTest {
      */
     @Test
     public void whenRockUseWatToDownThenCorrectCellArray() {
-        Cell first = new Cell(8, 0);
-        Cell dist = new Cell(6, 0);
+        Cell first = new Cell(7, 0);
+        Cell dist = new Cell(5, 0);
         Rook rook = new Rook(first);
         Cell[] result = rook.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y};
-        int[] expected = {6, 0, 7, 0};
+        int[] resultInt = {result[0].getX(), result[0].getY(), result[1].getX(), result[1].getY()};
+        int[] expected = {5, 0, 6, 0};
         assertThat(resultInt, is(expected));
 
     }
@@ -116,7 +116,7 @@ public class FigureTest {
         Cell dist = new Cell(1, 2);
         Knight knight = new Knight(first);
         Cell[] result = knight.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y};
+        int[] resultInt = {result[0].getX(), result[0].getY()};
         int[] expected = {1, 2};
         assertThat(resultInt, is(expected));
 
@@ -131,7 +131,7 @@ public class FigureTest {
         Cell dist = new Cell(2, 2);
         Knight knight = new Knight(first);
         Cell[] result = knight.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y};
+        int[] resultInt = {result[0].getX(), result[0].getY()};
         int[] expected = {2, 2};
         assertThat(resultInt, is(expected));
 
@@ -147,7 +147,7 @@ public class FigureTest {
         Cell dist = new Cell(2, 2);
         Bishop bishop = new Bishop(first);
         Cell[] result = bishop.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y};
+        int[] resultInt = {result[0].getX(), result[0].getY(), result[1].getX(), result[1].getY()};
         int[] expected = {1, 1, 2, 2};
         assertThat(resultInt, is(expected));
     }
@@ -162,8 +162,8 @@ public class FigureTest {
         Cell dist = new Cell(0, 1);
         Bishop bishop = new Bishop(first);
         Cell[] result = bishop.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y,
-                result[2].x, result[2].y, result[3].x, result[3].y};
+        int[] resultInt = {result[0].getX(), result[0].getY(), result[1].getX(), result[1].getY(),
+                result[2].getX(), result[2].getY(), result[3].getX(), result[3].getY()};
         int[] expected = {3, 4, 2, 3, 1, 2, 0, 1};
         assertThat(resultInt, is(expected));
     }
@@ -179,7 +179,7 @@ public class FigureTest {
         Cell dist = new Cell(3, 4);
         Bishop bishop = new Bishop(first);
         Cell[] result = bishop.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y};
+        int[] resultInt = {result[0].getX(), result[0].getY(), result[1].getX(), result[1].getY()};
         int[] expected = {2, 5, 3, 4};
         assertThat(resultInt, is(expected));
     }
@@ -194,7 +194,7 @@ public class FigureTest {
         Cell dist = new Cell(1, 3);
         Bishop bishop = new Bishop(first);
         Cell[] result = bishop.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y};
+        int[] resultInt = {result[0].getX(), result[0].getY(), result[1].getX(), result[1].getY()};
         int[] expected = {2, 2, 1, 3};
         assertThat(resultInt, is(expected));
     }
@@ -208,7 +208,7 @@ public class FigureTest {
         Cell dist = new Cell(1, 1);
         King king = new King(first);
         Cell[] result = king.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y};
+        int[] resultInt = {result[0].getX(), result[0].getY()};
         int[] expected = {1, 1};
         assertThat(resultInt, is(expected));
 
@@ -223,7 +223,7 @@ public class FigureTest {
         Cell dist = new Cell(5, 4);
         King king = new King(first);
         Cell[] result = king.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y};
+        int[] resultInt = {result[0].getX(), result[0].getY()};
         int[] expected = {5, 4};
         assertThat(resultInt, is(expected));
 
@@ -238,7 +238,7 @@ public class FigureTest {
         Cell dist = new Cell(0, 3);
         Queen queen = new Queen(first);
         Cell[] result = queen.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y, result[2].x, result[2].y};
+        int[] resultInt = {result[0].getX(), result[0].getY(), result[1].getX(), result[1].getY(), result[2].getX(), result[2].getY()};
         int[] expected = {0, 3, 1, 3, 2, 3};
         assertThat(resultInt, is(expected));
 
@@ -253,9 +253,9 @@ public class FigureTest {
         Cell dist = new Cell(0, 0);
         Queen queen = new Queen(first);
         Cell[] result = queen.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y, result[2].x, result[2].y,
-                result[3].x, result[3].y, result[4].x, result[4].y, result[5].x, result[5].y,
-                result[6].x, result[6].y};
+        int[] resultInt = {result[0].getX(), result[0].getY(), result[1].getX(), result[1].getY(), result[2].getX(), result[2].getY(),
+                result[3].getX(), result[3].getY(), result[4].getX(), result[4].getY(), result[5].getX(), result[5].getY(),
+                result[6].getX(), result[6].getY()};
         int[] expected = {0, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6};
         assertThat(resultInt, is(expected));
 
@@ -270,7 +270,7 @@ public class FigureTest {
         Cell dist = new Cell(0, 0);
         Queen queen = new Queen(first);
         Cell[] result = queen.way(first, dist);
-        int[] resultInt = {result[0].x, result[0].y, result[1].x, result[1].y, result[2].x, result[2].y};
+        int[] resultInt = {result[0].getX(), result[0].getY(), result[1].getX(), result[1].getY(), result[2].getX(), result[2].getY()};
         int[] expected = {2, 2, 1, 1, 0, 0};
         assertThat(resultInt, is(expected));
 
