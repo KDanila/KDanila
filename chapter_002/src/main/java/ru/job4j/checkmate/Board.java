@@ -17,67 +17,118 @@ public class Board {
      * @param source from.
      * @param dest   to.
      * @return possibility of move.
-     * @throws ImposibleMoveException - ImposibleMoveException.
-     * @throws OccupiedWayException - OccupiedWayException.
+     * @throws ImposibleMoveException  - ImposibleMoveException.
+     * @throws OccupiedWayException    - OccupiedWayException.
      * @throws FigureNotFoundException - FigureNotFoundException.
      */
-    boolean move(Cell source, Cell dest) throws ImposibleMoveException, OccupiedWayException, FigureNotFoundException {
-        boolean isPossibleToMove = false;
-        Cell[] way;
-        int xOfFigure = 0;
-        int yOfFigure = 0;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (figures[i][j] != null) {
-                    Cell currentPosition = figures[i][j].getCurrentPosition();
-                    if (currentPosition.equals(source)) {
-                        xOfFigure = i;
-                        yOfFigure = j;
-                        way = figures[i][j].way(source, dest);
-                        for (Cell cell : way) {
-                            if (cell.equals(dest)) {
-                                isPossibleToMove = true;
-                                break;
-                            }
+
+
+    public boolean move(Cell source, Cell dest) throws ImposibleMoveException, OccupiedWayException, FigureNotFoundException {
+        boolean isMove = false;
+        Figure figure = findFigure(source);
+        if (isMovePossible(figure, source, dest)&&isAnyFiguresOnTheWay()) {
+            isMove =true;
+        }
+        return isMove;
+    }
+//ToDo
+    private boolean isAnyFiguresOnTheWay() {
+        return false;
+    }
+
+    private boolean isMovePossible(Figure figure, Cell source, Cell dest) {
+        boolean isPossible = false;
+        Cell[] way = figure.way(source, dest);
+        for (Cell cell : way) {
+            if (figure.getCurrentPosition().equals(cell)) {
+                isPossible = true;
+            }
+        }
+        if (!isPossible) {
+            throw new ImposibleMoveException();
+        }
+        return isPossible;
+    }
+
+    Figure findFigure(Cell source) throws FigureNotFoundException {
+        Figure search = null;
+        for (Figure[] figureArray : figures) {
+            for (Figure figure : figureArray) {
+                if (figure.getCurrentPosition().equals(source)) {
+                    search = figure;
+                    break;
+                }
+            }
+        }
+        if (search != null) {
+            return search;
+        } else {
+            throw new FigureNotFoundException();
+        }
+    }
+/*
+        for(
+    int i = 0;
+    i< 8;i++)
+
+    {
+        for (int j = 0; j < 8; j++) {
+            if (figures[i][j] != null) {
+                Cell currentPosition = figures[i][j].getCurrentPosition();
+                if (currentPosition.equals(source)) {
+                    xOfFigure = i;
+                    yOfFigure = j;
+                    way = figures[i][j].way(source, dest);
+                    for (Cell cell : way) {
+                        if (cell.equals(dest)) {
+                            isPossibleToMove = true;
+                            break;
                         }
-                        if (!isPossibleToMove) {
-                            throw new ImposibleMoveException();
-                        }
-                        for (int k = 0; k < 8; k++) {
-                            for (int l = 0; l < 8; l++) {
-                                for (int m = 0; m < way.length - 1; m++) {
-                                    if (figures[k][l] != null) {
-                                        if (way[m].equals(figures[k][l].getCurrentPosition()) && !way[m].equals(dest)) {
-                                            isPossibleToMove = false;
-                                            throw new OccupiedWayException();
-                                        }
+                    }
+                    if (!isPossibleToMove) {
+                        throw new ImposibleMoveException();
+                    }
+                    for (int k = 0; k < 8; k++) {
+                        for (int l = 0; l < 8; l++) {
+                            for (int m = 0; m < way.length - 1; m++) {
+                                if (figures[k][l] != null) {
+                                    if (way[m].equals(figures[k][l].getCurrentPosition()) && !way[m].equals(dest)) {
+                                        isPossibleToMove = false;
+                                        throw new OccupiedWayException();
                                     }
                                 }
                             }
-
                         }
 
                     }
-                }
-            }
-        }
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (figures[i][j] != null) {
-                    Cell currentPosition = figures[i][j].getCurrentPosition();
-                    if (currentPosition.equals(dest)) {
-                        isPossibleToMove = false;
-                        throw new OccupiedWayException();
-                    }
-                }
-            }
 
+                }
+            }
         }
-        if (isPossibleToMove) {
-            figures[xOfFigure][yOfFigure].setCurrentPosition(dest);
-        }
-        return isPossibleToMove;
     }
+        for(
+    int i = 0;
+    i< 8;i++)
+
+    {
+        for (int j = 0; j < 8; j++) {
+            if (figures[i][j] != null) {
+                Cell currentPosition = figures[i][j].getCurrentPosition();
+                if (currentPosition.equals(dest)) {
+                    isPossibleToMove = false;
+                    throw new OccupiedWayException();
+                }
+            }
+        }
+
+    }
+        if(isPossibleToMove)
+
+    {
+        figures[xOfFigure][yOfFigure].setCurrentPosition(dest);
+    }
+        return isPossibleToMove;
+}*/
 
 
     /**

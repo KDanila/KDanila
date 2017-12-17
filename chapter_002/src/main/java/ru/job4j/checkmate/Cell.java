@@ -16,8 +16,8 @@ public class Cell {
      * @param y - оУ.
      */
     Cell(int x, int y) {
-        this.setX(x);
-        this.setY(y);
+        this.x=x;
+        this.y=y;
     }
 
     /**
