@@ -26,26 +26,33 @@ public class Board {
     public boolean move(Cell source, Cell dest) throws ImposibleMoveException, OccupiedWayException, FigureNotFoundException {
         boolean isMove = false;
         Figure figure = findFigure(source);
-        if (isMovePossible(figure, source, dest)&&isAnyFiguresOnTheWay()) {
-            isMove =true;
+        if (isMovePossible(figure, source, dest)) {
+            isMove = true;
         }
+        figure.setCurrentPosition(dest);
         return isMove;
     }
-//ToDo
-    private boolean isAnyFiguresOnTheWay() {
-        return false;
-    }
+
 
     private boolean isMovePossible(Figure figure, Cell source, Cell dest) {
         boolean isPossible = false;
         Cell[] way = figure.way(source, dest);
         for (Cell cell : way) {
-            if (figure.getCurrentPosition().equals(cell)) {
-                isPossible = true;
+            if (cell != null) {
+                if (cell.equals(dest)) {
+                    isPossible = true;
+                }
+                for (Figure[] figureArray : figures) {
+                    for (Figure figureIn : figureArray) {
+                        if (!(figureIn instanceof Knight)
+                                && figureIn != null
+                                && figureIn.getCurrentPosition().equals(cell)) {
+                            isPossible = false;
+                        }
+                    }
+                }
+
             }
-        }
-        if (!isPossible) {
-            throw new ImposibleMoveException();
         }
         return isPossible;
     }
@@ -54,7 +61,7 @@ public class Board {
         Figure search = null;
         for (Figure[] figureArray : figures) {
             for (Figure figure : figureArray) {
-                if (figure.getCurrentPosition().equals(source)) {
+                if (figure != null && figure.getCurrentPosition().equals(source)) {
                     search = figure;
                     break;
                 }

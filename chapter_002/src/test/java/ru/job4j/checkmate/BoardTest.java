@@ -68,7 +68,7 @@ public class BoardTest {
         Cell a2 = new Cell(0, 1);
         Cell a4 = new Cell(0, 3);
         Cell a1 = new Cell(0, 0);
-        Cell a3 = new Cell(0, 2);
+        Cell a3 = new Cell(0, 1);
         board.move(a2, a4);
         boolean result = board.move(a1, a3);
         boolean expected = true;
