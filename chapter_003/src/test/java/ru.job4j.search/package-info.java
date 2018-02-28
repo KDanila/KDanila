@@ -1,4 +1,3 @@
-package ru.job4j.search;
 /**
  * Package for testing Telephone Directory.
  *
@@ -6,3 +5,4 @@ package ru.job4j.search;
  * @version $Id$
  * @since 0.1
  */
+package ru.job4j.search;

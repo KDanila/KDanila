@@ -49,7 +49,6 @@ public class TelephoneDirectoryTest {
         phones.add(
                 new Person("Petr", "Arsentev", "534872", "Bryansk")
         );
-
         List<Person> persons = phones.find("Arsentev");
         assertThat(persons.get(0).getName(), is("Petr"));
         assertThat(persons.get(1).getName(), is("Petr"));

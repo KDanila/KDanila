@@ -15,6 +15,10 @@ public class TelephoneDirectory {
      */
     private List<Person> persons = new ArrayList<Person>();
 
+    /**
+     * Add person method.
+     * @param person - person class.
+     */
     public void add(Person person) {
         this.persons.add(person);
     }
