@@ -10,6 +10,9 @@ import java.util.List;
  * @since 0.1.3
  */
 public class TelephoneDirectory {
+    /**
+     * persons - list of persons.
+     */
     private List<Person> persons = new ArrayList<Person>();
 
     public void add(Person person) {
