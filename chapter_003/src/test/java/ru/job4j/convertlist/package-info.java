@@ -1,5 +1,5 @@
 /**
- * Package for convertlist directory.
+ * Package for convertlist testing directory.
  *
  * @author Danila Kuzmin (mailto:bus1d0@mail.ru)
  * @version $Id$

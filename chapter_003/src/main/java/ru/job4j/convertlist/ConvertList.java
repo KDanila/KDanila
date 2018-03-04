@@ -38,22 +38,14 @@ public class ConvertList {
      * @return - int [][] array.
      */
     public int[][] toArray(List<Integer> list, int rows) {
-        return null;
+        int[][] toReturn = new int[rows][rows];
+        int i = 0;
+        for (Integer li : list) {
+            if (i < rows * rows) {
+                toReturn[i / rows][i % rows] = li;
+                i++;
+            }
+        }
+        return toReturn;
     }
 }
-
-/**
- * Вам необходимо создать класс ConvertList. Внутри методов использовать foreach.
- * <p>
- * В нём написать 2 метода:
- * <p>
- * public List<Integer> toList (int[][] array) {} - в метод приходит двумерный массив целых чисел, необходимо пройтись
- * по всем элементам массива и добавить их в List<Integer>.
- * <p>
- * public int[][] toArray (List<Integer> list, int rows) {} - метод toArray должен равномерно разбить лист на количество
- * строк двумерного массива. В методе toArray должна быть проверка - если количество элементов не кратно количеству строк
- * - оставшиеся значения в массиве заполнять нулями.
- * <p>
- * Например в результате конвертации листа со значениями (1,2,3,4,5,6,7) с разбиением на 3 строки должен получиться
- * двумерный массив {{1, 2, 3} {4, 5, 6} {7, 0 ,0}}
- */
