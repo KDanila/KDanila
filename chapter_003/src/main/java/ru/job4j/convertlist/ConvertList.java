@@ -48,6 +48,21 @@ public class ConvertList {
         }
         return toReturn;
     }
+
+    /**
+     * Convert method <int[]> ---------><Integer>.
+     * @param list - list of int[].
+     * @return List - return list <Integer>.
+     */
+    public List<Integer> convert(List<int[]> list) {
+        List<Integer> toReturn = new ArrayList<Integer>();
+        for (int[] a : list) {
+            for (int b : a) {
+                toReturn.add(b);
+            }
+        }
+        return toReturn;
+    }
     /*
     В классе ConvertList из 3-го задания 1-го урока написать метод:
 

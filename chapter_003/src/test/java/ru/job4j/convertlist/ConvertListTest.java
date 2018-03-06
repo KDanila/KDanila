@@ -3,6 +3,7 @@ package ru.job4j.convertlist;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -185,5 +186,70 @@ public class ConvertListTest {
         int[][] expecting = {{0}};
         assertThat(result, is(expecting));
     }
+
+    /**
+     * Ninth Test.
+     */
+    @Test
+    public void toListOfIntegerFromIntMassive() {
+        List<int[]> toChange = new ArrayList<int[]>();
+        toChange.add(new int[]{1, 2});
+        toChange.add(new int[]{3, 4, 5, 6});
+        ConvertList cl = new ConvertList();
+        List<Integer> expectedArray = new ArrayList<Integer>();
+        expectedArray.add(1);
+        expectedArray.add(2);
+        expectedArray.add(3);
+        expectedArray.add(4);
+        expectedArray.add(5);
+        expectedArray.add(6);
+        List<Integer> result = cl.convert(toChange);
+        assertThat(result, is(expectedArray));
+    }
+
+    /**
+     * Tenth Test.
+     */
+    @Test
+    public void toListOfIntegerFromIntMassiveTwo() {
+        List<int[]> toChange = new ArrayList<int[]>();
+        toChange.add(new int[]{1, 2});
+        toChange.add(new int[]{3, 4, 5, 6});
+        toChange.add(new int[]{3, 4, 5, 6});
+        ConvertList cl = new ConvertList();
+        List<Integer> expectedArray = new ArrayList<Integer>();
+        expectedArray.add(1);
+        expectedArray.add(2);
+        expectedArray.add(3);
+        expectedArray.add(4);
+        expectedArray.add(5);
+        expectedArray.add(6);
+        expectedArray.add(3);
+        expectedArray.add(4);
+        expectedArray.add(5);
+        expectedArray.add(6);
+        List<Integer> result = cl.convert(toChange);
+        assertThat(result, is(expectedArray));
+    }
+
+    /**
+     * Eleventh Test.
+     */
+    @Test
+    public void toListOfIntegerFromIntMassiveWithZero() {
+        List<int[]> toChange = new ArrayList<int[]>();
+        toChange.add(new int[]{0});
+        toChange.add(new int[]{0, 0, 0, 0});
+        ConvertList cl = new ConvertList();
+        List<Integer> expectedArray = new ArrayList<Integer>();
+        expectedArray.add(0);
+        expectedArray.add(0);
+        expectedArray.add(0);
+        expectedArray.add(0);
+        expectedArray.add(0);
+        List<Integer> result = cl.convert(toChange);
+        assertThat(result, is(expectedArray));
+    }
+
 
 }
