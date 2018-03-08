@@ -48,7 +48,7 @@ public class Tracker {
         String id = item.getId();
         for (int i = 0; i < position; i++) {
             if (items.get(i).getId().equals(id)) {
-                this.items.add(item);
+                this.items.set(i, item);
             }
         }
     }

@@ -1,4 +1,5 @@
 package ru.job4j.checkmate;
+
 /**
  * Cell class.
  *
@@ -12,16 +13,18 @@ public class Cell {
 
     /**
      * Конструктор.
+     *
      * @param x - оХ.
      * @param y - оУ.
      */
     Cell(int x, int y) {
-        this.x=x;
-        this.y=y;
+        this.x = x;
+        this.y = y;
     }
 
     /**
      * Equals method.
+     *
      * @param cell - cell to equal.
      * @return boolean.
      */
@@ -37,9 +40,9 @@ public class Cell {
     }
 
     public void setX(int x) throws ImposibleMoveException {
-        if(x>=0&&x<8) {
+        if (x >= 0 && x < 8) {
             this.x = x;
-        }else {
+        } else {
             throw new ImposibleMoveException();
         }
     }
@@ -52,9 +55,9 @@ public class Cell {
     }
 
     public void setY(int y) throws ImposibleMoveException {
-        if(y>=0&&y<8) {
+        if (y >= 0 && y < 8) {
             this.y = y;
-        }else {
+        } else {
             throw new ImposibleMoveException();
         }
     }

@@ -23,14 +23,11 @@ public class MenuTracker {
      * tracker - массив заявок.
      */
     private Tracker tracker;
+
     /**
      * actions - массив возможных действий.
      */
     private ArrayList<BaseAction> actions = new ArrayList<BaseAction>();
-    /**
-     * possibleVariety - массив возможных значений.
-     */
-    private ArrayList<Integer> possibleVariety;
 
     /**
      * Конструктор.
@@ -84,16 +81,6 @@ public class MenuTracker {
         this.actions.get(key).execute(this.input, this.tracker);
     }
 
-    /**
-     * @return - возвращаем массив возможных значений.
-     */
-    public ArrayList<Integer> getPossibleVariety() {
-        ArrayList<Integer> intToReturn = new ArrayList<Integer>();
-        for (int i = 0; i < actions.size(); i++) {
-            intToReturn.add(i);
-        }
-        return intToReturn;
-    }
 
     /**
      * @return - getter.
@@ -107,6 +94,18 @@ public class MenuTracker {
      */
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    /**
+     * @return - возвращаем массив возможных значений.
+     */
+    public ArrayList<Integer> getPossibleVariety() {
+        ArrayList<Integer> intToReturn = new ArrayList<Integer>();
+        for (int i = 0; i < actions.size(); i++) {
+            intToReturn.add(i);
+        }
+        return intToReturn;
+
     }
 }
 
@@ -154,8 +153,7 @@ class ShowItem extends BaseAction {
     @Override
     public void execute(Input input, Tracker tracker) {
         for (Item i : tracker.findAll()) {
-            System.out.println("Имя: " + i.getName() + " Описание: " + i.getDescription() + " id: " + i.getId());
-
+            System.out.printf("Имя: %s Описание: %s id: %s \n", i.getName(), i.getDescription(), i.getId());
         }
     }
 }
@@ -231,8 +229,7 @@ class FindItemByID extends BaseAction {
     public void execute(Input input, Tracker tracker) {
         String id = input.ask("Введите номер id искомой заявки: ");
         Item item = tracker.findById(id);
-        System.out.println("Имя: " + item.getName() + " Описание: " + item.getDescription() + " id: " + item.getId());
-
+        System.out.printf("Имя: %s Описание: %s id: %s \n", item.getName(), item.getDescription(), item.getId());
     }
 
 }
@@ -257,7 +254,7 @@ class FindItemByName extends BaseAction {
     public void execute(Input input, Tracker tracker) {
         String name = input.ask("Введите имя искомой заявки: ");
         Item item = tracker.findByName(name);
-        System.out.println("Имя: " + item.getName() + " Описание: " + item.getDescription() + " id: " + item.getId());
+        System.out.printf("Имя: %s Описание: %s id: %s \n", item.getName(), item.getDescription(), item.getId());
     }
 }
 
