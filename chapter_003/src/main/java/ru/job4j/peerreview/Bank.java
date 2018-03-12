@@ -49,6 +49,6 @@ public class Bank {
 
     public String toString() {
         return "Bank{" + "accounts=" + treemap + "}";
-        //"Bank{accounts=" + treemap + "}" Можно это как то через string.format сдулать?
+        //"Bank{accounts=" + treemap + "}" //Можно это как то через string.format сделать?
     }
 }*/

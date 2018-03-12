@@ -1,6 +1,6 @@
 /*
 
-package com;
+package com; com.domain.package.class - должно выглядить подобным образом
 
 
 //import java.util.ArrayList; Я бы добавил только конкретные классы
@@ -29,9 +29,7 @@ public class Convert {
     public int[][] makeArray(List<Integer> list, int rws) {
         Iterator<Integer> iterator = list.iterator();
         int cls = list.size() / rws + (list.size() % rws == 0 ? 0 : 1);//Не читаемо, плюс зачем эта операция если
-        //массив инициализируется нулями самостоятельно.
-
-
+        //массив имеет по сути вид [rows][rows]. Прогнал по тестам этот метод упал практически везде.
         int[][] array = new int[rws][cls];
         for (int i = 0; i < rws; i++) {
             for (int j = 0; j < cls; j++) {
