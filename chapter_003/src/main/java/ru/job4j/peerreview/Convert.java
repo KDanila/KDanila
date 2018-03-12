@@ -1,12 +1,16 @@
 /*
+
 package com;
 
 
+//import java.util.ArrayList; Я бы добавил только конкретные классы
+//import java.util.Iterator;
+//import java.util.List;
 import java.util.*;
 
 public class Convert {
 
-    public Convert(){
+    public Convert(){ //Пустой конструктор создается автоматически, перегрузки его нет ---> смысл его создовать?
 
     }
 
@@ -24,7 +28,8 @@ public class Convert {
     //Converts list to array
     public int[][] makeArray(List<Integer> list, int rws) {
         Iterator<Integer> iterator = list.iterator();
-        int cls = list.size() / rws + (list.size() % rws == 0 ? 0 : 1);
+        int cls = list.size() / rws + (list.size() % rws == 0 ? 0 : 1);//Не читаемо, плюс зачем эта операция если
+        //массив инициализируется нулями самостоятельно.
 
 
         int[][] array = new int[rws][cls];

@@ -1,11 +1,12 @@
 /*
-package com;
+
+package com;// com.domain.package.class - должно выглядить подобным образом
 
 
 public class Account {
 
-    double values;
-    String reqs;
+    double values;  //Почему не private
+    String reqs;    //Почему не private
 
     public Account(double values, String requisites) {
         this.values = values;
@@ -23,7 +24,7 @@ public class Account {
 
     boolean transfer(Account destination, double amount) {
         boolean success = false;
-        if (amount > 0 && amount < this.values && destination != null) {
+        if (amount > 0 && amount < this.values && destination != null) {//amount <= this.value
             success = true;
             this.values -= amount;
             destination.values += amount;
@@ -35,6 +36,8 @@ public class Account {
         String otvet;
         otvet = "Account{" + "values=" + values + ", reqs='" + reqs + "\\" + "}";
         return otvet;
+        //Заменил бы
+        //return String.format(("Account{values=%d, regs=%s \n"),this.values, this.reqs)
     }
 
     public boolean equals(Object o) {
@@ -53,4 +56,5 @@ public class Account {
     public int hashCode() {
         return this.reqs.hashCode();
     }
-}*/
+}
+*/

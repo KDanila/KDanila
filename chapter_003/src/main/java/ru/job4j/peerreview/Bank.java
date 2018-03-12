@@ -1,11 +1,12 @@
 /*
-package com;
+
+package com; // com.domain.package.class - должно выглядить подобным образом
 
 
 
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List;  //Не используется
 import java.util.TreeMap;
 
 
@@ -14,7 +15,7 @@ public class Bank {
     private TreeMap<User, ArrayList<Account>> treemap = new TreeMap<>();
 
     public void addUser(User user) {
-        this.treemap.put(user, new ArrayList<>());
+        this.treemap.put(user, new ArrayList<>());//new ArrayList<Account>()
     }
 
     public void delete(User user) {
@@ -48,5 +49,6 @@ public class Bank {
 
     public String toString() {
         return "Bank{" + "accounts=" + treemap + "}";
+        //"Bank{accounts=" + treemap + "}" Можно это как то через string.format сдулать?
     }
 }*/
