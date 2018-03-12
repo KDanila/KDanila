@@ -27,37 +27,5 @@ public class TrackerTest {
         tracker.update(next);
         assertThat(tracker.findById(previous.getId()).getName(), is("test2"));
     }
-/*
-    *//**
-     * Тест delete and finAll().
-     *//*
-    @Test
-    public void whenDeleteOneItemThenWithoutOne() {
-        Tracker tracker = new Tracker();
-        Item first = new Item("test1", "testDescription", 123L);
-        Item second = new Item("test2", "testDescription2", 123L);
-        Item third = new Item("test3", "testDescription3", 123L);
-        tracker.add(first);
-        tracker.add(second);
-        tracker.add(third);
-        Item[] expected = {first, second};
-        tracker.delete(third);
-        Item[] result = tracker.findAll();
-        assertThat(result, is(expected));
-    }
-    *//**
-     * Тест find by name().
-     *//*
-    @Test
-    public void whenSearchByNameThenFindOne() {
-        Tracker tracker = new Tracker();
-        Item first = new Item("test1", "testDescription", 123L);
-        Item second = new Item("test2", "testDescription2", 123L);
-        Item third = new Item("test3", "testDescription3", 123L);
-        tracker.add(first);
-        tracker.add(second);
-        tracker.add(third);
-        String expected = "test2";
-        assertThat(tracker.findByName("test2").getName(), is(expected));
-    }*/
+
 }
