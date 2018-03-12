@@ -1,3 +1,4 @@
+/*
 package ru.job4j.checkmate;
 
 import org.junit.Test;
@@ -5,19 +6,23 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+*/
 /**
  * Figure test class.
  *
  * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
  * @version $Id$
  * @since 0.1.3
- */
+ *//*
+
 
 public class FigureTest {
 
-    /**
+    */
+/**
      * Тест на возможные ходы белой пешки, если ход первый.
-     */
+     *//*
+
     @Test
     public void whenPawnUseWayThenReturnCorrectCellArray() {
         Cell first = new Cell(0, 1);
@@ -29,9 +34,11 @@ public class FigureTest {
         assertThat(resultInt, is(expected));
     }
 
-    /**
+    */
+/**
      * Тест на возможные ходы белой пешки, если ход не первый.
-     */
+     *//*
+
     @Test
     public void whenPawnUseWayMoreThanOneTimeThenReturnCorrectCellArray() {
         Cell first = new Cell(1, 1);
@@ -44,9 +51,11 @@ public class FigureTest {
         assertThat(resultInt, is(expected));
     }
 
-    /**
+    */
+/**
      * Тест на возможные ходы черной пешки, если ход не первый.
-     */
+     *//*
+
     @Test
     public void whenPawnBlackUseWayMoreThanOneTimeThenReturnCorrectCellArray() {
         Cell first = new Cell(7, 7);
@@ -60,9 +69,11 @@ public class FigureTest {
         assertThat(resultInt, is(expected));
     }
 
-    /**
+    */
+/**
      * Тест на возможные ходы черной пешки, если ход первый.
-     */
+     *//*
+
     @Test
     public void whenPawnBlackUseWayThenReturnCorrectCellArray() {
         Cell first = new Cell(6, 7);
@@ -75,9 +86,11 @@ public class FigureTest {
         assertThat(resultInt, is(expected));
     }
 
-    /**
+    */
+/**
      * Ладья ходит по вертикали вверх.
-     */
+     *//*
+
     @Test
     public void whenRockUseWatToUpThenCorrectCellArray() {
         Cell first = new Cell(0, 0);
@@ -92,9 +105,11 @@ public class FigureTest {
 
     }
 
-    /**
+    */
+/**
      * Ладья ходит по вертикали вниз(Массив выдается по возрастанию).
-     */
+     *//*
+
     @Test
     public void whenRockUseWatToDownThenCorrectCellArray() {
         Cell first = new Cell(7, 0);
@@ -107,9 +122,11 @@ public class FigureTest {
 
     }
 
-    /**
+    */
+/**
      * Конь ходит Г.
-     */
+     *//*
+
     @Test
     public void whenKnightMoveThenCorrectCellArray() {
         Cell first = new Cell(0, 0);
@@ -122,9 +139,11 @@ public class FigureTest {
 
     }
 
-    /**
+    */
+/**
      * Конь ходит 2.
-     */
+     *//*
+
     @Test
     public void whenKnightMoveSecondThenCorrectCellArray() {
         Cell first = new Cell(3, 4);
@@ -137,9 +156,11 @@ public class FigureTest {
 
     }
 
-    /**
+    */
+/**
      * Слон с 0 0---->2 2.
-     */
+     *//*
+
 
     @Test
     public void whenBishopMoveThenCorrectCellArray() {
@@ -152,9 +173,11 @@ public class FigureTest {
         assertThat(resultInt, is(expected));
     }
 
-    /**
+    */
+/**
      * Слон с 4 5 ----> 0 1.
-     */
+     *//*
+
 
     @Test
     public void whenBishopMoveSecondThenCorrectCellArray() {
@@ -169,9 +192,11 @@ public class FigureTest {
     }
 
 
-    /**
+    */
+/**
      * Слон с 1 6 ----> 7 7.
-     */
+     *//*
+
 
     @Test
     public void whenBishopMoveThirdThenCorrectCellArray() {
@@ -184,9 +209,11 @@ public class FigureTest {
         assertThat(resultInt, is(expected));
     }
 
-    /**
+    */
+/**
      * Слон с 3 1 ----> 1 3.
-     */
+     *//*
+
 
     @Test
     public void whenBishopMoveFourthThenCorrectCellArray() {
@@ -199,9 +226,11 @@ public class FigureTest {
         assertThat(resultInt, is(expected));
     }
 
-    /**
+    */
+/**
      * Король 0,0 ---- 1,1.
-     */
+     *//*
+
     @Test
     public void whenKingMoveThenCorrectCellArray() {
         Cell first = new Cell(0, 0);
@@ -214,9 +243,11 @@ public class FigureTest {
 
     }
 
-    /**
+    */
+/**
      * Король 5,5 ---- 5,4.
-     */
+     *//*
+
     @Test
     public void whenKingMoveSecondThenCorrectCellArray() {
         Cell first = new Cell(5, 5);
@@ -229,9 +260,11 @@ public class FigureTest {
 
     }
 
-    /**
+    */
+/**
      * Ферзь 3,3 ---- 0,3.
-     */
+     *//*
+
     @Test
     public void whenQueenMoveThenCorrectCellArray() {
         Cell first = new Cell(3, 3);
@@ -244,9 +277,11 @@ public class FigureTest {
 
     }
 
-    /**
+    */
+/**
      * Ферзь 0,7 ---- 0,0.
-     */
+     *//*
+
     @Test
     public void whenQueenMoveSecondThenCorrectCellArray() {
         Cell first = new Cell(0, 7);
@@ -261,9 +296,11 @@ public class FigureTest {
 
     }
 
-    /**
+    */
+/**
      * Ферзь 0,7 ---- 0,0.
-     */
+     *//*
+
     @Test
     public void whenQueenMoveThirdThenCorrectCellArray() {
         Cell first = new Cell(3, 3);
@@ -277,3 +314,4 @@ public class FigureTest {
     }
 }
 
+*/

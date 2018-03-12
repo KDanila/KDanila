@@ -1,26 +1,33 @@
+/*
 package ru.job4j.checkmate;
 
+*/
 /**
  * Board class.
  *
  * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
  * @version $Id$
  * @since 0.1.3
- */
+ *//*
+
 public class Board {
-    /**
+    */
+/**
      * figures array.
-     */
+     *//*
+
     Figure[][] figures = new Figure[8][8];
 
-    /**
+    */
+/**
      * @param source from.
      * @param dest   to.
      * @return possibility of move.
      * @throws ImposibleMoveException  - ImposibleMoveException.
      * @throws OccupiedWayException    - OccupiedWayException.
      * @throws FigureNotFoundException - FigureNotFoundException.
-     */
+     *//*
+
 
 
     public boolean move(Cell source, Cell dest) throws ImposibleMoveException, OccupiedWayException, FigureNotFoundException {
@@ -73,6 +80,7 @@ public class Board {
             throw new FigureNotFoundException();
         }
     }
+*/
 /*
         for(
     int i = 0;
@@ -135,12 +143,15 @@ public class Board {
         figures[xOfFigure][yOfFigure].setCurrentPosition(dest);
     }
         return isPossibleToMove;
-}*/
+}*//*
 
 
-    /**
+
+    */
+/**
      * Set first position of figures.
-     */
+     *//*
+
     public void setFirstPosition() {
         for (int i = 0; i < 8; i++) {
             figures[i][1] = new Pawn(new Cell(i, 1));
@@ -178,3 +189,4 @@ public class Board {
         figures[3][7] = new Queen((new Cell(3, 7)));
     }
 }
+*/
