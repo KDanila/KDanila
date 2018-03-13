@@ -1,5 +1,5 @@
 /*
-package com; //Пишется полностью сайт.(?)
+package com; //Пишется полностью сайт.
 
 import java.util.*;
 
@@ -13,6 +13,8 @@ public class Sorter {
         TreeSet<User> sortedList = new TreeSet<User>();
         sortedList.addAll(list);
         return sortedList;
+        //        я бы написал без ссылки Collections.sort(list);
+        //return new TreeSet<User>(users);
     }
 
     List<User> sortnamelength(List<User> list) {
@@ -38,7 +40,7 @@ public class Sorter {
             public int compare(User o1, User o2) {
                 return o1.getAge() - o2.getAge();
             }
-        };
+        }; // Насколько я понял, если использовать лямбду весь этот метод сжимается до четырех строк.
         list.sort(compar1.thenComparing(compar2));
         return list;
     }
