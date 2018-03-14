@@ -31,17 +31,30 @@ public class BankTransfer {
 
     public boolean transferMoney(String srcPassport, String srcRequisite, String destPassport, String dstRequisite,
                                  double amount) {
-        for (User user : this.userAccounts.keySet()) {
-
-            if (user.getPassport() != null && user.getPassport().equals(srcPassport)) {
-                this.userAccounts.get(user);
-
-            } else {
-                throw new RuntimeException("can't find user with this passport");
-            }
-
+        User userFrom = findUserByPassport(srcPassport);
+        User userTo = findUserByPassport(destPassport);
+        Account accountFrom = findAccountByUser(userFrom, srcRequisite);
+        Account accountTo = findAccountByUser(userTo, dstRequisite);
+        if(accountFrom.getValue()>=amount){
+            accountFrom.setValue((accountFrom.getValue()-amount));
+            accountTo.setValue((accountTo.getValue()+amount));
+            return true;
+        } else{
+            return false;
         }
-        return false;
+    }
+
+    private Account findAccountByUser(User user, String requisite) {
+        Account toReturn = null;
+        for (Account ac : this.userAccounts.get(user)) {
+            if(ac.getRequisites()==Integer.valueOf(requisite)){
+                toReturn = ac;
+            }
+        }
+        if (toReturn==null){
+            throw new RuntimeException("Can't find account");
+        }
+        return toReturn;
     }
 
     public User findUserByPassport(String passport) {
@@ -51,7 +64,7 @@ public class BankTransfer {
                 us = user;
             }
         }
-        if(us==null){
+        if (us == null) {
             throw new RuntimeException("Can't find user with tis passport");
         }
         return us;
