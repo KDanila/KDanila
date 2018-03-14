@@ -2,7 +2,12 @@ package ru.job4j.banktransfer;
 
 public class Account {
     private double value;
-    private int requisites;
+    private String requisites;
+
+    public Account(double value, String requisites) {
+        this.value = value;
+        this.requisites = requisites;
+    }
 
     public double getValue() {
         return value;
@@ -12,11 +17,11 @@ public class Account {
         this.value = value;
     }
 
-    public int getRequisites() {
+    public String getRequisites() {
         return requisites;
     }
 
-    public void setRequisites(int requisites) {
+    public void setRequisites(String requisites) {
         this.requisites = requisites;
     }
 
