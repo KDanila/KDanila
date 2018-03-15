@@ -22,15 +22,16 @@ public class ListCompare implements Comparator<String> {
         int lengthO2 = o2.length();
         char[] o1Char = o1.toCharArray();
         char[] o2Char = o2.toCharArray();
-        if (lengthO1 == lengthO2) {
-            for (int i = 0; i < lengthO1; i++) {
-                if (o1Char[i] != o2Char[i]) {
-                    toReturn = o1Char[i] - o2Char[i];
-                }
+        for (int i = 0; i < lengthO1; i++) {
+            if (o1Char[i] != o2Char[i]) {
+                toReturn = o1Char[i] - o2Char[i];
             }
-        } else {
+        }
+
+        if(toReturn==0){
             toReturn = lengthO1 - lengthO2;
         }
+
         if (toReturn > 0) {
             toReturn = 1;
         } else if (toReturn < 0) {
