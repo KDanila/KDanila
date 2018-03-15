@@ -46,8 +46,8 @@ public class ListCompareTest {
     public void whenLeftGreatRightThenPlus() {
         ListCompare compare = new ListCompare();
         int rst = compare.compare(
-                "Ivanova",
-                "Petrov"
+                "Petrov" ,
+                 "Ivanova"
         );
         assertThat(rst, is(1));
     }

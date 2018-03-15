@@ -1,6 +1,7 @@
 package ru.job4j.comparator;
 
 import java.util.Comparator;
+
 /**
  * ListCompare class.
  *
@@ -11,6 +12,7 @@ import java.util.Comparator;
 public class ListCompare implements Comparator<String> {
     /**
      * Compare method.
+     *
      * @param o1 - first String.
      * @param o2 - second String.
      * @return int -1,0,1.
@@ -25,13 +27,12 @@ public class ListCompare implements Comparator<String> {
         for (int i = 0; i < lengthO1; i++) {
             if (o1Char[i] != o2Char[i]) {
                 toReturn = o1Char[i] - o2Char[i];
+                break;
             }
         }
-
-        if(toReturn==0){
+        if (toReturn == 0) {
             toReturn = lengthO1 - lengthO2;
         }
-
         if (toReturn > 0) {
             toReturn = 1;
         } else if (toReturn < 0) {
