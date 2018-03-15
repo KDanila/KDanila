@@ -9,8 +9,17 @@ import java.util.Map;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+/**
+ * BankTransferTest class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.3
+ */
 public class BankTransferTest {
-
+    /**
+     * Test add user.
+     */
     @Test
     public void testAddUser() {
         BankTransfer bankTransfer = new BankTransfer();
@@ -20,6 +29,9 @@ public class BankTransferTest {
         assertThat(user.getName(), is("Alex"));
     }
 
+    /**
+     * Test delete user.
+     */
     @Test
     public void testDeleteUser() {
         BankTransfer bankTransfer = new BankTransfer();
@@ -30,6 +42,9 @@ public class BankTransferTest {
         assertThat(userAccounts.size(), is(0));
     }
 
+    /**
+     * test adding account to user.
+     */
     @Test
     public void testAddAccountsToUser() {
         BankTransfer bankTransfer = new BankTransfer();
@@ -42,8 +57,11 @@ public class BankTransferTest {
         assertThat(result, is(a1));
     }
 
+    /**
+     * Test deleting acount from user.
+     */
     @Test
-    public void testDeleteAccountsToUser() {
+    public void testDeleteAccountsFromUser() {
         BankTransfer bankTransfer = new BankTransfer();
         User u1 = new User("Alex", "000");
         Account a1 = new Account(200, "aaa");
@@ -55,8 +73,11 @@ public class BankTransferTest {
         assertThat(result.size(), is(0));
     }
 
+    /**
+     * Test transfer money with true.
+     */
     @Test
-    public void testTransferMoneyToUserWithTrueStatemnet() {
+    public void testTransferMoneyToUserWithTrueStatement() {
         BankTransfer bankTransfer = new BankTransfer();
         User u1 = new User("Alex", "000");
         User u2 = new User("Boris", "111");
@@ -67,11 +88,13 @@ public class BankTransferTest {
         bankTransfer.addUser(u2);
         bankTransfer.addAccountToUser("111", a2);
         bankTransfer.transferMoney("000", "aaa", "111", "bbb", 150);
-
         assertThat(a2.getValue(), is(450.));
         assertThat(a1.getValue(), is(50.));
     }
 
+    /**
+     * Test transfer money with false.
+     */
     @Test
     public void testTransferMoneyToUserWithFalseStatemnet() {
         BankTransfer bankTransfer = new BankTransfer();
@@ -88,6 +111,5 @@ public class BankTransferTest {
         assertThat(result, is(false));
 
     }
-
 }
 
