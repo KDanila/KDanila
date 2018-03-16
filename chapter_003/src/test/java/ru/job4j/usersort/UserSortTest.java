@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TreeSet;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -22,15 +23,16 @@ public class UserSortTest {
     @Test
     public void firstSortedTestwithTheeElement() {
         ArrayList<User> users = new ArrayList<User>();
-        users.addAll(Arrays.asList(
-                new User("Boris", 30),
-                new User("Anton", 15),
-                new User("Victor", 40)
-        ));
+        User b = new User("Boris", 30);
+        User a = new User("Anton", 15);
+        User v = new User("Victor", 40);
+
+        users.addAll(Arrays.asList(b, a, v));
         UserSort us = new UserSort();
-        us.sort(users);
-        assertThat(users.get(0).getName(), is("Anton"));
-        assertThat(users.get(1).getName(), is("Boris"));
+        TreeSet<User> treeSet = (TreeSet<User>) us.sort(users);
+
+        assertThat(treeSet.first().getName(), is("Anton"));
+        assertThat(treeSet.last().getName(), is("Victor"));
     }
 
     /**
@@ -38,19 +40,20 @@ public class UserSortTest {
      */
     @Test
     public void secondSortedTestwithFourElement() {
-        ArrayList<User> users = new ArrayList<User>();
-        users.addAll(Arrays.asList(
-                new User("Boris", 30),
-                new User("Anton", 15),
-                new User("Stanislav", 55),
-                new User("Victor", 40)
-        ));
+        ArrayList<User> users = new ArrayList<>();
+        User b = new User("Boris", 30);
+        User a = new User("Anton", 15);
+        User s = new User("Stanislav", 55);
+        User v = new User("Victor", 40);
+        users.addAll(Arrays.asList(b, a, s, v));
         UserSort us = new UserSort();
-        us.sort(users);
-        assertThat(users.get(0).getName(), is("Anton"));
-        assertThat(users.get(1).getName(), is("Boris"));
-        assertThat(users.get(2).getName(), is("Stanislav"));
-        assertThat(users.get(3).getName(), is("Victor"));
+        TreeSet<User> treeSet = (TreeSet<User>) us.sort(users);
+        assertThat(treeSet.first().getName(), is("Anton"));
+        treeSet.remove(a);
+        assertThat(treeSet.first().getName(), is("Boris"));
+        treeSet.remove(b);
+        assertThat(treeSet.first().getName(), is("Stanislav"));
+        assertThat(treeSet.last().getName(), is("Victor"));
     }
 
     /**

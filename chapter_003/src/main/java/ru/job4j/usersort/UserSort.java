@@ -23,7 +23,6 @@ public class UserSort {
      * @return set.
      */
     public Set<User> sort(List<User> users) {
-        Collections.sort(users);
         return new TreeSet<User>(users);
     }
 

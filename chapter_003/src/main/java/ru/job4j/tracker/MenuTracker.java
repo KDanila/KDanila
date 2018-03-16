@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Menu tracker класс.
@@ -27,7 +28,7 @@ public class MenuTracker {
     /**
      * actions - массив возможных действий.
      */
-    private ArrayList<BaseAction> actions = new ArrayList<BaseAction>();
+    private List<BaseAction> actions = new ArrayList<BaseAction>();
 
     /**
      * Конструктор.

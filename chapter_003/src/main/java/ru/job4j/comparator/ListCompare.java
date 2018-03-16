@@ -33,11 +33,6 @@ public class ListCompare implements Comparator<String> {
         if (toReturn == 0) {
             toReturn = lengthO1 - lengthO2;
         }
-        if (toReturn > 0) {
-            toReturn = 1;
-        } else if (toReturn < 0) {
-            toReturn = -1;
-        }
         return toReturn;
     }
 }

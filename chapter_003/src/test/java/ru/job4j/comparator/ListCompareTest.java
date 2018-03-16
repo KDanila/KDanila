@@ -2,6 +2,8 @@ package ru.job4j.comparator;
 
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -17,7 +19,7 @@ public class ListCompareTest {
      * The First test.
      */
     @Test
-    public void whenLeftAndRightEqualsThenZero() {
+    public void whenStringsAreEqualThenZero() {
         ListCompare compare = new ListCompare();
         int rst = compare.compare(
                 "Ivanov",
@@ -30,25 +32,54 @@ public class ListCompareTest {
      * The Second test.
      */
     @Test
-    public void whenLeftLessRightThenMunis() {
+    public void whenLeftLessThanRightResultShouldBeNegative() {
         ListCompare compare = new ListCompare();
         int rst = compare.compare(
                 "Ivanov",
                 "Ivanova"
         );
-        assertThat(rst, is(-1));
+        assertThat(rst, lessThan(0));
     }
 
     /**
      * The third test.
      */
     @Test
-    public void whenLeftGreatRightThenPlus() {
+    public void whenLeftGreaterThanRightResultShouldBePositive() {
         ListCompare compare = new ListCompare();
         int rst = compare.compare(
                 "Petrov",
                 "Ivanova"
         );
-        assertThat(rst, is(1));
+        assertThat(rst, greaterThan(0));
+    }
+
+    /**
+     * The fourth test.
+     */
+    @Test
+    public void secondCharOfLeftGreaterThanRightShouldBePositive() {
+        ListCompare compare = new ListCompare();
+        int rst = compare.compare(
+                "Petrov",
+                "Patrov"
+        );
+        assertThat(rst, greaterThan(0));
+    }
+
+    /**
+     * The fifth test.
+     */
+    @Test
+    public void secondCharOfLeftLessThanRightShouldBeNegative() {
+        ListCompare compare = new ListCompare();
+        int rst = compare.compare(
+                "Patrova",
+                "Petrov"
+        );
+        assertThat(rst, lessThan(0));
     }
 }
+
+
+
