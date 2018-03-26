@@ -4,9 +4,22 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
+/**
+ * DepartmentSorting class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.3
+ */
 public class DepartmentSorting {
 
-    // ToDo инкапсулировать стратегию сортировки (в аргумент принимать стратегию сортировки).
+    /**
+     * Sorting department by several ways(compareStrategy).
+     *
+     * @param departments     - list of departments.
+     * @param compareStrategy - compare strategy.
+     * @return treeset.
+     */
     TreeSet<String> sort(List<String> departments, Comparator<String> compareStrategy) {
         TreeSet<String> toReturn = new TreeSet<>(compareStrategy);
         String tempLine;
