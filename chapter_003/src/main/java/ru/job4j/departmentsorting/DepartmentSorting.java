@@ -1,23 +1,24 @@
 package ru.job4j.departmentsorting;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
 public class DepartmentSorting {
 
     // ToDo инкапсулировать стратегию сортировки (в аргумент принимать стратегию сортировки).
-    TreeSet<String> upToDownSort(List<String> departments){
-        TreeSet<String> toReturn = new TreeSet<>();
+    TreeSet<String> sort(List<String> departments, Comparator<String> compareStrategy) {
+        TreeSet<String> toReturn = new TreeSet<>(compareStrategy);
         String tempLine;
         int lastIndex;
         for (int i = 0; i < departments.size(); i++) {
             toReturn.add(departments.get(i));
-            tempLine=departments.get(i);
+            tempLine = departments.get(i);
             lastIndex = tempLine.lastIndexOf("\\");
-            while (lastIndex!=-1){
-                toReturn.add(tempLine.substring(0,lastIndex));
-                tempLine=tempLine.substring(0,lastIndex);
-                lastIndex=tempLine.lastIndexOf("\\");
+            while (lastIndex != -1) {
+                toReturn.add(tempLine.substring(0, lastIndex));
+                tempLine = tempLine.substring(0, lastIndex);
+                lastIndex = tempLine.lastIndexOf("\\");
             }
         }
         return toReturn;

@@ -14,8 +14,7 @@ public class DepartmentSortingTest {
     @Test
     public void upToDownFirstTest(){
         //Set<String> upToDownSort(List<String> departments)
-        List<String> test = new ArrayList<>(Arrays.asList(
-                "K1\\SK1",
+        List<String> test = new ArrayList<>(Arrays.asList("K1\\SK1",
                 "K1\\SK2",
                 "K1\\SK1\\SSK1",
                 "K1\\SK1\\SSK2",
@@ -24,9 +23,9 @@ public class DepartmentSortingTest {
                 "K2\\SK1\\SSK2\\SSSK1"));
 
         DepartmentSorting departmentSorting = new DepartmentSorting();
-        Set<String> result =  departmentSorting.upToDownSort(test);
-        List<String> expected = new ArrayList<>(Arrays.asList(
-                "K1",
+        CompareDepartmentsUp cdu = new CompareDepartmentsUp();
+        ArrayList<String> result = new ArrayList<>(departmentSorting.sort(test,cdu));
+        List<String> expected = new ArrayList<>(Arrays.asList("K1",
                 "K1\\SK1",
                 "K1\\SK1\\SSK1",
                 "K1\\SK1\\SSK2",
