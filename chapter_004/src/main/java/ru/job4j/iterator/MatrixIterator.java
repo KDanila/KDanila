@@ -1,44 +1,72 @@
 package ru.job4j.iterator;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
+/**
+ * MatrixIterator class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.0
+ */
 public class MatrixIterator implements Iterator<Integer> {
-
+    /**
+     * matrix.
+     */
     private final int[][] matrix;
 
-    int position;
+    /**
+     * current position.
+     */
+    private int position = 0;
 
+    /**
+     * Constructor.
+     *
+     * @param matrix - int[][];
+     */
     MatrixIterator(int[][] matrix) {
         this.matrix = matrix;
     }
 
+    /**
+     * hasNext method.
+     *
+     * @return boolean - existing of next position.
+     */
     @Override
     public boolean hasNext() {
-        return false;
+        int counter = 0;
+        int matrixLength = matrix.length;
+        for (int[] aMatrix : matrix) {
+            counter += aMatrix.length;
+        }
+        return position < counter;
     }
 
+    /**
+     * Next method.
+     *
+     * @return current element.
+     * @throws NoSuchElementException .
+     */
     @Override
-    public Integer next() {
-        return 0;
+    public Integer next() throws NoSuchElementException {
+        int counter = 0;
+        int matrixLength = matrix.length;
+        if (matrixLength == 0) {
+            throw new NoSuchElementException();
+        }
+        for (int[] aMatrix : matrix) {
+            for (int anAMatrix : aMatrix) {
+                if (counter == this.position) {
+                    this.position++;
+                    return anAMatrix;
+                }
+                counter++;
+            }
+        }
+        return -1;
     }
 }
-/*
-Необходимо создать итератор для двухмерного массива.
-
-int[][] value = {
-   {1, 2}
-   {3, 4}
-};
-
-метод next = должен вернуть последовательно 1, 2, 3, 4.
-
-Старайтесь написать универсальное решение, чтобы оно не было
- жестко ориентировано на тестовый пример.
-И хотя в примере указана квадратная матрица, программа должна
- корректно обрабатывать и jagged array тоже.
-Пример jagged array - {{1},{2, 3, 4, 5,},{6, 7},
-{8, 9, 10, 11, 12, 13, 14}}
-Не используйте в данном задании коллекции из JDK,
- вспомогательные массивы и т.д.
-Постарайтесь реализовать последовательным проходом по массиву.
- */
