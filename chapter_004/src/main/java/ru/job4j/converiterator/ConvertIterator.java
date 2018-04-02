@@ -18,7 +18,34 @@ public class ConvertIterator {
      * @return Iterator<Integer>.
      */
     Iterator<Integer> convert(Iterator<Iterator<Integer>> it) {
-        Iterator<Integer> tempIterator;
+        return new Iterator<Integer>() {
+            int position = 0;
+            @Override
+            public boolean hasNext() {
+                return it.hasNext();
+            }
+
+            @Override
+            public Integer next() {
+                Iterator tempIterator;
+                int counter = 0;
+                int toReturn=-1;
+                while (it.hasNext()) {
+                    tempIterator = it.next();
+                    while (tempIterator.hasNext()) {
+                        if(counter==this.position){
+                            this.position ++;
+                            return (Integer) tempIterator.next();
+                        }
+                        counter++;
+                        tempIterator.next();
+                    }
+                }
+                return toReturn;
+            }
+        };
+
+        /*        Iterator<Integer> tempIterator;
         Iterator<Integer> toReturn;
         ArrayList<Integer> tempInt = new ArrayList<>();
         while (it.hasNext()) {
@@ -28,6 +55,6 @@ public class ConvertIterator {
             }
         }
         toReturn = tempInt.iterator();
-        return toReturn;
+        return toReturn;*/
     }
 }
