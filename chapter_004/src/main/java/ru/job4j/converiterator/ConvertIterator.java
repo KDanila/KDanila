@@ -1,6 +1,5 @@
 package ru.job4j.converiterator;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -36,7 +35,7 @@ public class ConvertIterator {
                     if (counter == this.position) {
                         this.position++;
                         toReturn = (Integer) tempIterator.next();
-                        if (!tempIterator.hasNext()&&it.hasNext()) {
+                        if (!tempIterator.hasNext() && it.hasNext()) {
                             tempIterator = it.next();
                             this.position = 0;
                         }
@@ -45,7 +44,7 @@ public class ConvertIterator {
                     counter++;
 
                 }
-                if(toReturn==-1){
+                if (toReturn == -1) {
                     throw new NoSuchElementException();
                 }
 
