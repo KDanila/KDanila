@@ -1,6 +1,5 @@
 package ru.job4j.converiterator;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -17,7 +16,35 @@ public class ConvertIterator {
      * @param it - Iterator<Iterator<Integer>>.
      * @return Iterator<Integer>.
      */
-    Iterator<Integer> convert(Iterator<Iterator<Integer>> it) {
+    Iterator convert(Iterator<Iterator<Integer>> it) {
+
+        return new Iterator() {
+            private int position = 0;
+
+            @Override
+            public boolean hasNext() {
+                return it.hasNext();
+            }
+
+            @Override
+            public Object next() {
+                Iterator<Integer> tempIterator;
+                int counter = 0;
+                while (it.hasNext()) {
+                    tempIterator = it.next();
+                    while (tempIterator.hasNext()) {
+                        if (counter == position) {
+                            position++;
+                            return tempIterator.next();
+                        }
+                    }
+                }
+                return -1;
+            }
+        };
+
+/*
+
         Iterator<Integer> tempIterator;
         Iterator<Integer> toReturn;
         ArrayList<Integer> tempInt = new ArrayList<>();
@@ -28,6 +55,6 @@ public class ConvertIterator {
             }
         }
         toReturn = tempInt.iterator();
-        return toReturn;
+        return toReturn;*/
     }
 }
