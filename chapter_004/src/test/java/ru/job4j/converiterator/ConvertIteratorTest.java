@@ -125,5 +125,19 @@ public class ConvertIteratorTest {
         assertThat(it.next(), is(3));
         it.next();
     }
+    /**
+     * Testing null iterator.
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void invocationOfNullIteratorShouldThrowNoSuchElementException() {
+        Iterator<Integer> it1 = null;
+        Iterator<Iterator<Integer>> its = Arrays.asList(it1).iterator();
+        ConvertIterator iteratorOfIterators = new ConvertIterator();
+        it = iteratorOfIterators.convert(its);
+        assertThat(it.next(), is(1));
+        assertThat(it.next(), is(2));
+        assertThat(it.next(), is(3));
+        it.next();
+    }
 }
 

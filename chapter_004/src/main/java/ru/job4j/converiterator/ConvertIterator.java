@@ -2,6 +2,7 @@ package ru.job4j.converiterator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * ConvertIterator class.
@@ -19,28 +20,35 @@ public class ConvertIterator {
      */
     Iterator<Integer> convert(Iterator<Iterator<Integer>> it) {
         return new Iterator<Integer>() {
-            int position = 0;
+            private int position = 0;
+            private Iterator tempIterator = it.next();
+
             @Override
             public boolean hasNext() {
-                return it.hasNext();
+                return tempIterator.hasNext();
             }
 
             @Override
-            public Integer next() {
-                Iterator tempIterator;
+            public Integer next() throws NoSuchElementException {
                 int counter = 0;
-                int toReturn=-1;
-                while (it.hasNext()) {
-                    tempIterator = it.next();
-                    while (tempIterator.hasNext()) {
-                        if(counter==this.position){
-                            this.position ++;
-                            return (Integer) tempIterator.next();
+                int toReturn = -1;
+                while (tempIterator.hasNext()) {
+                    if (counter == this.position) {
+                        this.position++;
+                        toReturn = (Integer) tempIterator.next();
+                        if (!tempIterator.hasNext()&&it.hasNext()) {
+                            tempIterator = it.next();
+                            this.position = 0;
                         }
-                        counter++;
-                        tempIterator.next();
+                        break;
                     }
+                    counter++;
+
                 }
+                if(toReturn==-1){
+                    throw new NoSuchElementException();
+                }
+
                 return toReturn;
             }
         };
