@@ -28,7 +28,7 @@ public class SimpleArray<E> implements Iterable<E> {
      *
      * @param size - size of array.
      */
-    SimpleArray(int size) {
+    public SimpleArray(int size) {
         this.objects = new Object[size];
     }
 
