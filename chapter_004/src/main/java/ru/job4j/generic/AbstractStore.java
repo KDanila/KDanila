@@ -4,21 +4,21 @@ import ru.job4j.simplearray.SimpleArray;
 
 import java.util.Iterator;
 
-public abstract class AbstractStore implements Store<Base>{
+public abstract class AbstractStore<T extends Base>{
 
-    private SimpleArray<Base> roleStoreData ;
+    private SimpleArray<T> roleStoreData ;
 
     protected AbstractStore(int size) {
         this.roleStoreData = new SimpleArray<>(size);
     }
 
-    @Override
-    public void add(Base model) {
+
+    public void add(T model) {
         this.roleStoreData.add(model);
     }
 
-    @Override
-    public boolean replace(String id, Base model) {
+
+    public boolean replace(String id, T model) {
         int position = findPositionByID(id);
         if (position == -1) {
             this.roleStoreData.set(position, model);
@@ -28,7 +28,6 @@ public abstract class AbstractStore implements Store<Base>{
         }
     }
 
-    @Override
     public boolean delete(String id) throws Exception {
         int position = findPositionByID(id);
         if (position == -1) {
@@ -39,7 +38,6 @@ public abstract class AbstractStore implements Store<Base>{
         }
     }
 
-    @Override
     public Base findById(String id) {
         int position = findPositionByID(id);
         if (position == -1) {
@@ -56,7 +54,7 @@ public abstract class AbstractStore implements Store<Base>{
      * @return int -position.
      */
     public int findPositionByID(String id) {
-        Iterator<Base> iterator = this.roleStoreData.iterator();
+        Iterator<T> iterator = this.roleStoreData.iterator();
         int counter = 0;
         while (iterator.hasNext()) {
             Base temp = iterator.next();
