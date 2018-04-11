@@ -4,19 +4,19 @@ import ru.job4j.simplearray.SimpleArray;
 
 import java.util.Iterator;
 
-public class RoleStore<User> implements Store {
-    private SimpleArray<Base> roleStoreData = new SimpleArray(10);
+public class RoleStore implements Store {
+    private SimpleArray<Role> roleStoreData = new SimpleArray(10);
 
     @Override
     public void add(Base model) {
-        this.roleStoreData.add(model);
+        this.roleStoreData.add((Role) model);
     }
 
     @Override
     public boolean replace(String id, Base model) {
         int position = findPositionByID(id);
         if (position == -1) {
-            this.roleStoreData.set(position, model);
+            this.roleStoreData.set(position, (Role) model);
             return true;
         } else {
             return false;
@@ -38,7 +38,7 @@ public class RoleStore<User> implements Store {
     public Base findById(String id) {
         int position = findPositionByID(id);
         if (position == -1) {
-            return this.roleStoreData.get(position);
+            return (Base) this.roleStoreData.get(position);
         } else {
             return null;
         }
@@ -51,7 +51,7 @@ public class RoleStore<User> implements Store {
      * @return int -position.
      */
     public int findPositionByID(String id) {
-        Iterator<Base> iterator = this.roleStoreData.iterator();
+        Iterator<Role> iterator =  this.roleStoreData.iterator();
         int counter = 0;
         while (iterator.hasNext()) {
             Base temp = iterator.next();
