@@ -24,7 +24,7 @@ public class EvenIteratorTest {
     private Iterator<Integer> it;
 
     /**
-     *  Initializing.
+     * Initializing.
      */
     @Before
     public void setUp() {

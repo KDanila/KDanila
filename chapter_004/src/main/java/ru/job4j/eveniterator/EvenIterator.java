@@ -38,12 +38,14 @@ public class EvenIterator implements Iterator {
      */
     @Override
     public boolean hasNext() {
+        int currentPosition = -1;
         for (int i = this.position; i < numbers.length; i++) {
             if (numbers[i] % 2 == 0) {
-                return true;
+                currentPosition = i;
+                break;
             }
         }
-        return false;
+        return currentPosition != -1;
     }
 
     /**
@@ -54,16 +56,16 @@ public class EvenIterator implements Iterator {
      */
     @Override
     public Integer next() throws NoSuchElementException {
-        for (int i = this.position; i < numbers.length; i++) {
-            if (numbers[i] % 2 == 0) {
-                this.position++;
-                return numbers[i];
+        int nextInt = -1;
+        while (hasNext()) {
+            nextInt = this.numbers[this.position++];
+            if (nextInt % 2 == 0) {
+                break;
             }
-            this.position++;
         }
-        if (this.numbers.length == 0 || this.position >= this.numbers.length) {
+        if (nextInt == -1) {
             throw new NoSuchElementException();
         }
-        return -1;
+        return nextInt;
     }
 }

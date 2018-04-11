@@ -4,7 +4,7 @@ import ru.job4j.simplearray.SimpleArray;
 
 import java.util.Iterator;
 
-public class RoleStore implements Store {
+public class RoleStore<User> implements Store {
     private SimpleArray<Base> roleStoreData = new SimpleArray(10);
 
     @Override

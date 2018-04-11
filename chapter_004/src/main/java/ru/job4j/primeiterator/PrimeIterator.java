@@ -55,33 +55,35 @@ public class PrimeIterator implements Iterator {
      */
     @Override
     public Integer next() throws NoSuchElementException {
-        for (int i = this.position; i < numbers.length; i++) {
-            if (isPrime(numbers[i])) {
-                this.position++;
-                return numbers[i];
-            }
-            this.position++;
-        }
+        int nextInt = -1;
         if (this.numbers.length == 0 || this.position >= this.numbers.length) {
             throw new NoSuchElementException();
         }
-        return -1;
+        while (hasNext()) {
+            nextInt = this.numbers[this.position++];
+            if (isPrime(nextInt)) {
+                break;
+            }
+        }
+
+        return nextInt;
     }
 
     /**
      * Перебор делителей.
      *
      * @param number - income number.
-     * @return boolean true-prime number, false - not prime.
+     * @return state: true-prime number, false - not prime.
      */
     private boolean isPrime(int number) {
+        boolean state = true;
         int possibleDivider = (int) Math.sqrt(number);
         for (int i = 2; i <= possibleDivider; i++) {
             if (number % i == 0) {
-                return false;
+                state = false;
             }
         }
-        return true;
+        return state;
     }
 
 }
