@@ -4,7 +4,7 @@ import ru.job4j.simplearray.SimpleArray;
 
 import java.util.Iterator;
 
-public class RoleStore implements Store {
+public class RoleStore<Role> implements Store {
     private SimpleArray<Role> roleStoreData = new SimpleArray(10);
 
     @Override
@@ -54,7 +54,7 @@ public class RoleStore implements Store {
         Iterator<Role> iterator =  this.roleStoreData.iterator();
         int counter = 0;
         while (iterator.hasNext()) {
-            Base temp = iterator.next();
+            Base temp = (Base) iterator.next();
             if (temp.getId().equals(id)) {
                 return counter;
             }
