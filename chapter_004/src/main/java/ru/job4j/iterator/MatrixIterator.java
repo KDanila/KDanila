@@ -17,9 +17,13 @@ public class MatrixIterator implements Iterator<Integer> {
     private final int[][] matrix;
 
     /**
-     * current position.
+     * rows.
      */
-    private int position = 0;
+    private int row = 0;
+    /**
+     * cells.
+     */
+    private int cell = 0;
 
     /**
      * Constructor.
@@ -37,12 +41,7 @@ public class MatrixIterator implements Iterator<Integer> {
      */
     @Override
     public boolean hasNext() {
-        int counter = 0;
-        int matrixLength = matrix.length;
-        for (int[] aMatrix : matrix) {
-            counter += aMatrix.length;
-        }
-        return position < counter;
+        return !(row==matrix.length&&cell==0);
     }
 
     /**
@@ -53,20 +52,16 @@ public class MatrixIterator implements Iterator<Integer> {
      */
     @Override
     public Integer next() throws NoSuchElementException {
-        int counter = 0;
-        int matrixLength = matrix.length;
-        if (matrixLength == 0) {
+        if (this.row == this.matrix.length&&this.cell==0) {
             throw new NoSuchElementException();
         }
-        for (int[] aMatrix : matrix) {
-            for (int anAMatrix : aMatrix) {
-                if (counter == this.position) {
-                    this.position++;
-                    return anAMatrix;
-                }
-                counter++;
-            }
+        int nextElement = this.matrix[this.row][this.cell];
+        if (this.cell == this.matrix[this.row].length - 1) {
+            this.cell = 0;
+            this.row++;
+        } else {
+            this.cell++;
         }
-        return -1;
+        return nextElement;
     }
 }

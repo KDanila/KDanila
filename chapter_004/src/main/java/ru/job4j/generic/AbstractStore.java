@@ -4,7 +4,7 @@ import ru.job4j.simplearray.SimpleArray;
 
 import java.util.Iterator;
 
-public abstract class AbstractStore implements Store<Base>{
+public abstract class AbstractStore implements Store{
 
     private SimpleArray<Base> roleStoreData ;
 
