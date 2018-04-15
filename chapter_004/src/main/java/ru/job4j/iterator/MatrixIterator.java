@@ -41,7 +41,7 @@ public class MatrixIterator implements Iterator<Integer> {
      */
     @Override
     public boolean hasNext() {
-        return !(row==matrix.length&&cell==0);
+        return !(row == matrix.length && cell == 0);
     }
 
     /**
@@ -52,7 +52,7 @@ public class MatrixIterator implements Iterator<Integer> {
      */
     @Override
     public Integer next() throws NoSuchElementException {
-        if (this.row == this.matrix.length&&this.cell==0) {
+        if (this.row == this.matrix.length && this.cell == 0) {
             throw new NoSuchElementException();
         }
         int nextElement = this.matrix[this.row][this.cell];

@@ -1,4 +1,5 @@
 package ru.job4j.generic;
+/*
 
 import org.junit.Test;
 
@@ -9,4 +10,4 @@ public class RoleStoreTest {
     public void whenSetInRoleStoreUserShouldError() {
 
     }
-}
+}*/

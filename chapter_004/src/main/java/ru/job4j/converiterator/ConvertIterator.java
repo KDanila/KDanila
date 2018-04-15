@@ -51,17 +51,5 @@ public class ConvertIterator {
                 return toReturn;
             }
         };
-
-        /*        Iterator<Integer> tempIterator;
-        Iterator<Integer> toReturn;
-        ArrayList<Integer> tempInt = new ArrayList<>();
-        while (it.hasNext()) {
-            tempIterator = it.next();
-            while (tempIterator.hasNext()) {
-                tempInt.add(tempIterator.next());
-            }
-        }
-        toReturn = tempInt.iterator();
-        return toReturn;*/
     }
 }

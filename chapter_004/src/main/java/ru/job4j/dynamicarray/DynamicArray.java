@@ -5,21 +5,51 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * DynamicArray - is like light ArrayList.
+ *
+ * @param <E> -generic.
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.0
+ */
+
 public class DynamicArray<E> implements Iterable<E> {
+    /**
+     * data of dynamic array.
+     */
     private Object[] container;
-
+    /**
+     * index.
+     */
     private int index = 0;
-
+    /**
+     * Modification count.
+     * Итератор должен реализовывать fail-fast поведение.
+     */
     private int modificationCount = 0;
 
+    /**
+     * Constructor.
+     */
     public DynamicArray() {
         this.container = new Object[10];
     }
 
+    /**
+     * Overload constructor.
+     *
+     * @param size - size of array.
+     */
     public DynamicArray(int size) {
         this.container = new Object[size];
     }
 
+    /**
+     * Add method.
+     *
+     * @param value - value.
+     */
     public void add(E value) {
         if (this.container.length == index) {
             this.container = increaseArray();
@@ -28,15 +58,31 @@ public class DynamicArray<E> implements Iterable<E> {
         this.modificationCount++;
     }
 
+    /**
+     * Increase array method.
+     * Increasing in  two times by first capacity.
+     *
+     * @return - object[];
+     */
     private Object[] increaseArray() {
         return Arrays.copyOf(this.container, this.container.length * 2);
     }
 
+    /**
+     * Gett method.
+     *
+     * @param index - index.
+     * @return E - generic.
+     */
     public E get(int index) {
         return (E) this.container[index];
     }
 
-    //TODO
+    /**
+     * Iterator.
+     *
+     * @return - Iterator<E>.
+     */
     @Override
     public Iterator<E> iterator() {
         int currentModCount = this.modificationCount;
@@ -47,12 +93,12 @@ public class DynamicArray<E> implements Iterable<E> {
 
             @Override
             public boolean hasNext() {
-                return (objects[cursor]!=null&&objects.length != 0 && cursor <= objects.length);
+                return (objects[cursor] != null && cursor <= objects.length);
             }
 
             @Override
             public E next() throws NoSuchElementException, ConcurrentModificationException {
-                if(currentModCount!=getModificationCount()){
+                if (currentModCount != getModificationCount()) {
                     throw new ConcurrentModificationException();
                 }
                 if (hasNext()) {
@@ -64,31 +110,22 @@ public class DynamicArray<E> implements Iterable<E> {
         };
     }
 
+    /**
+     * Method to test class.
+     *
+     * @return -length of array.
+     */
     public int getLengthOfArray() {
         return this.container.length;
     }
 
+    /**
+     * Getter for modificationCount.
+     *
+     * @return - int.
+     */
     public int getModificationCount() {
         return modificationCount;
     }
 }
 
-
-/*
-Необходимо создать динамический контейнер с методами:
-
-1) add(E value);
-
-2) E get(int index);
-
-3) реализовать интерфейс Iterable<E>.
-
-Внутри контейнер должен базироваться на массиве (Object[] container). Использовать стандартные коллекции JDK
-(ArrayList, LinkedList и т.д.) запрещено. Контейнер должен быть динамическим, т.е. при полном заполнении увеличиваться.
-
-Итератор должен реализовывать fail-fast поведение, т.е. если с момента создания итератора коллекция подверглась
-структурному изменению, итератор должен кидать ConcurrentModificationException.
-Это достигается через введение счетчика изменений - modCount. Каждая операция, которая структурно модифицирует
-коллекцию должна инкрементировать этот счетчик. В свою очередь итератор запоминает значение этого счетчика на момент
-своего создания (expectedModCount), а затем на каждой итерации сравнивает сохраненное значение, с текущим значением
-поля modCount, если они отличаются, то генерируется исключение.  */
