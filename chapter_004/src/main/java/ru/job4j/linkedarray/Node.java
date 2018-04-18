@@ -44,4 +44,22 @@ public class Node<E> {
     public E getItem() {
         return item;
     }
+
+    /**
+     * Setter.
+     *
+     * @param prev - previous.
+     */
+    public void setPrev(Node prev) {
+        this.prev = prev;
+    }
+
+    /**
+     * Setter.
+     *
+     * @param next - next.
+     */
+    public void setNext(Node next) {
+        this.next = next;
+    }
 }

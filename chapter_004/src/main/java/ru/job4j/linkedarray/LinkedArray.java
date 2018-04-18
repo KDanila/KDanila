@@ -32,7 +32,7 @@ public class LinkedArray<E> implements Iterable<E> {
     /**
      * Constructor.
      */
-    LinkedArray() {
+    public LinkedArray() {
         container = new Object[10];
     }
 
@@ -41,7 +41,7 @@ public class LinkedArray<E> implements Iterable<E> {
      *
      * @param size - size.
      */
-    LinkedArray(int size) {
+    public LinkedArray(int size) {
         container = new Object[size];
     }
 
@@ -65,16 +65,39 @@ public class LinkedArray<E> implements Iterable<E> {
      * @param value - value.
      */
     public void add(E value) {
+
         if (this.index == 0) {
             container[index] = new Node<>(value, null, null);
         } else if (index == this.container.length) {
             this.container = increaseContainer();
-            container[index] = new Node<>(value, (Node<E>) container[index - 1], null);
+            Node n = (Node<E>) container[index - 1];
+            container[index] = new Node<>(value, n, null);
+            n.setNext((Node) container[index]);
         } else {
+            Node n = (Node<E>) container[index - 1];
             container[index] = new Node<>(value, (Node<E>) container[index - 1], null);
+            n.setNext((Node) container[index]);
         }
         this.modificationCount++;
         this.index++;
+    }
+
+    /**
+     * For queue realisation.
+     * Change first element and shift all data from array.
+     */
+    public void takeFirst() {
+        if (this.container[1] != null) {
+            Node first = (Node) this.container[1];
+            first.setPrev(null);
+        }
+        for (int i = 1; i < this.container.length; i++) {
+            this.container[i - 1] = this.container[i];
+            if (this.container[i] == null) {
+                break;
+            }
+        }
+
     }
 
     /**
