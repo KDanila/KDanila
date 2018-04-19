@@ -17,7 +17,7 @@ public class SimpleQueueTest {
      * Push and Poll test.
      */
     @Test
-    public void whenPushShouldBePushe() {
+    public void whenPushShouldBePush() {
         SimpleQueue<String> sq = new SimpleQueue<>();
         sq.push("0");
         sq.push("1");

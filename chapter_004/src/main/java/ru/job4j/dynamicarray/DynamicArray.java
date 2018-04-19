@@ -90,10 +90,9 @@ public class DynamicArray<E> implements Iterable<E> {
         return new Iterator<E>() {
             private int cursor = 0;
 
-
             @Override
             public boolean hasNext() {
-                return (objects[cursor] != null && cursor <= objects.length);
+                return objects[cursor] != null && cursor <= objects.length;
             }
 
             @Override

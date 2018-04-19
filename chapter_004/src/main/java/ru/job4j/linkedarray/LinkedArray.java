@@ -24,6 +24,16 @@ public class LinkedArray<E> implements Iterable<E> {
      * Итератор должен реализовывать fail-fast поведение.
      */
     private int modificationCount = 0;
+
+    /**
+     * Getter.
+     *
+     * @return int - index.
+     */
+    public int getIndex() {
+        return index;
+    }
+
     /**
      * index.
      */
@@ -97,8 +107,20 @@ public class LinkedArray<E> implements Iterable<E> {
                 break;
             }
         }
-
     }
+
+    /**
+     * For stack realisation method.
+     * Take last element.
+     */
+    public void takeLast() {
+        if (this.container[this.index - 1] != null) {
+            Node last = (Node) this.container[this.index - 1];
+            last.setNext(null);
+        }
+        this.container[this.index--] = null;
+    }
+
 
     /**
      * For test method. Return container length.
