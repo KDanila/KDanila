@@ -35,6 +35,7 @@ public class SimpleStack<T> {
     public void push(T value) {
         this.data.add(value);
     }
+
 }
 
 

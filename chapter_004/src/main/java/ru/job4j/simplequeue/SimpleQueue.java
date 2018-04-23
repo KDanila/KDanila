@@ -22,11 +22,13 @@ public class SimpleQueue<T> {
      *
      * @return T - generic.
      */
+
     public T poll() {
         T toReturn = data.get(0);
         data.takeFirst();
         return toReturn;
     }
+
 
     /**
      * Push Method.

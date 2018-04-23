@@ -14,6 +14,8 @@ public class Node<E> {
      * item.
      */
     private E item;
+
+
     /**
      * link on previous Node.
      */
@@ -61,5 +63,23 @@ public class Node<E> {
      */
     public void setNext(Node next) {
         this.next = next;
+    }
+
+    /**
+     * Getter.
+     *
+     * @return Node - node.
+     */
+    public Node<E> getNext() {
+        return next;
+    }
+
+    /**
+     * Getter.
+     *
+     * @return previous.
+     */
+    public Node<E> getPrev() {
+        return prev;
     }
 }

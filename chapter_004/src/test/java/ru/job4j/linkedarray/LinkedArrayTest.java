@@ -28,8 +28,10 @@ public class LinkedArrayTest {
         test.add("1");
         test.add("2");
         test.add("3");
-        String result = test.get(0);
-        assertThat(result, is("1"));
+
+        assertThat(test.get(0), is("1"));
+        assertThat(test.get(1), is("2"));
+        assertThat(test.get(2), is("3"));
     }
 
     /**
@@ -38,12 +40,12 @@ public class LinkedArrayTest {
      */
     @Test
     public void whenIncreasingShouldExtendTwotimes() {
-        LinkedArray<Integer> test = new LinkedArray<>(2);
+        LinkedArray<Integer> test = new LinkedArray<>();
         test.add(1);
         test.add(2);
         test.add(2);
-        int expecting = test.getContainerLength();
-        assertThat(expecting, is(4));
+        int expecting = test.getSize();
+        assertThat(expecting, is(3));
     }
 
     /**
@@ -52,13 +54,19 @@ public class LinkedArrayTest {
      */
     @Test
     public void whenIncreasingDynamicArrayShouldReturnCorrectData() {
-        LinkedArray<Integer> la = new LinkedArray<>(2);
-        la.add(1);
+        LinkedArray<Integer> la = new LinkedArray<>();
+        la.add(111);
         la.add(2);
-        la.add(3);
-        assertThat(la.get(0), is(1));
+        la.add(1);
+        la.add(4);
+        la.add(2);
+        la.add(0);
+        assertThat(la.get(0), is(111));
         assertThat(la.get(1), is(2));
-        assertThat(la.get(2), is(3));
+        assertThat(la.get(2), is(1));
+        assertThat(la.get(3), is(4));
+        assertThat(la.get(4), is(2));
+        assertThat(la.get(5), is(0));
     }
 
     /**
@@ -67,7 +75,7 @@ public class LinkedArrayTest {
      */
     @Test(expected = NoSuchElementException.class)
     public void whenCreateIteratorShouldReturnCorrectlyData() {
-        LinkedArray<Integer> la = new LinkedArray<>(2);
+        LinkedArray<Integer> la = new LinkedArray<>();
         la.add(1);
         la.add(2);
         la.add(3);
@@ -88,7 +96,7 @@ public class LinkedArrayTest {
      */
     @Test(expected = ConcurrentModificationException.class)
     public void whenIteratorCreateAndAddElementShouldThrowError() {
-        LinkedArray<Integer> la = new LinkedArray<>(2);
+        LinkedArray<Integer> la = new LinkedArray<>();
         la.add(1);
         la.add(2);
         la.add(3);
