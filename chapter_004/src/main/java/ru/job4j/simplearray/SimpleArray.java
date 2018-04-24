@@ -33,6 +33,13 @@ public class SimpleArray<E> implements Iterable<E> {
     }
 
     /**
+     * Constructor.
+     */
+    public SimpleArray() {
+        this.objects = new Object[10];
+    }
+
+    /**
      * Get position method.
      *
      * @param position - numberof position.
