@@ -1,6 +1,8 @@
 package ru.job4j.linkedarray;
 
 
+import ru.job4j.simpleset.SimpleList;
+
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -14,7 +16,7 @@ import java.util.NoSuchElementException;
  * @since 0.1.0
  */
 
-public class LinkedArray<E> implements Iterable<E> {
+public class LinkedArray<E> implements SimpleList<E>, Iterable<E> {
     /**
      * data of dynamic array.
      */

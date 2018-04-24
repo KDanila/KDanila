@@ -1,5 +1,7 @@
 package ru.job4j.simplearray;
 
+import ru.job4j.simpleset.SimpleList;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -13,7 +15,7 @@ import java.util.NoSuchElementException;
  */
 
 
-public class SimpleArray<E> implements Iterable<E> {
+public class SimpleArray<E> implements SimpleList<E>,  Iterable<E> {
     /**
      * objects - array of data.
      */

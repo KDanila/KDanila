@@ -1,5 +1,6 @@
 package ru.job4j.simpleset;
 
+import ru.job4j.linkedarray.LinkedArray;
 import ru.job4j.simplearray.SimpleArray;
 
 import java.util.Iterator;
@@ -16,7 +17,8 @@ public class SimpleSet<E> implements Iterable<E> {
     /**
      * Array Objects.
      */
-    private SimpleArray<E> objects = new SimpleArray<E>();
+    //private SimpleList<E> objects = new SimpleArray<E>();
+    private SimpleList<E> objects = new LinkedArray<>();
 
     /**
      * Add set method.
@@ -25,8 +27,10 @@ public class SimpleSet<E> implements Iterable<E> {
      */
     public void add(E e) {
         boolean isDouble = true;
-        for (E object : objects) {
-            if (object == e) {
+        Iterator it = objects.iterator();
+        while (it.hasNext()) {
+            E temp = (E) it.next();
+            if (temp == e) {
                 isDouble = false;
             }
         }
