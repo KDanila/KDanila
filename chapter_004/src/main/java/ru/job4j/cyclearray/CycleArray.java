@@ -15,7 +15,20 @@ public class CycleArray {
      * @return boolean - true if in node links have cycle.
      */
     boolean hasCycle(Node first) {
-        Node temp = first;
+        Node slow = first;
+        Node fast = first;
+        boolean isCycle = false;
+        while (slow != null && fast != null) {
+            slow = slow.getNext();
+            fast = fast.getNext().getNext();
+            if (slow == fast) {
+                isCycle = true;
+                break;
+            }
+        }
+        return isCycle;
+    }
+        /*Node temp = first;
         boolean toReturn = false;
         while (temp.getNext() != null) {
             if (temp.isFlag()) {
@@ -25,8 +38,8 @@ public class CycleArray {
             temp.setFlag(true);
             temp = temp.getNext();
         }
-        return toReturn;
-    }
+        return toReturn;*/
+
 }
 
 /**
@@ -35,10 +48,6 @@ public class CycleArray {
  * @param <T> - generic.
  */
 class Node<T> {
-    /**
-     * flag for found cycle.
-     */
-    private boolean flag = false;
     /**
      * T value.
      */
@@ -58,30 +67,12 @@ class Node<T> {
     }
 
     /**
-     * Getter.
-     *
-     * @return flag.
-     */
-    public boolean isFlag() {
-        return flag;
-    }
-
-    /**
      * Setter.
      *
      * @param next - next.
      */
     public void setNext(Node<T> next) {
         this.next = next;
-    }
-
-    /**
-     * Setter.
-     *
-     * @param flag - flag.
-     */
-    public void setFlag(boolean flag) {
-        this.flag = flag;
     }
 
     /**
