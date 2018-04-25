@@ -28,6 +28,7 @@ public class SimpleSetTest {
         Iterator it = ss.iterator();
         assertThat(it.next(), is("000"));
         assertThat(it.next(), is("02"));
+        assertThat(it.hasNext(), is(false));
     }
 
     /**

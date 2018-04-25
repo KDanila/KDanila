@@ -136,10 +136,10 @@ public class LinkedArray<E> implements SimpleList<E>, Iterable<E> {
             @Override
             public boolean hasNext() {
                 boolean isNext = false;
-                if (first == currentNode) {
-                    isNext = true;
-                } else if (currentNode == null) {
+                if (currentNode == null) {
                     isNext = false;
+                } else if (first == currentNode) {
+                    isNext = true;
                 } else {
                     isNext = currentNode.getPrev() != null;
                 }

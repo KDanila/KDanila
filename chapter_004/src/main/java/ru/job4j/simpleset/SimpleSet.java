@@ -1,7 +1,7 @@
 package ru.job4j.simpleset;
 
 import ru.job4j.linkedarray.LinkedArray;
-import ru.job4j.simplearray.SimpleArray;
+//import ru.job4j.simplearray.SimpleArray;
 
 import java.util.Iterator;
 
