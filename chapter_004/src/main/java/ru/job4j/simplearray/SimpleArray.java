@@ -15,11 +15,12 @@ import java.util.NoSuchElementException;
  */
 
 
-public class SimpleArray<E> implements SimpleList<E>,  Iterable<E> {
+public class SimpleArray<E> implements SimpleList<E>, Iterable<E> {
     /**
      * objects - array of data.
      */
     private Object[] objects;
+
     /**
      * index - curent position.
      */

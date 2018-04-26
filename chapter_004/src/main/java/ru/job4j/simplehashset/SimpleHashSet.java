@@ -1,29 +1,45 @@
 package ru.job4j.simplehashset;
 
-import ru.job4j.simplearray.SimpleArray;
+import ru.job4j.dynamicarray.DynamicArray;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Iterator;
 
 public class SimpleHashSet<E> {
-
+    /**
+     * As standart here is 128 groups.
+     */
     private int numberOfGroup;
 
-    private SimpleArray<E> objects;
+    private DynamicArray<E> objects;
+
+    private int size = 0;
 
     SimpleHashSet() {
         this.numberOfGroup = 128;
-        objects = new SimpleArray<>(128);
+        objects = new DynamicArray<>(128);
+        initializingObjectsArray(128);
     }
 
     SimpleHashSet(int size) {
         this.numberOfGroup = size;
-        objects = new SimpleArray<>(size);
+        objects = new DynamicArray<>(size);
+        initializingObjectsArray(size);
+
+    }
+
+    private void initializingObjectsArray(int size) {
+        for (int i = 0; i <size; i++) {
+            this.objects.add(null);
+        }
     }
 
     public boolean add(E e) {
-        int hash = e.hashCode()%numberOfGroup;
-        //this.objects.add(hash,e);
+        //int hash = (this.size==0)?0:e.hashCode()%this.size;
+        int hash = e.hashCode() % this.numberOfGroup;
+        if (size / numberOfGroup > 0.75) {
+            this.objects.increaseArray();
+        }
+        this.objects.add(hash, e);
 
         return false;
     }
@@ -34,6 +50,10 @@ public class SimpleHashSet<E> {
 
     boolean remove(E e) {
         return false;
+    }
+
+    public Iterator iterator() {
+        return this.objects.iterator();
     }
 
 

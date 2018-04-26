@@ -59,12 +59,36 @@ public class DynamicArray<E> implements Iterable<E> {
     }
 
     /**
+     * Overload add method. Coppied from ArrayList))).
+     *
+     * @param index - index position
+     * @param value
+     * @throws IndexOutOfBoundsException
+     */
+    public void add(int index, E value) throws IndexOutOfBoundsException {
+        if (index > this.index || index < 0) {
+            throw new IndexOutOfBoundsException();
+        }
+        modificationCount++;
+        int s = this.index;
+        Object[] elementData = this.container;
+        if (s == elementData.length) {
+            elementData = increaseArray();
+        }
+        System.arraycopy(elementData, index,
+                elementData, index + 1,
+                s - index);
+        elementData[index] = value;
+        this.index = s + 1;
+    }
+
+    /**
      * Increase array method.
      * Increasing in  two times by first capacity.
      *
      * @return - object[];
      */
-    private Object[] increaseArray() {
+    public Object[] increaseArray() {
         return Arrays.copyOf(this.container, this.container.length * 2);
     }
 

@@ -3,6 +3,7 @@ package ru.job4j.dynamicarray;
 import org.junit.Test;
 
 
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -94,5 +95,45 @@ public class DynamicArrayTest {
         Iterator itr = da.iterator();
         da.add(4);
         itr.next();
+    }
+
+    /**
+     * the Sixth test.
+     * testing add method.
+     */
+    @Test
+    public void whenAddDataWithPositionIndexShouldInputCorrectly() {
+        DynamicArray<Integer> da = new DynamicArray<>();
+        da.add(1);
+        da.add(2);
+        da.add(3);
+        da.add(0, 0);
+        Iterator itr = da.iterator();
+        assertThat(itr.next(), is(0));
+        assertThat(itr.next(), is(1));
+        assertThat(itr.next(), is(2));
+        assertThat(itr.next(), is(3));
+    }
+
+    /**
+     * the Seventh test.
+     * testing add method.
+     */
+    @Test
+    public void whenSecondAddDataWithPositionIndexShouldInputCorrectly() {
+        DynamicArray<Integer> da = new DynamicArray<>(128);
+        da.add(1);
+        da.add(1);
+        da.add(1);
+        da.add(2);
+        da.add(3);
+        da.add(7, 777);
+        Iterator itr = da.iterator();
+        assertThat(itr.next(), is(1));
+        assertThat(itr.next(), is(1));
+        assertThat(itr.next(), is(1));
+        assertThat(itr.next(), is(777));
+        assertThat(itr.next(), is(2));
+        assertThat(itr.next(), is(3));
     }
 }
