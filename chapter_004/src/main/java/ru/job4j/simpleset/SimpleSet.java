@@ -26,17 +26,28 @@ public class SimpleSet<E> implements Iterable<E> {
      * @param e - e.
      */
     public void add(E e) {
-        boolean isDouble = true;
+        if (contains(e)) {
+            objects.add(e);
+        }
+    }
+
+    /**
+     * Contains method.
+     *
+     * @param e - generic
+     * @return true - if contains same data.
+     */
+    private boolean contains(E e) {
+        boolean isContain = true;
         Iterator it = objects.iterator();
         while (it.hasNext()) {
             E temp = (E) it.next();
-            if (temp == e) {
-                isDouble = false;
+            if (temp.equals(e)) {
+                isContain = false;
+                break;
             }
         }
-        if (isDouble) {
-            objects.add(e);
-        }
+        return isContain;
     }
 
     /**

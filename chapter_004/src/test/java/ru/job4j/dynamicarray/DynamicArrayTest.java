@@ -3,7 +3,6 @@ package ru.job4j.dynamicarray;
 import org.junit.Test;
 
 
-import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -13,9 +12,8 @@ import static org.hamcrest.Matchers.is;
 
 /**
  * DynamicArrayTest - is like light ArrayList.
- * <p>
- * * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
  *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
  * @version $Id$
  * @since 0.1.0
  */
