@@ -1,69 +1,114 @@
 package ru.job4j.simplehashset;
 
-import ru.job4j.dynamicarray.DynamicArray;
 
-import java.util.Iterator;
+import java.util.Arrays;
 
+/**
+ * SimpleHashSet class.
+ *
+ * @param <E>
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.0
+ */
 public class SimpleHashSet<E> {
     /**
      * As standart here is 128 groups.
      */
     private int numberOfGroup;
-
-    private DynamicArray<E> objects;
-
+    /**
+     * Objects data.
+     */
+    private Object[] objects;
+    /**
+     * Size.
+     */
     private int size = 0;
 
+    /**
+     * Constructor.
+     */
     SimpleHashSet() {
         this.numberOfGroup = 128;
-        objects = new DynamicArray<>(128);
-        initializingObjectsArray(128);
+        objects = new Object[128];
     }
 
-    SimpleHashSet(int size) {
-        this.numberOfGroup = size;
-        objects = new DynamicArray<>(size);
-        initializingObjectsArray(size);
-
-    }
-
-    private void initializingObjectsArray(int size) {
-        for (int i = 0; i <size; i++) {
-            this.objects.add(null);
-        }
-    }
-
+    /**
+     * Метод Add  с линейным пробированием.
+     *
+     * @param e - E generic.
+     * @return boolean always add becouse before adding checking array filling.
+     */
     public boolean add(E e) {
-        //int hash = (this.size==0)?0:e.hashCode()%this.size;
-        int hash = e.hashCode() % this.numberOfGroup;
-        if (size / numberOfGroup > 0.75) {
-            this.objects.increaseArray();
+        int hash = hashKey(e);
+        if (size / numberOfGroup > 0.5) {
+            this.objects = increaseArray();
         }
-        this.objects.add(hash, e);
-
-        return false;
+        while (this.objects[hash] != null) {
+            hash++;
+            hash %= this.objects.length;
+        }
+        this.objects[hash] = e;
+        return true;
     }
 
+    /**
+     * Method increasing array.
+     *
+     * @return objects X 2.
+     */
+    private Object[] increaseArray() {
+        return Arrays.copyOf(this.objects, this.objects.length * 2);
+    }
+
+    /**
+     * Contains method.
+     *
+     * @param e - E generic.
+     * @return contains or not objects element.
+     */
     boolean contains(E e) {
-        return false;
+        boolean isContains = false;
+        int hash = hashKey(e);
+        while (this.objects[hash] != null) {
+            if (hashKey((E) this.objects[hash]) == hash) {
+                isContains = true;
+                break;
+            }
+            hash++;
+            hash %= this.objects.length;
+        }
+        return isContains;
     }
 
+    /**
+     * Remove method.
+     *
+     * @param e - E generic.
+     * @return boolean - return true if delete element.
+     */
     boolean remove(E e) {
-        return false;
+        boolean isRemove = false;
+        int hash = hashKey(e);
+        while (this.objects[hash] != null) {
+            if (hashKey((E) this.objects[hash]) == hash) {
+                isRemove = true;
+                this.objects[hash] = null;
+                break;
+            }
+            hash++;
+            hash %= this.objects.length;
+        }
+        return isRemove;
     }
 
-    public Iterator iterator() {
-        return this.objects.iterator();
+    /**
+     * Method to find hashKey.
+     *
+     * @param e -E generic.
+     * @return - return hash.
+     */
+    private int hashKey(E e) {
+        return e.hashCode() % this.numberOfGroup;
     }
-
-
 }
-/*
-Напишите свою реализацию Set на базе хэш-таблицы. Реализуйте следующие методы:
-1) boolean add (E e)
-2) boolean contains (E e)
-3) boolean remove (E e)
-Ваша хэш-таблица должна базироваться на массиве.
-Разрешение коллизий реализовывать не надо. Предусмотрите возможность роста
- хэш-таблицы при нехватке места для нового элемента.
- */

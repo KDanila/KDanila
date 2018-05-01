@@ -125,7 +125,7 @@ public class DynamicArrayTest {
         da.add(1);
         da.add(2);
         da.add(3);
-        da.add(7, 777);
+        da.add(3, 777);
         Iterator itr = da.iterator();
         assertThat(itr.next(), is(1));
         assertThat(itr.next(), is(1));

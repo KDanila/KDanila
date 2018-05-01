@@ -32,7 +32,7 @@ public class DynamicArray<E> implements Iterable<E> {
     /**
      * Constructor.
      */
-    public DynamicArray() {
+    protected DynamicArray() {
         this.container = new Object[10];
     }
 
@@ -41,7 +41,7 @@ public class DynamicArray<E> implements Iterable<E> {
      *
      * @param size - size of array.
      */
-    public DynamicArray(int size) {
+    protected DynamicArray(int size) {
         this.container = new Object[size];
     }
 
@@ -62,8 +62,8 @@ public class DynamicArray<E> implements Iterable<E> {
      * Overload add method. Coppied from ArrayList))).
      *
      * @param index - index position
-     * @param value
-     * @throws IndexOutOfBoundsException
+     * @param value - value.
+     * @throws IndexOutOfBoundsException - ioobe.
      */
     public void add(int index, E value) throws IndexOutOfBoundsException {
         if (index > this.index || index < 0) {
@@ -88,7 +88,7 @@ public class DynamicArray<E> implements Iterable<E> {
      *
      * @return - object[];
      */
-    public Object[] increaseArray() {
+    private Object[] increaseArray() {
         return Arrays.copyOf(this.container, this.container.length * 2);
     }
 
@@ -138,7 +138,7 @@ public class DynamicArray<E> implements Iterable<E> {
      *
      * @return -length of array.
      */
-    public int getLengthOfArray() {
+    protected int getLengthOfArray() {
         return this.container.length;
     }
 
@@ -147,7 +147,7 @@ public class DynamicArray<E> implements Iterable<E> {
      *
      * @return - int.
      */
-    public int getModificationCount() {
+    private int getModificationCount() {
         return modificationCount;
     }
 }

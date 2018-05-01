@@ -2,25 +2,56 @@ package ru.job4j.simplehashset;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
-import static org.junit.Assert.*;
 
+/**
+ * SimpleHashSet class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.0
+ */
 public class SimpleHashSetTest {
+    /**
+     * testing add and contains method.
+     */
     @Test
     public void whenHashSetAddReturnCorrectResults() {
         SimpleHashSet<String> shs = new SimpleHashSet<>();
-
         shs.add("0");
         shs.add("1");
         shs.add("2");
         shs.add("4");
-        Iterator<Integer> iter = shs.iterator();
-        while (iter.hasNext()) {
-            System.out.println(iter.next());
-        }
+
+        assertThat(shs.contains("0"), is(true));
+        assertThat(shs.contains("1"), is(true));
+        assertThat(shs.contains("2"), is(true));
+        assertThat(shs.contains("3"), is(false));
+        assertThat(shs.contains("4"), is(true));
+
+    }
+
+    /**
+     * testing delete method.
+     */
+    @Test
+    public void whenHashSetRemoveReturnCorrectResults() {
+        SimpleHashSet<String> shs = new SimpleHashSet<>();
+        shs.add("0");
+        shs.add("1");
+        shs.add("2");
+        shs.add("4");
+        shs.remove("0");
+        shs.remove("22");
+
+        assertThat(shs.contains("0"), is(false));
+        assertThat(shs.contains("1"), is(true));
+        assertThat(shs.contains("2"), is(true));
+        assertThat(shs.contains("3"), is(false));
+        assertThat(shs.contains("4"), is(true));
+
     }
 
 }

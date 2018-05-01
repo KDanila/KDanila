@@ -7,6 +7,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+
 /**
  * LinkedArray - is like light LinkedList.
  *
@@ -17,10 +18,6 @@ import java.util.NoSuchElementException;
  */
 
 public class LinkedArray<E> implements SimpleList<E>, Iterable<E> {
-    /**
-     * data of dynamic array.
-     */
-    //private Object[] container;
     /**
      * Modification count.
      * Итератор должен реализовывать fail-fast поведение.
@@ -51,7 +48,7 @@ public class LinkedArray<E> implements SimpleList<E>, Iterable<E> {
      *
      * @return int - size.
      */
-    public int getSize() {
+    protected int getSize() {
         return this.index;
     }
 
@@ -60,7 +57,7 @@ public class LinkedArray<E> implements SimpleList<E>, Iterable<E> {
      *
      * @return modification count.
      */
-    public int getModificationCount() {
+    private int getModificationCount() {
         return modificationCount;
     }
 
@@ -135,20 +132,18 @@ public class LinkedArray<E> implements SimpleList<E>, Iterable<E> {
 
             @Override
             public boolean hasNext() {
-                boolean isNext = false;
+                boolean isNext;
                 if (currentNode == null) {
                     isNext = false;
-                } else if (first == currentNode) {
-                    isNext = true;
                 } else {
-                    isNext = currentNode.getPrev() != null;
+                    isNext = first == currentNode || currentNode.getPrev() != null;
                 }
                 return isNext;
             }
 
             @Override
             public E next() throws NoSuchElementException, ConcurrentModificationException {
-                E toReturn = null;
+                E toReturn;
                 if (currentModCount != getModificationCount()) {
                     throw new ConcurrentModificationException();
                 }
