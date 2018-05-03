@@ -1,6 +1,6 @@
 package ru.job4j.simplearray;
 
-import ru.job4j.simpleset.SimpleList;
+import ru.job4j.simplecollection.simpleset.SimpleList;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
