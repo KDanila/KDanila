@@ -1,5 +1,7 @@
 package ru.job4j.simplecollection.simplemap;
 
+import java.util.*;
+
 /**
  * SimpleHashSet class.
  *
@@ -9,7 +11,6 @@ package ru.job4j.simplecollection.simplemap;
  * @since 0.1.0
  */
 public class SimpleMap<E> {
-    //User one = new User("First",2, );
 }
 /*
 Создать два объекта User, которые имеют одинаковые поля.
