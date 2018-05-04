@@ -15,7 +15,7 @@ import org.junit.Test;
  */
 public class SimpleMapTest {
     /**
-     * 2. Не перекрывать equals hashCode.
+     * 3. Переопределить только hashCode
      */
     @Test
     public void map() {
@@ -27,8 +27,11 @@ public class SimpleMapTest {
         map.put(two, "2");
         System.out.println(map);
     }
+
     /**
-     * 2. Не перекрывать equals hashCode.
+     * 3. Переопределить только hashCode
+     * При добавлениии в карту идет проверка.
+     * if (p.hash == hash &&((k = p.key) == key || (key != null && key.equals(k)))).
      */
     @Test
     public void whenAddTwoSameUserShouldReturnTwoObjectInMap() {
