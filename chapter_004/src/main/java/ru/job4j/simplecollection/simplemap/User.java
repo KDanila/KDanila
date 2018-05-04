@@ -90,7 +90,7 @@ public class User {
         this.birthday = birthday;
     }
 
-   /* @Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
@@ -100,13 +100,13 @@ public class User {
         if (getChildren() != user.getChildren()) return false;
         if (getName() != null ? !getName().equals(user.getName()) : user.getName() != null) return false;
         return getBirthday() != null ? getBirthday().equals(user.getBirthday()) : user.getBirthday() == null;
-    }*/
-
+    }
+/*
     @Override
     public int hashCode() {
         int result = getName() != null ? getName().hashCode() : 0;
         result = 31 * result + getChildren();
         result = 31 * result + (getBirthday() != null ? getBirthday().hashCode() : 0);
         return result;
-    }
+    }*/
 }
