@@ -26,7 +26,7 @@ public class SimpleSet<E> implements Iterable<E> {
      * @param e - e.
      */
     public void add(E e) {
-        if (contains(e)) {
+        if (!contains(e)) {
             objects.add(e);
         }
     }
@@ -38,11 +38,10 @@ public class SimpleSet<E> implements Iterable<E> {
      * @return true - if contains same data.
      */
     private boolean contains(E e) {
-        boolean isContain = true;
+        boolean isContain = false;
         for (E element : this.objects) {
-            E temp = element;
-            if (temp.equals(e)) {
-                isContain = false;
+            if (element.equals(e)) {
+                isContain = true;
                 break;
             }
         }

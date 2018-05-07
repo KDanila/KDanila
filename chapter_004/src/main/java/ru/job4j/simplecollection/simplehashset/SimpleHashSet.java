@@ -1,5 +1,9 @@
 package ru.job4j.simplecollection.simplehashset;
 
+import ru.job4j.simplearray.SimpleIterator;
+
+import java.util.Iterator;
+
 /**
  * SimpleHashSet class.
  *
@@ -8,7 +12,7 @@ package ru.job4j.simplecollection.simplehashset;
  * @version $Id$
  * @since 0.1.0
  */
-public class SimpleHashSet<E> {
+public class SimpleHashSet<E> implements Iterable<E> {
     /**
      * Objects data.
      */
@@ -49,7 +53,9 @@ public class SimpleHashSet<E> {
             hash++;
             hash %= this.objects.length;
         }
-        this.objects[hash] = e;
+        if (this.objects[hashKey(e)] == null || !(this.objects[hashKey(e)].equals(e))) {
+            this.objects[hash] = e;
+        }
         size++;
         return true;
     }
@@ -144,4 +150,15 @@ public class SimpleHashSet<E> {
     public int getHashSetLength() {
         return this.objects.length;
     }
+
+    /**
+     * Iterator().
+     *
+     * @return Iterator.
+     */
+    @Override
+    public Iterator<E> iterator() {
+        return new SimpleIterator<E>(this.objects, this.objects.length);
+    }
+
 }

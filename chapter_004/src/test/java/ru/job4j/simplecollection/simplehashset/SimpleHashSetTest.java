@@ -2,6 +2,8 @@ package ru.job4j.simplecollection.simplehashset;
 
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -24,12 +26,24 @@ public class SimpleHashSetTest {
         shs.add("1");
         shs.add("2");
         shs.add("4");
+        shs.add("4");
+        shs.remove("4");
+        shs.add("4");
+        shs.add("4");
 
-        assertThat(shs.contains("0"), is(true));
+      Iterator<String> it = shs.iterator();
+        while (it.hasNext()) {
+            String temp = it.next();
+            if (temp != null) {
+                System.out.println(temp);
+            }
+        }
+       /* assertThat(shs.contains("0"), is(true));
         assertThat(shs.contains("1"), is(true));
         assertThat(shs.contains("2"), is(true));
         assertThat(shs.contains("3"), is(false));
-        assertThat(shs.contains("4"), is(true));
+        assertThat(shs.contains("4"), is(true));*/
+
 
     }
 

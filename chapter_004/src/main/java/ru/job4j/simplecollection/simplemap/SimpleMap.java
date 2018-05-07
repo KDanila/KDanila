@@ -1,6 +1,5 @@
 package ru.job4j.simplecollection.simplemap;
 
-import java.util.*;
 
 /**
  * SimpleHashSet class.
