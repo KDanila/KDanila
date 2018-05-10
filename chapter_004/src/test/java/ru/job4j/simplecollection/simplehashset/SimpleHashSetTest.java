@@ -31,18 +31,19 @@ public class SimpleHashSetTest {
         shs.add("4");
         shs.add("4");
 
-      Iterator<String> it = shs.iterator();
+
+      /*  Iterator<String> it = shs.iterator();
         while (it.hasNext()) {
             String temp = it.next();
             if (temp != null) {
                 System.out.println(temp);
             }
-        }
-       /* assertThat(shs.contains("0"), is(true));
+        }*/
+        assertThat(shs.contains("0"), is(true));
         assertThat(shs.contains("1"), is(true));
         assertThat(shs.contains("2"), is(true));
         assertThat(shs.contains("3"), is(false));
-        assertThat(shs.contains("4"), is(true));*/
+        assertThat(shs.contains("4"), is(true));
 
 
     }

@@ -17,6 +17,12 @@ public class SimpleHashSet<E> implements Iterable<E> {
      * Objects data.
      */
     private Object[] objects;
+
+    public NullElement getNullElement() {
+        return this.nullElement;
+    }
+
+    private final   NullElement nullElement = new NullElement();
     /**
      * Size.
      */
@@ -55,8 +61,9 @@ public class SimpleHashSet<E> implements Iterable<E> {
         }
         if (this.objects[hashKey(e)] == null || !(this.objects[hashKey(e)].equals(e))) {
             this.objects[hash] = e;
+            size++;
         }
-        size++;
+
         return true;
     }
 
@@ -66,17 +73,16 @@ public class SimpleHashSet<E> implements Iterable<E> {
      * @return objects X 2.
      */
     private Object[] increaseArray() {
-        int hashKey;
         int newObjectSize = this.objects.length * 2;
-        Object[] newArray = new Object[newObjectSize];
-        for (int i = 0; i < this.objects.length; i++) {
-            if (this.objects[i] != null) {
-                hashKey = hashKey((E) this.objects[i], newObjectSize);
-                newArray[hashKey] = this.objects[i];
+        Object[] temp = this.objects;
+        this.objects = new Object[newObjectSize];
+        for (int i = 0; i < temp.length; i++) {
+            if (temp[i] != null) {
+                add((E) temp[i]);
+                size--;
             }
         }
-
-        return newArray;
+        return this.objects;
     }
 
     /**
@@ -109,15 +115,15 @@ public class SimpleHashSet<E> implements Iterable<E> {
         boolean isRemove = false;
         int hash = hashKey(e);
         while (this.objects[hash] != null) {
-            if (hashKey((E) this.objects[hash]) == hash) {
+            if (hashKey((E) this.objects[hash]) == hash && this.objects[hash].equals(e)) {
                 isRemove = true;
-                this.objects[hash] = null;
+                this.objects[hash] = nullElement;
+                size--;
                 break;
             }
             hash++;
             hash %= this.objects.length;
         }
-        size--;
         return isRemove;
     }
 
@@ -159,6 +165,14 @@ public class SimpleHashSet<E> implements Iterable<E> {
     @Override
     public Iterator<E> iterator() {
         return new SimpleIterator<E>(this.objects, this.objects.length);
+    }
+
+    public class NullElement extends Object {
+
+        @Override
+        public String toString() {
+            return "NullElement";
+        }
     }
 
 }
