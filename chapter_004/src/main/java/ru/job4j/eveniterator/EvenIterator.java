@@ -1,4 +1,4 @@
-package ru.job4j.simplecollection.simplequeue.eveniterator;
+package ru.job4j.eveniterator;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

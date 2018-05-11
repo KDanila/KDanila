@@ -3,6 +3,7 @@ package ru.job4j.simplearray;
 import ru.job4j.simplecollection.simpleset.SimpleList;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * SimpleArray class.
@@ -94,8 +95,10 @@ public class SimpleArray<E> implements SimpleList<E>, Iterable<E> {
      */
     @Override
     public Iterator<E> iterator() {
-        return new SimpleIterator<E>(this.objects, this.objects.length);
-       /* return new Iterator<E>() {
+        int size = this.objects.length;
+        Object[] objects = this.objects;
+
+        return new Iterator<E>() {
             private int cursor = 0;
             private E toReturn = null;
 
@@ -119,6 +122,6 @@ public class SimpleArray<E> implements SimpleList<E>, Iterable<E> {
                 }
                 return toReturn;
             }
-        };*/
+        };
     }
 }

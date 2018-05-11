@@ -18,15 +18,11 @@ public class SimpleHashSetTest {
      * testing add and contains method.
      */
     @Test
-    public void testWhenHashSetAddReturnCorrectResults() {
+    public void whenHashSetAddReturnCorrectResults() {
         SimpleHashSet<String> shs = new SimpleHashSet<>();
         shs.add("0");
         shs.add("1");
         shs.add("2");
-        shs.add("4");
-        shs.add("4");
-        shs.remove("4");
-        shs.add("4");
         shs.add("4");
 
         assertThat(shs.contains("0"), is(true));
@@ -34,7 +30,6 @@ public class SimpleHashSetTest {
         assertThat(shs.contains("2"), is(true));
         assertThat(shs.contains("3"), is(false));
         assertThat(shs.contains("4"), is(true));
-
 
     }
 
