@@ -1,6 +1,5 @@
 package ru.job4j.simplecollection.simplemap;
 
-
 /**
  * SimpleHashSet class.
  *

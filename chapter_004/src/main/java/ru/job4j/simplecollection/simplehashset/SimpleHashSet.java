@@ -17,12 +17,10 @@ public class SimpleHashSet<E> implements Iterable<E> {
      * Objects data.
      */
     private Object[] objects;
-
-    public NullElement getNullElement() {
-        return this.nullElement;
-    }
-
-    private final   NullElement nullElement = new NullElement();
+    /**
+     * Null element.
+     */
+    private final NullElement nullElement = new NullElement();
     /**
      * Size.
      */
@@ -56,10 +54,15 @@ public class SimpleHashSet<E> implements Iterable<E> {
             this.objects = increaseArray();
         }
         while (this.objects[hash] != null) {
+            if (this.objects[hash] == nullElement) {
+                break;
+            }
             hash++;
             hash %= this.objects.length;
         }
-        if (this.objects[hashKey(e)] == null || !(this.objects[hashKey(e)].equals(e))) {
+        if (this.objects[hashKey(e)] == null
+                || this.objects[hash] == nullElement
+                || !(this.objects[hashKey(e)].equals(e))) {
             this.objects[hash] = e;
             size++;
         }
@@ -97,6 +100,9 @@ public class SimpleHashSet<E> implements Iterable<E> {
         while (this.objects[hash] != null) {
             if (hashKey((E) this.objects[hash]) == hash) {
                 isContains = true;
+                break;
+            } else if (this.objects[hash] == nullElement) {
+                isContains = false;
                 break;
             }
             hash++;
@@ -167,12 +173,10 @@ public class SimpleHashSet<E> implements Iterable<E> {
         return new SimpleIterator<E>(this.objects, this.objects.length);
     }
 
+    /**
+     * Null Element class.
+     */
     public class NullElement extends Object {
-
-        @Override
-        public String toString() {
-            return "NullElement";
-        }
     }
 
 }
