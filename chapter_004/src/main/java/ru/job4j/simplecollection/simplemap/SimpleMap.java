@@ -1,8 +1,7 @@
 package ru.job4j.simplecollection.simplemap;
 
-
 /**
- * SimpleHashSet class.
+ * SimpleMap class.
  *
  * @param <K> - key.
  * @param <V> - value.
@@ -13,13 +12,9 @@ package ru.job4j.simplecollection.simplemap;
 
 public class SimpleMap<K, V> {
     /**
-     * keys array.
+     * Entry objects.
      */
-    private Object[] keys;
-    /**
-     * values array.
-     */
-    private Object[] values;
+    private SimpleMapEntry<K, V>[] objects;
     /**
      * number of elements.
      */
@@ -29,8 +24,7 @@ public class SimpleMap<K, V> {
      * Constructor.
      */
     public SimpleMap() {
-        this.keys = new Object[128];
-        this.values = new Object[128];
+        this.objects = new SimpleMapEntry[128];
     }
 
     /**
@@ -39,10 +33,8 @@ public class SimpleMap<K, V> {
      * @param size - size.
      */
     public SimpleMap(int size) {
-        this.keys = new Object[size];
-        this.values = new Object[size];
+        this.objects = new SimpleMapEntry[size];
     }
-
 
     /**
      * Insert method.
@@ -56,12 +48,11 @@ public class SimpleMap<K, V> {
     boolean insert(K key, V value) {
         int hash = hashKey(key);
         boolean isInsert = false;
-        if ((double) size / (double) this.keys.length >= 0.5) {
+        if ((double) size / (double) this.objects.length >= 0.5) {
             increaseArray();
         }
-        if (this.keys[hash] == null) {
-            this.keys[hash] = key;
-            this.values[hash] = value;
+        if (this.objects[hash] == null) {
+            this.objects[hash] = new SimpleMapEntry<>(key, value);
             isInsert = true;
             this.size++;
         }
@@ -76,11 +67,11 @@ public class SimpleMap<K, V> {
      */
     V get(K key) {
         int hash = hashKey(key);
-        Object value = null;
-        if (this.keys[hash] != null) {
-            value = this.values[hash];
+        V value = null;
+        if (this.objects[hash] != null) {
+            value = this.objects[hash].getValue();
         }
-        return (V) value;
+        return value;
     }
 
     /**
@@ -92,9 +83,8 @@ public class SimpleMap<K, V> {
     boolean delete(K key) {
         int hash = hashKey(key);
         boolean isDelete = false;
-        if (this.keys[hash] != null) {
-            this.keys[hash] = null;
-            this.values[hash] = null;
+        if (this.objects[hash] != null) {
+            this.objects[hash] = null;
             isDelete = true;
             this.size--;
         }
@@ -105,14 +95,12 @@ public class SimpleMap<K, V> {
      * Method increasing array.
      */
     private void increaseArray() {
-        int newObjectSize = this.keys.length * 2;
-        Object[] tempKeys = this.keys;
-        Object[] tempValues = this.values;
-        this.keys = new Object[newObjectSize];
-        this.values = new Object[newObjectSize];
-        for (int i = 0; i < tempKeys.length; i++) {
-            if (tempKeys[i] != null) {
-                insert((K) tempKeys[i], (V) tempValues[i]);
+        int newObjectSize = this.objects.length * 2;
+        SimpleMapEntry<K, V>[] tempObjects = this.objects;
+        this.objects = new SimpleMapEntry[newObjectSize];
+        for (int i = 0; i < tempObjects.length; i++) {
+            if (tempObjects[i] != null) {
+                insert(tempObjects[i].getKey(), tempObjects[i].getValue());
                 size--;
             }
         }
@@ -125,7 +113,7 @@ public class SimpleMap<K, V> {
      * @return hash.
      */
     private int hashKey(K key) {
-        return key.hashCode() % this.keys.length;
+        return key.hashCode() % this.objects.length;
     }
 
     /**
@@ -134,7 +122,7 @@ public class SimpleMap<K, V> {
      * @return size of arrays.
      */
     public int getSize() {
-        return this.keys.length;
+        return this.objects.length;
     }
 
 }
