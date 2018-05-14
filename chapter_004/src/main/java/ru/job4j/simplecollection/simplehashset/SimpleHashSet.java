@@ -59,7 +59,7 @@ public class SimpleHashSet<E> {
         }
         if (this.objects[hashKey(e)] == null
                 || this.objects[hash] == nullElement
-                || !(this.objects[hashKey(e)].equals(e))) {
+                || !contains(e)) {
             this.objects[hash] = e;
             size++;
         }
@@ -95,12 +95,11 @@ public class SimpleHashSet<E> {
         boolean isContains = false;
         int hash = hashKey(e);
         while (this.objects[hash] != null) {
-            if (hashKey((E) this.objects[hash]) == hash) {
+            if (this.objects[hash].equals(e)) {
                 isContains = true;
                 break;
             } else if (this.objects[hash] == nullElement) {
                 isContains = false;
-                break;
             }
             hash++;
             hash %= this.objects.length;

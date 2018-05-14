@@ -92,13 +92,21 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof User)) {
+            return false;
+        }
 
         User user = (User) o;
 
-        if (getChildren() != user.getChildren()) return false;
-        if (getName() != null ? !getName().equals(user.getName()) : user.getName() != null) return false;
+        if (getChildren() != user.getChildren()) {
+            return false;
+        }
+        if (getName() != null ? !getName().equals(user.getName()) : user.getName() != null) {
+            return false;
+        }
         return getBirthday() != null ? getBirthday().equals(user.getBirthday()) : user.getBirthday() == null;
     }
 
