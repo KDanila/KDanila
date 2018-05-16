@@ -113,7 +113,7 @@ public class SimpleMap<K, V> {
      * @return hash.
      */
     private int hashKey(K key) {
-        return key.hashCode() % this.objects.length;
+        return Math.abs(key.hashCode() % this.objects.length);
     }
 
     /**
@@ -126,15 +126,3 @@ public class SimpleMap<K, V> {
     }
 
 }
-/*
-Ассоциативный массив на базе хэш-таблицы должен быть унифицирован через генерики и иметь методы:
-boolean insert(K key, V value);
-V get(K key);
-boolean delete(K key);
-
-Реализовывать итератор.
-Внутренняя реализация должна использовать массив. Нужно обеспечить фиксированное время вставки и получение.
-Предусмотрите возможность роста хэш-таблицы при нехватке места для нового элемента.
-
-Методы разрешения коллизий реализовывать не надо. Например: если при добавлении ключ уже есть, то возвращать false.
- */
