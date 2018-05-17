@@ -45,21 +45,4 @@ node.children.add(child);
 
 В качестве базового алгоритма мы будет использовать алгоритм поиска в ширину.
 
-@Override
-public Optional<Node<E>> findBy(E value) {
-    Optional<Node<E>> rsl = Optional.empty();
-    Queue<Node<E>> data = new LinkedList<>();
-    data.offer(this.root);
-    while (!data.isEmpty()) {
-        Node<E> el = data.poll();
-        if (el.eqValue(value)) {
-            rsl = Optional.of(el);
-            break;
-        }
-        for (Node<E> child : el.leaves()) {
-            data.offer(child);
-        }
-    }
-    return rsl;
-}
  */
