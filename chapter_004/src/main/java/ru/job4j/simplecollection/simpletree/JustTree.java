@@ -5,31 +5,44 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Queue;
 
-public class JustTree implements SimpleTree {
-    Node root;
+public class JustTree<E extends Comparable<E>> implements SimpleTree<E> {
 
-    @Override
-    public boolean add(Comparable parent, Comparable child) {
-        Node currentParent = (Node)parent;
-        if(this.root==null){
-            root = (Node)parent;
-        }
-        return false;
+    Node<E> root;
+
+    public JustTree(E root) {
+        this.root = new Node<>(root);
+    }
+
+    public JustTree() {
     }
 
     @Override
-    public Optional<Node> findBy(Comparable value) {
-        Optional<Node> rsl = Optional.empty();
-        Queue<Node> data = new LinkedList<>();
+    public boolean add(E parent, E child) {
+        boolean isAdded = false;
+        Node<E> childNode = new Node<>(child);
+        if (this.root == null) {
+            this.root = new Node<>(parent);
+        }
+        if (findBy(parent).isPresent()) {
+            findBy(parent).get().add(childNode);
+            isAdded = true;
+        }
+        return isAdded;
+    }
+
+    @Override
+    public Optional<Node<E>> findBy(E value) {
+        Optional<Node<E>> rsl = Optional.empty();
+        Queue<Node<E>> data = new LinkedList<>();
         data.offer(this.root);
         while (!data.isEmpty()) {
-            Node el = data.poll();
+            Node<E> el = data.poll();
             if (el.eqValue(value)) {
                 rsl = Optional.of(el);
                 break;
             }
-            for (Object child : el.leaves()) {
-                data.offer((Node) child);
+            for (Node<E> child : el.leaves()) {
+                data.offer(child);
             }
         }
         return rsl;

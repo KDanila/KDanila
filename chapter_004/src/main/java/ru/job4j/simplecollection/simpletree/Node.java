@@ -9,7 +9,13 @@ import java.util.List;
  * @since 0.1
  */
 public class Node<E extends Comparable<E>> {
+
     private final List<Node<E>> children = new ArrayList<>();
+
+    public E getValue() {
+        return value;
+    }
+
     private final E value;
 
     public Node(final E value) {
@@ -26,7 +32,6 @@ public class Node<E extends Comparable<E>> {
 
     public boolean eqValue(E that) {
         return this.value.compareTo(that) == 0;
-
     }
 
 }
