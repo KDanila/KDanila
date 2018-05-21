@@ -1,6 +1,5 @@
 package ru.job4j.simplecollection.simpletree;
 
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -80,6 +79,31 @@ public class JustTree<E extends Comparable<E>> implements SimpleTree<E> {
             }
         }
         return rsl;
+    }
+
+    /**
+     * isBinary method.
+     * checking tree and if tree is binary return true;
+     *
+     * @return true or false.
+     */
+    public boolean isBinary() {
+        Queue<Node<E>> treeData = new LinkedList<>();
+        treeData.offer(this.root);
+        int counter;
+        boolean isBinary = true;
+        while (!treeData.isEmpty() && isBinary) {
+            counter = 0;
+            Node<E> el = treeData.poll();
+            for (Node<E> child : el.leaves()) {
+                treeData.offer(child);
+                if (++counter > 2) {
+                    isBinary = false;
+                }
+            }
+        }
+
+        return isBinary;
     }
 
     /**
