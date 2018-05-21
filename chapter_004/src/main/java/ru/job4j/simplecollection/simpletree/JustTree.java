@@ -1,9 +1,6 @@
 package ru.job4j.simplecollection.simpletree;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Optional;
-import java.util.Queue;
+import java.util.*;
 
 public class JustTree<E extends Comparable<E>> implements SimpleTree<E> {
 
@@ -23,7 +20,8 @@ public class JustTree<E extends Comparable<E>> implements SimpleTree<E> {
         if (this.root == null) {
             this.root = new Node<>(parent);
         }
-        if (findBy(parent).isPresent()) {
+        Optional<Node<E>> oParent = findBy(parent);
+        if (oParent.isPresent() && !findBy(child).isPresent()) {
             findBy(parent).get().add(childNode);
             isAdded = true;
         }
@@ -51,6 +49,10 @@ public class JustTree<E extends Comparable<E>> implements SimpleTree<E> {
 
     @Override
     public Iterator iterator() {
+
+        Queue<E> treeData = new LinkedList<>();
+
+
         return null;
     }
 }

@@ -16,10 +16,15 @@ public class SimpleTreeTest {
         justTree.add(1, 3);
         justTree.add(1, 4);
         justTree.add(2, 6);
+        justTree.add(2, 6);
         justTree.add(2, 7);
+        justTree.add(3, 6);
+        justTree.add(3, 6);
+        System.out.println(justTree.root.getValue());
         for (Node in : justTree.root.leaves()) {
             System.out.println(in.getValue());
             if (in.leaves() != null) {
+
                 for (Node aa : (ArrayList<Node>) in.leaves()) {
                     System.out.println("===============");
                     System.out.println(aa.getValue());
@@ -27,6 +32,7 @@ public class SimpleTreeTest {
                 }
             }
         }
+
     }
 
     @Test
