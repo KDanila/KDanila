@@ -1,10 +1,14 @@
 package ru.job4j.tradesystem;
 
+import java.util.Objects;
+
 public class Order implements Comparable<Order> {
     /**
-     * Ключ заявки.
+     * Ключ заявки начинается с тысячи.
      */
-    private int id;
+    private int id = 1000;
+
+    private static int orderCounter = 0;
     /**
      * Идентификатор ценной бумаги. Номер имитента.
      */
@@ -25,6 +29,10 @@ public class Order implements Comparable<Order> {
      * Количество акции покупки/продажи.
      */
     private int volume;
+
+    public Order() {
+        this.id += orderCounter++;
+    }
 
     public int getId() {
         return id;
@@ -77,6 +85,21 @@ public class Order implements Comparable<Order> {
     @Override
     public int compareTo(Order o) {
         return this.price - o.getPrice();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id == order.id &&
+                book == order.book;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, book);
     }
 }
 

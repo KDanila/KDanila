@@ -7,12 +7,11 @@ import static org.hamcrest.Matchers.is;
 import org.junit.Test;
 
 import java.util.Iterator;
-import java.util.TreeSet;
 
 public class DepthOfMarketTest {
     @Test
     public void whenAddValuesShouldReturnCorrectlySorted() {
-        DepthOfMarket depthOfMarket = new DepthOfMarket();
+        DepthOfMarket depthOfMarket = new DepthOfMarket(0);
         Order order1 = new Order();
         order1.setPrice(10);
         Order order2 = new Order();
@@ -26,5 +25,36 @@ public class DepthOfMarketTest {
         assertThat(((Order)it.next()).getPrice(),is(1));
         assertThat(((Order)it.next()).getPrice(),is(5));
         assertThat(((Order)it.next()).getPrice(),is(10));
+    }
+
+    /**
+     * Тестируем добавление order'а и его удаление, в случае закрытия(OrderType.Delete).
+     */
+    @Test
+    public void whenAddAskOrderShouldAdded(){
+        DepthOfMarket dom = new DepthOfMarket(0);
+        Order order1 = new Order();
+        order1.setOrderType(OrderType.ADD);
+        order1.setPrice(2);
+        dom.add(order1);
+        Iterator it = dom.iterator();
+        Order expected = (Order) it.next();
+        assertThat(expected.getPrice(),is(2));
+        assertThat(expected.getOrderType(),is(OrderType.ADD));
+        order1.setOrderType(OrderType.DELETE);
+        dom.add(order1);
+        assertThat(dom.getOrdersSizeInDom(), is(0));
+
+    }
+    /**
+     * Тестируем добавление order'а на удаление, которого нет.
+     */
+
+    @Test(expected = RuntimeException.class)
+    public void whenBidOrderShouldReturnError(){
+        DepthOfMarket dom = new DepthOfMarket(0);
+        Order order1 = new Order();
+        order1.setOrderType(OrderType.DELETE);
+        dom.add(order1);
     }
 }
