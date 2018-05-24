@@ -14,10 +14,13 @@ public class DepthOfMarketTest {
         DepthOfMarket depthOfMarket = new DepthOfMarket(0);
         Order order1 = new Order();
         order1.setPrice(10);
+        order1.setOrderType(OrderType.ADD);
         Order order2 = new Order();
         order2.setPrice(1);
+        order2.setOrderType(OrderType.ADD);
         Order order3 = new Order();
         order3.setPrice(5);
+        order3.setOrderType(OrderType.ADD);
         depthOfMarket.add(order1);
         depthOfMarket.add(order2);
         depthOfMarket.add(order3);

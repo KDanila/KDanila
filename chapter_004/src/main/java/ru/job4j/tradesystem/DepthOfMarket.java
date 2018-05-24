@@ -13,25 +13,43 @@ public class DepthOfMarket implements Iterable<Order> {
 
     public void add(Order order) throws RuntimeException {
         OrderType orderType = order.getOrderType();
+        /**
+         * Берем код эмитента и если нет такого стакана заявок - создаем.
+         */
         if (this.ID == 0) {
             this.ID = order.getBook();
         }
-        //Если добавляем и нет такой заявки - добавляем.
-        if (orderType==OrderType.ADD&&findById(order.getId())==null) {
-            this.orders.add(order);
-        } else if(orderType==OrderType.DELETE&&findById(order.getId())!=null){
-            this.orders.remove(order);
-        } else{
-            throw new RuntimeException("Can't added order");
+        //По типу заявки выполняем действие.
+        if (orderType == OrderType.DELETE) {
+            Order orderToRemove = findById(order.getId());
+            if (orderToRemove != null) {
+                this.orders.remove(orderToRemove);
+            } else {
+                throw new RuntimeException("Can't added order");
+            }
+        } else if (orderType == OrderType.ADD) {
+            if (findById(order.getId()) == null) {
+                addOrder(order);
+            }
         }
+    }
+//ToDO  проверка заявки если можно уже закрыть из списка ордеров. Покупка и продажа не по рынку.
+    private void addOrder(Order order) {
+        //Order toModerate = null;
+        for (Order ord : this.orders) {
+            if(order.getAction()==Action.ASK&&ord.getAction()==Action.BID
+                    ||order.getAction()==Action.BID&&ord.getAction()==Action.ASK){
 
+            }
+        }
+        this.orders.add(order);
 
     }
 
     private Order findById(int id) {
-        Order order= null;
+        Order order = null;
         for (Order temp : orders) {
-            if(temp.getId()==id){
+            if (temp.getId() == id) {
                 order = temp;
                 break;
             }
@@ -52,7 +70,7 @@ public class DepthOfMarket implements Iterable<Order> {
         return this.orders.toString();
     }
 
-    public int getOrdersSizeInDom(){
+    public int getOrdersSizeInDom() {
         return this.orders.size();
     }
 
