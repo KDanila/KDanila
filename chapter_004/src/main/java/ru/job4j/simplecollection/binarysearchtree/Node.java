@@ -1,5 +1,8 @@
 package ru.job4j.simplecollection.binarysearchtree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Node class.
  *
@@ -74,6 +77,22 @@ public class Node<E> {
      */
     public void setRightChild(Node rightChild) {
         this.rightChild = rightChild;
+    }
+
+    /**
+     * Leaves method.
+     *
+     * @return List Node.
+     */
+    public List<Node<E>> leaves() {
+        List<Node<E>> toReturn = new ArrayList<>();
+        if (this.leftChild != null) {
+            toReturn.add(this.leftChild);
+        }
+        if (this.rightChild != null) {
+            toReturn.add(this.rightChild);
+        }
+        return toReturn;
     }
 
 }

@@ -1,8 +1,9 @@
 package ru.job4j.simplecollection.binarysearchtree;
 
-import java.util.ArrayList;
+
 import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * JustTree class.
@@ -60,10 +61,22 @@ public class BinarySearchTree<E extends Comparable<E>> {
      *
      * @return iterator.
      */
-    public Iterator<E> iterator() {
-        List<E> treeData = new ArrayList<>();
+    public Iterator<Node<E>> iterator() {
+        /*List<E> treeData = new ArrayList<>();
         createArray(this.root, treeData);
-        return treeData.iterator();
+        return treeData.iterator();*/
+        Queue<Node<E>> treeData = new LinkedList<>();
+        Queue<Node<E>> allLeaves = new LinkedList<>();
+        treeData.offer(this.root);
+        allLeaves.offer(this.root);
+        while (!treeData.isEmpty()) {
+            Node<E> el = treeData.poll();
+            for (Node<E> child : el.leaves()) {
+                treeData.offer(child);
+                allLeaves.offer(child);
+            }
+        }
+        return allLeaves.iterator();
     }
 
     /**
@@ -73,12 +86,12 @@ public class BinarySearchTree<E extends Comparable<E>> {
      * @param localRoot - local root.
      * @param data      - array.
      */
-    private void createArray(Node<E> localRoot, List<E> data) {
+    /*private void createArray(Node<E> localRoot, List<E> data) {
 
         if (localRoot != null) {
             createArray(localRoot.getLeftChild(), data);
             data.add(localRoot.getValue());
             createArray(localRoot.getRightChild(), data);
         }
-    }
+    }*/
 }

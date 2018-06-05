@@ -27,11 +27,12 @@ public class BinarySearchTreeTest {
         binarySearchTree.add(4);
         binarySearchTree.add(5);
         Iterator it = binarySearchTree.iterator();
-        assertThat(it.next(), is(1));
-        assertThat(it.next(), is(2));
-        assertThat(it.next(), is(3));
-        assertThat(it.next(), is(4));
-        assertThat(it.next(), is(5));
+
+        assertThat(((Node) it.next()).getValue(), is(1));
+        assertThat(((Node) it.next()).getValue(), is(2));
+        assertThat(((Node) it.next()).getValue(), is(3));
+        assertThat(((Node) it.next()).getValue(), is(4));
+        assertThat(((Node) it.next()).getValue(), is(5));
     }
 
     /**
@@ -46,11 +47,11 @@ public class BinarySearchTreeTest {
         binarySearchTree.add(15);
         binarySearchTree.add(20);
         Iterator it = binarySearchTree.iterator();
-        assertThat(it.next(), is(1));
-        assertThat(it.next(), is(5));
-        assertThat(it.next(), is(10));
-        assertThat(it.next(), is(15));
-        assertThat(it.next(), is(20));
+        assertThat(((Node) it.next()).getValue(), is(1));
+        assertThat(((Node) it.next()).getValue(), is(10));
+        assertThat(((Node) it.next()).getValue(), is(5));
+        assertThat(((Node) it.next()).getValue(), is(15));
+        assertThat(((Node) it.next()).getValue(), is(20));
     }
 
 }
