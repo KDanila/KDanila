@@ -88,7 +88,7 @@ public class JustTree<E extends Comparable<E>> implements SimpleTree<E> {
      * @return true or false.
      */
     public boolean isBinary() {
-        Queue<Node<E>> treeData = new LinkedList<>();
+/*        Queue<Node<E>> treeData = new LinkedList<>();
         treeData.offer(this.root);
         int counter;
         boolean isBinary = true;
@@ -102,7 +102,21 @@ public class JustTree<E extends Comparable<E>> implements SimpleTree<E> {
                 }
             }
         }
+        return isBinary;*/
 
+        int counter = 0;
+        boolean isBinary = true;
+        Iterator it = iterator();
+        while (it.hasNext() && isBinary) {
+            counter = 0;
+            Node<E> currentNode = (Node<E>) it.next();
+            for (Node<E> child : currentNode.leaves()) {
+                counter++;
+                if (counter > 2) {
+                    isBinary = false;
+                }
+            }
+        }
         return isBinary;
     }
 
@@ -124,7 +138,6 @@ public class JustTree<E extends Comparable<E>> implements SimpleTree<E> {
                 allLeaves.offer(child);
             }
         }
-
         return allLeaves.iterator();
     }
 }
