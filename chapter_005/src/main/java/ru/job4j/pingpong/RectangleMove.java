@@ -11,8 +11,25 @@ public class RectangleMove implements Runnable {
 
     @Override
     public void run() {
+        boolean directionX = true;
+        boolean directionY = true;
         while (true) {
-            this.rect.setX(this.rect.getX() + 1);
+            if (directionX && directionY) {
+                this.rect.setX(this.rect.getX() + 1);
+                this.rect.setY(this.rect.getY() + 1);
+
+            } else if (directionX && !directionY) {
+                this.rect.setX(this.rect.getX() + 1);
+                this.rect.setY(this.rect.getY() - 1);
+            } else if (!directionX && directionY) {
+                this.rect.setX(this.rect.getX() - 1);
+                this.rect.setY(this.rect.getY() + 1);
+            } else if (!directionX && !directionY) {
+                this.rect.setX(this.rect.getX() - 1);
+                this.rect.setY(this.rect.getY() - 1);
+            }
+            directionX = checkDirection(this.rect.getX(), directionX);
+            directionY = checkDirection(this.rect.getY(), directionY);
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
@@ -20,4 +37,15 @@ public class RectangleMove implements Runnable {
             }
         }
     }
+
+    private boolean checkDirection(double x, boolean directionX) {
+        boolean direction = directionX;
+        if (x > 300 || x < 0) {
+            direction = !directionX;
+        }
+        return direction;
+    }
 }
+
+
+
