@@ -1,8 +1,6 @@
 package ru.job4j.tradesystem;
 
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Depth of market class.
@@ -19,7 +17,7 @@ public class DepthOfMarket implements Iterable<Order> {
     /**
      * Orders set.
      */
-    private Set<Order> orders = new TreeSet<>();
+    private Map<Integer, Order> orders = new LinkedHashMap<>();
 
     /**
      * Constructor.
@@ -46,7 +44,7 @@ public class DepthOfMarket implements Iterable<Order> {
         if (orderType == OrderType.DELETE) {
             Order orderToRemove = findById(order.getId());
             if (orderToRemove != null) {
-                this.orders.remove(orderToRemove);
+                this.orders.remove(orderToRemove.getId());
             } else {
                 throw new RuntimeException("Can't delete order");
             }
@@ -68,7 +66,7 @@ public class DepthOfMarket implements Iterable<Order> {
         Order toDeleteFirst = null;
         Order toDeleteSecond = null;
         boolean isEqualVolume = false;
-        for (Order ord : this.orders) {
+        for (Order ord : this.orders.values()) {
             //Смотрим первую возможность добавляем на покупку, если есть на продажу в стакане, и цена покупки выше, чем цена продажи
             if (order.getAction() == Action.BUY
                     && ord.getAction() == Action.SELL
@@ -97,15 +95,15 @@ public class DepthOfMarket implements Iterable<Order> {
             }
         }
         if (toDeleteFirst != null) {
-            this.orders.remove(toDeleteFirst);
+            this.orders.remove(toDeleteFirst.getId());
         }
         if (toDeleteSecond != null) {
-            this.orders.remove(toDeleteSecond);
+            this.orders.remove(toDeleteSecond.getId());
         }
         if (toModerate != null) {
-            this.orders.add(toModerate);
+            this.orders.put(toModerate.getId(), toModerate);
         } else if (!isEqualVolume) {
-            this.orders.add(order);
+            this.orders.put(order.getId(), order);
         }
     }
 
@@ -116,14 +114,7 @@ public class DepthOfMarket implements Iterable<Order> {
      * @return order.
      */
     private Order findById(int id) {
-        Order order = null;
-        for (Order temp : orders) {
-            if (temp.getId() == id) {
-                order = temp;
-                break;
-            }
-        }
-        return order;
+        return this.orders.get(id);
     }
 
     /**
@@ -169,6 +160,7 @@ public class DepthOfMarket implements Iterable<Order> {
      */
     @Override
     public Iterator<Order> iterator() {
-        return orders.iterator();
+        return orders.values().iterator();
     }
+
 }

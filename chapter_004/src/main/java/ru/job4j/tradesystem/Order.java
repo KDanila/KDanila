@@ -194,6 +194,15 @@ public class Order implements Comparable<Order> {
 
         return Objects.hash(id, book);
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", price=" + price +
+                ", volume=" + volume +
+                '}';
+    }
 }
 
 /**

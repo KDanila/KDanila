@@ -27,18 +27,20 @@ public class DepthOfMarketTest {
         order1.setPrice(10);
         order1.setOrderType(OrderType.ADD);
         Order order2 = new Order();
-        order2.setPrice(1);
+        order2.setPrice(5);
         order2.setOrderType(OrderType.ADD);
         Order order3 = new Order();
-        order3.setPrice(5);
+        order3.setPrice(1);
         order3.setOrderType(OrderType.ADD);
         depthOfMarket.add(order1);
         depthOfMarket.add(order2);
         depthOfMarket.add(order3);
+
         Iterator it = depthOfMarket.iterator();
-        assertThat(((Order) it.next()).getPrice(), is(1));
-        assertThat(((Order) it.next()).getPrice(), is(5));
+        //System.out.println(depthOfMarket);
         assertThat(((Order) it.next()).getPrice(), is(10));
+        assertThat(((Order) it.next()).getPrice(), is(5));
+        assertThat(((Order) it.next()).getPrice(), is(1));
     }
 
     /**
