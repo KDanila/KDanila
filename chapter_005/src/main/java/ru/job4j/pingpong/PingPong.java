@@ -41,9 +41,9 @@ public class PingPong extends Application {
         stage.setScene(scene);
         stage.setTitle(JOB4J);
         stage.setResizable(false);
-        stage.show();
         stage.setOnCloseRequest(
                 event -> System.exit(0)
         );
+
     }
 }

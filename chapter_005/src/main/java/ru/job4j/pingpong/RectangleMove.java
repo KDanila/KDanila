@@ -43,7 +43,7 @@ public class RectangleMove implements Runnable {
     public void run() {
         boolean directionX = true;
         boolean directionY = true;
-        double movementSpeedX = 5;
+        double movementSpeedX = 2;
         double movementSpeedY = 5;
         while (true) {
             if (directionX && directionY) {
