@@ -22,11 +22,12 @@ public class RectangleMove implements Runnable {
      * rectangle.
      */
     private final Rectangle player2;
+    private boolean interupted = false;
 
     /**
      * @param rectangle - rectangle.
-     * @param player1 - rectangle.
-     * @param player2 - rectangle.
+     * @param player1   - rectangle.
+     * @param player2   - rectangle.
      */
 
     public RectangleMove(Rectangle rectangle, Rectangle player1, Rectangle player2) {
@@ -41,41 +42,43 @@ public class RectangleMove implements Runnable {
      */
     @Override
     public void run() {
-        boolean directionX = true;
-        boolean directionY = true;
-        double movementSpeedX = 2;
-        double movementSpeedY = 5;
-        while (true) {
-            if (directionX && directionY) {
-                this.rect.setX(this.rect.getX() + movementSpeedX);
-                this.rect.setY(this.rect.getY() + movementSpeedY);
-            } else if (directionX && !directionY) {
-                this.rect.setX(this.rect.getX() + movementSpeedX);
-                this.rect.setY(this.rect.getY() - movementSpeedY);
-            } else if (!directionX && directionY) {
-                this.rect.setX(this.rect.getX() - movementSpeedX);
-                this.rect.setY(this.rect.getY() + movementSpeedY);
-            } else if (!directionX && !directionY) {
-                this.rect.setX(this.rect.getX() - movementSpeedX);
-                this.rect.setY(this.rect.getY() - movementSpeedY);
-            }
-            directionX = checkDirectionX(this.rect.getX(), directionX);
-            directionY = checkDirectionY(this.rect.getY(), directionY);
-            if (checkContactWithPlayer1() || checkContactWithPlayer2()) {
-                directionX = !directionX;
-            }
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        while (!interupted) {
+            boolean directionX = true;
+            boolean directionY = true;
+            double movementSpeedX = 2;
+            double movementSpeedY = 5;
+            while (true) {
+                if (directionX && directionY) {
+                    this.rect.setX(this.rect.getX() + movementSpeedX);
+                    this.rect.setY(this.rect.getY() + movementSpeedY);
+                } else if (directionX && !directionY) {
+                    this.rect.setX(this.rect.getX() + movementSpeedX);
+                    this.rect.setY(this.rect.getY() - movementSpeedY);
+                } else if (!directionX && directionY) {
+                    this.rect.setX(this.rect.getX() - movementSpeedX);
+                    this.rect.setY(this.rect.getY() + movementSpeedY);
+                } else if (!directionX && !directionY) {
+                    this.rect.setX(this.rect.getX() - movementSpeedX);
+                    this.rect.setY(this.rect.getY() - movementSpeedY);
+                }
+                directionX = checkDirectionX(this.rect.getX(), directionX);
+                directionY = checkDirectionY(this.rect.getY(), directionY);
+                if (checkContactWithPlayer1() || checkContactWithPlayer2()) {
+                    directionX = !directionX;
+                }
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
 
-
     /**
      * Проверяем на соприкосновение с игроком 1.
+     *
      * @return true - if contact present.
      */
     private boolean checkContactWithPlayer1() {
@@ -94,6 +97,7 @@ public class RectangleMove implements Runnable {
 
     /**
      * Проверяем на соприкосновение с игроком 2.
+     *
      * @return true - if contact present.
      */
     private boolean checkContactWithPlayer2() {
@@ -139,6 +143,10 @@ public class RectangleMove implements Runnable {
             direction = !directionY;
         }
         return direction;
+    }
+
+    public void setInterupted(boolean interupted) {
+        this.interupted = interupted;
     }
 }
 

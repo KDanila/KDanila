@@ -36,14 +36,14 @@ public class PingPong extends Application {
         group.getChildren().add(player1);
         group.getChildren().add(player2);
         Scene scene = new Scene(group, limitX, limitY);
-        new Thread(new RectangleMove(rect, player1, player2)).start();
+        RectangleMove rectangleMove = new RectangleMove(rect, player1, player2);
+        new Thread(rectangleMove).start();
         new Thread(new PlayerMove(player1, player2, scene)).start();
         stage.setScene(scene);
         stage.setTitle(JOB4J);
         stage.setResizable(false);
         stage.setOnCloseRequest(
-                event -> System.exit(0)
-        );
+                event -> rectangleMove.setInterupted(true));
 
     }
 }
