@@ -22,7 +22,6 @@ public class RectangleMove implements Runnable {
      * rectangle.
      */
     private final Rectangle player2;
-    private boolean interupted = false;
 
     /**
      * @param rectangle - rectangle.
@@ -42,7 +41,7 @@ public class RectangleMove implements Runnable {
      */
     @Override
     public void run() {
-        while (!interupted) {
+        //while () {
             boolean directionX = true;
             boolean directionY = true;
             double movementSpeedX = 2;
@@ -72,7 +71,7 @@ public class RectangleMove implements Runnable {
                     e.printStackTrace();
                 }
             }
-        }
+        //}
     }
 
 
@@ -143,10 +142,6 @@ public class RectangleMove implements Runnable {
             direction = !directionY;
         }
         return direction;
-    }
-
-    public void setInterupted(boolean interupted) {
-        this.interupted = interupted;
     }
 }
 
