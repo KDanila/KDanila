@@ -41,7 +41,6 @@ public class RectangleMove implements Runnable {
      */
     @Override
     public void run() {
-        //while () {
             boolean directionX = true;
             boolean directionY = true;
             double movementSpeedX = 2;
@@ -71,7 +70,6 @@ public class RectangleMove implements Runnable {
                     e.printStackTrace();
                 }
             }
-        //}
     }
 
 
