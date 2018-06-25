@@ -45,6 +45,9 @@ public class PlayerMove implements Runnable {
     @Override
     public void run() {
         while (true) {
+            if (Thread.interrupted()) {
+                break;
+            }
             scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
                 @Override
                 public void handle(KeyEvent event) {

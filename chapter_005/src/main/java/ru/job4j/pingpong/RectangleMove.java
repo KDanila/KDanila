@@ -41,35 +41,37 @@ public class RectangleMove implements Runnable {
      */
     @Override
     public void run() {
-            boolean directionX = true;
-            boolean directionY = true;
-            double movementSpeedX = 2;
-            double movementSpeedY = 5;
-            while (true) {
-                if (directionX && directionY) {
-                    this.rect.setX(this.rect.getX() + movementSpeedX);
-                    this.rect.setY(this.rect.getY() + movementSpeedY);
-                } else if (directionX && !directionY) {
-                    this.rect.setX(this.rect.getX() + movementSpeedX);
-                    this.rect.setY(this.rect.getY() - movementSpeedY);
-                } else if (!directionX && directionY) {
-                    this.rect.setX(this.rect.getX() - movementSpeedX);
-                    this.rect.setY(this.rect.getY() + movementSpeedY);
-                } else if (!directionX && !directionY) {
-                    this.rect.setX(this.rect.getX() - movementSpeedX);
-                    this.rect.setY(this.rect.getY() - movementSpeedY);
-                }
-                directionX = checkDirectionX(this.rect.getX(), directionX);
-                directionY = checkDirectionY(this.rect.getY(), directionY);
-                if (checkContactWithPlayer1() || checkContactWithPlayer2()) {
-                    directionX = !directionX;
-                }
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        boolean directionX = true;
+        boolean directionY = true;
+        double movementSpeedX = 2;
+        double movementSpeedY = 5;
+        while (!Thread.interrupted()) {
+            if (directionX && directionY) {
+                this.rect.setX(this.rect.getX() + movementSpeedX);
+                this.rect.setY(this.rect.getY() + movementSpeedY);
+            } else if (directionX && !directionY) {
+                this.rect.setX(this.rect.getX() + movementSpeedX);
+                this.rect.setY(this.rect.getY() - movementSpeedY);
+            } else if (!directionX && directionY) {
+                this.rect.setX(this.rect.getX() - movementSpeedX);
+                this.rect.setY(this.rect.getY() + movementSpeedY);
+            } else if (!directionX && !directionY) {
+                this.rect.setX(this.rect.getX() - movementSpeedX);
+                this.rect.setY(this.rect.getY() - movementSpeedY);
             }
+            directionX = checkDirectionX(this.rect.getX(), directionX);
+            directionY = checkDirectionY(this.rect.getY(), directionY);
+            if (checkContactWithPlayer1() || checkContactWithPlayer2()) {
+                directionX = !directionX;
+            }
+
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 

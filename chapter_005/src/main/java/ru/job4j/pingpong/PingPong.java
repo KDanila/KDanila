@@ -39,13 +39,14 @@ public class PingPong extends Application {
         RectangleMove rectangleMove = new RectangleMove(rect, player1, player2);
         Thread rectangleThread = new Thread(rectangleMove);
         rectangleThread.start();
-        new Thread(new PlayerMove(player1, player2, scene)).start();
+        Thread playersThread = new Thread(new PlayerMove(player1, player2, scene));
+       // playersThread.start();
         stage.setScene(scene);
         stage.setTitle(JOB4J);
         stage.setResizable(false);
-        while (!rectangleThread.isInterrupted()) {
-            stage.setOnCloseRequest(
+        stage.show();
+        stage.setOnCloseRequest(
                     event -> rectangleThread.interrupt());
-        }
+
     }
 }
