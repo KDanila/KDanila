@@ -6,64 +6,61 @@ import net.jcip.annotations.ThreadSafe;
 import java.util.LinkedList;
 import java.util.Queue;
 
+
+/**
+ * SimpleBlockingQueue class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.0
+ */
 @ThreadSafe
-public class SimpleBlockingQueue<T> {
-
-    private final Object consumerLock = new Object();
-    private final Object producerLock = new Object();
-    private boolean blockConsumer = false;
-    private boolean blockProducer = false;
-
+class SimpleBlockingQueue<T> {
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<>();
+    private int maxSize;
 
     /**
-     * Добавляем элемент.
+     * Constructor.
      *
-     * @param value
-     * @throws InterruptedException
+     * @param maxSize Max size.
      */
-    public void offer(T value) throws InterruptedException {
-        synchronized (producerLock) {
-            blockProducer = !this.queue.offer(value);
-            System.out.println("block producer " + blockProducer);
-            if (!blockProducer) {
-                System.out.println("consumer notify");
-                //consumerLock.notify();
-            } else {
-                while (blockProducer) {
-                    System.out.println("wait offer");
-                    producerLock.wait();
-                }
-                System.out.println("offer after block producer");
-                this.queue.offer(value);
-            }
-        }
+    public SimpleBlockingQueue(int maxSize) {
+        this.maxSize = maxSize;
     }
 
-    public T poll() throws InterruptedException {
-        synchronized (consumerLock) {
-            T temp = this.queue.peek();
-            System.out.println(temp);
-            if (temp == null) {
-                blockConsumer = true;
-                return null;
-            } else {
-                System.out.println("Producer notify");
-                //producerLock.notify();
-                while (blockConsumer) {
-                    System.out.println("block consumer");
-                    consumerLock.wait();
-                }
-                return this.queue.poll();
+    /**
+     * Add value.
+     *
+     * @param value Value.
+     */
+    public synchronized void offer(T value) {
+        while (this.queue.size() == this.maxSize) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
+        this.queue.add(value);
+        notifyAll();
     }
 
-    @Override
-    public String toString() {
-        return "SimpleBlockingQueue{" +
-                "queue=" + queue +
-                '}';
+    /**
+     * Take element
+     *
+     * @return
+     */
+    public synchronized T poll() {
+        while (this.queue.size() == 0) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        notifyAll();
+        return this.queue.poll();
     }
+
 }

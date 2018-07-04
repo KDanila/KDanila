@@ -1,8 +1,6 @@
 package ru.job4j.pingpong;
 
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -48,25 +46,22 @@ public class PlayerMove implements Runnable {
             if (Thread.interrupted()) {
                 break;
             }
-            scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-                @Override
-                public void handle(KeyEvent event) {
-                    switch (event.getCode()) {
-                        case UP:
-                            player1.setY(player1.getY() - 10);
-                            break;
-                        case DOWN:
-                            player1.setY(player1.getY() + 10);
-                            break;
-                        case W:
-                            player2.setY(player2.getY() - 10);
-                            break;
-                        case S:
-                            player2.setY(player2.getY() + 10);
-                            break;
-                        default:
-                            break;
-                    }
+            scene.setOnKeyPressed(event -> {
+                switch (event.getCode()) {
+                    case UP:
+                        player1.setY(player1.getY() - 10);
+                        break;
+                    case DOWN:
+                        player1.setY(player1.getY() + 10);
+                        break;
+                    case W:
+                        player2.setY(player2.getY() - 10);
+                        break;
+                    case S:
+                        player2.setY(player2.getY() + 10);
+                        break;
+                    default:
+                        break;
                 }
             });
         }
