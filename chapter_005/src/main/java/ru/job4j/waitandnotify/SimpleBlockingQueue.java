@@ -6,18 +6,24 @@ import net.jcip.annotations.ThreadSafe;
 import java.util.LinkedList;
 import java.util.Queue;
 
-
 /**
  * SimpleBlockingQueue class.
  *
+ * @param <T>
  * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
  * @version $Id$
  * @since 0.1.0
  */
 @ThreadSafe
 class SimpleBlockingQueue<T> {
+    /**
+     * Queue.
+     */
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<>();
+    /**
+     * Max size of queue.
+     */
     private int maxSize;
 
     /**
@@ -25,7 +31,7 @@ class SimpleBlockingQueue<T> {
      *
      * @param maxSize Max size.
      */
-    public SimpleBlockingQueue(int maxSize) {
+    SimpleBlockingQueue(int maxSize) {
         this.maxSize = maxSize;
     }
 
@@ -47,9 +53,9 @@ class SimpleBlockingQueue<T> {
     }
 
     /**
-     * Take element
+     * Take element.
      *
-     * @return
+     * @return T - generic.
      */
     public synchronized T poll() {
         while (this.queue.size() == 0) {
@@ -62,5 +68,4 @@ class SimpleBlockingQueue<T> {
         notifyAll();
         return this.queue.poll();
     }
-
 }

@@ -64,7 +64,6 @@ public class RectangleMove implements Runnable {
             if (checkContactWithPlayer1() || checkContactWithPlayer2()) {
                 directionX = !directionX;
             }
-
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {

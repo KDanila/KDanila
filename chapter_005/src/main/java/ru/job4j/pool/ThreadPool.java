@@ -8,13 +8,33 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * ThreadPool class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.0
+ */
 @ThreadSafe
 public class ThreadPool {
+    /**
+     * Threads.
+     */
     private final List<Thread> threads = new LinkedList<>();
+    /**
+     * Tasks of runnable.
+     */
     @GuardedBy("this")
     private final Queue<Runnable> tasks = new LinkedBlockingQueue<>();
-    int size = Runtime.getRuntime().availableProcessors();
+    /**
+     * Size - number of available processors.
+     */
+    private final int size = Runtime.getRuntime().availableProcessors();
 
+    /**
+     * Constructor.
+     * Initialising new thread for each task.
+     */
     public ThreadPool() {
         for (int i = 0; i < size; i++) {
             threads.add(new Thread(() -> {
@@ -31,12 +51,23 @@ public class ThreadPool {
         }
     }
 
+    /**
+     * Add job method.
+     *
+     * @param job - runnable.
+     */
     public void work(Runnable job) {
         tasks.offer(job);
         notifyAll();
     }
 
+    /**
+     * Shutdown method.
+     * Close all threads.
+     */
     public void shutdown() {
-
+        for (int i = 0; i < size; i++) {
+            threads.get(0).interrupt();
+        }
     }
 }
