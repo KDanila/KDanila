@@ -22,7 +22,7 @@ public class SimpleLock {
      * Lock method.
      * Проверяет свободен ли лок? Если да - захватывает, иначе блокируется.
      */
-    public void lock() {
+    public synchronized void lock() {
         while (isLock) {
             try {
                 wait();
@@ -37,7 +37,7 @@ public class SimpleLock {
      * Unlock method.
      * Проверяет владеет ли поток локом? Если да то - освобождает.
      */
-    public void unlock() {
+    public synchronized void unlock() {
         this.isLock = false;
         notifyAll();
     }
