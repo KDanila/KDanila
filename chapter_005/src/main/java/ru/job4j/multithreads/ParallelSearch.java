@@ -31,22 +31,18 @@ public class ParallelSearch {
     }
 
     public void init() throws InterruptedException {
-        String root = this.root;
-        Queue<String> files = this.files;
-        String text = this.text;
-        List<String> paths = this.paths;
         Thread search = new Thread(() -> {
             Path startPath = Paths.get(root);
             String pattern = "regex:\\S+\\.txt";
             try {
                 Files.walkFileTree(startPath, new SearchFileVisitor(pattern, files));
-                finish = true;
+              //  finish = true;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
         Thread read = new Thread(() -> {
-            while (finish) {
+           // while (finish) {
                 for (String s : files) {
                     try {
                         List<String> temp = Files.readAllLines(Paths.get(s));
@@ -58,7 +54,7 @@ public class ParallelSearch {
                         e.printStackTrace();
                     }
                 }
-            }
+            //}
         });
         search.start();
         search.join();
