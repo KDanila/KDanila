@@ -56,7 +56,7 @@ public class ThreadPool {
      *
      * @param job - runnable.
      */
-    public void work(Runnable job) {
+    public synchronized void work(Runnable job) {
         tasks.offer(job);
         notifyAll();
     }
