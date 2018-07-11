@@ -33,7 +33,7 @@ public class Order implements Comparable<Order> {
     /**
      * Цена покупки/продажи.
      */
-    private int price;
+    private double price;
     /**
      * Количество акции покупки/продажи.
      */
@@ -123,7 +123,7 @@ public class Order implements Comparable<Order> {
      *
      * @return price.
      */
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -132,7 +132,7 @@ public class Order implements Comparable<Order> {
      *
      * @param price - price.
      */
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -163,7 +163,7 @@ public class Order implements Comparable<Order> {
      */
     @Override
     public int compareTo(Order o) {
-        return this.price - o.getPrice();
+        return (int) (this.price - o.getPrice());
     }
 
     /**
@@ -197,11 +197,11 @@ public class Order implements Comparable<Order> {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", price=" + price +
-                ", volume=" + volume +
-                '}';
+        return "Order{"
+                + "id=" + id
+                + ", price=" + price
+                + ", volume=" + volume
+                + '}';
     }
 }
 

@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
 
-import java.util.Iterator;
 
 /**
  * Depth of market test class.
@@ -18,7 +17,7 @@ import java.util.Iterator;
 public class DepthOfMarketTest {
     /**
      * First test.
-     * testing compareTo.
+     * testing add and correctly distribution to buy and sell map.
      */
     @Test
     public void whenAddValuesShouldReturnCorrectlySorted() {
@@ -26,21 +25,21 @@ public class DepthOfMarketTest {
         Order order1 = new Order();
         order1.setPrice(10);
         order1.setOrderType(OrderType.ADD);
+        order1.setAction(Action.SELL);
         Order order2 = new Order();
         order2.setPrice(5);
         order2.setOrderType(OrderType.ADD);
+        order2.setAction(Action.SELL);
         Order order3 = new Order();
         order3.setPrice(1);
         order3.setOrderType(OrderType.ADD);
+        order3.setAction(Action.BUY);
         depthOfMarket.add(order1);
         depthOfMarket.add(order2);
         depthOfMarket.add(order3);
-
-        Iterator it = depthOfMarket.iterator();
-        //System.out.println(depthOfMarket);
-        assertThat(((Order) it.next()).getPrice(), is(10));
-        assertThat(((Order) it.next()).getPrice(), is(5));
-        assertThat(((Order) it.next()).getPrice(), is(1));
+        assertThat(depthOfMarket.getSellOrders().get(10D), is(order1));
+        assertThat(depthOfMarket.getSellOrders().get(5D), is(order2));
+        assertThat(depthOfMarket.getBuyOrders().get(1D), is(order3));
     }
 
     /**
@@ -51,16 +50,14 @@ public class DepthOfMarketTest {
         DepthOfMarket dom = new DepthOfMarket(0);
         Order order1 = new Order();
         order1.setOrderType(OrderType.ADD);
+        order1.setAction(Action.BUY);
         order1.setPrice(2);
         dom.add(order1);
-        Iterator it = dom.iterator();
-        Order expected = (Order) it.next();
-        assertThat(expected.getPrice(), is(2));
-        assertThat(expected.getOrderType(), is(OrderType.ADD));
+        assertThat(dom.getBuyOrders().get(2D), is(order1));
+        assertThat(dom.getBuyOrders().get(2D).getOrderType(), is(OrderType.ADD));
         order1.setOrderType(OrderType.DELETE);
         dom.add(order1);
-        assertThat(dom.getOrdersSizeInDom(), is(0));
-
+        assertThat(dom.getBuyOrders().size(), is(0));
     }
 
     /**
@@ -92,15 +89,13 @@ public class DepthOfMarketTest {
         orderSell.setVolume(50);
         orderSell.setAction(Action.SELL);
         dom.add(orderSell);
-        Iterator it = dom.iterator();
-        Order expected = (Order) it.next();
-        assertThat(expected.getPrice(), is(20));
-        assertThat(expected.getVolume(), is(50));
-        assertThat(expected.getAction(), is(Action.BUY));
+        System.out.println(dom);
+        assertThat(dom.getBuyOrders().get(20D), is(orderBuy));
+        assertThat(dom.getBuyOrders().get(20D).getVolume(), is(50));
     }
 
     /**
-     * Тестируем добавление ордеров на покупку, когда уже есть ордер на продажу с меньшей ценной.
+     * Тестируем добавление ордеров на покупку, когда уже есть ордер на продажу с большей ценной.
      * Объем добавляемого больше.
      */
     @Test
@@ -108,21 +103,18 @@ public class DepthOfMarketTest {
         DepthOfMarket dom = new DepthOfMarket(0);
         Order orderBuy = new Order();
         orderBuy.setOrderType(OrderType.ADD);
-        orderBuy.setPrice(20);
+        orderBuy.setPrice(10);
         orderBuy.setVolume(100);
         orderBuy.setAction(Action.BUY);
         dom.add(orderBuy);
         Order orderSell = new Order();
         orderSell.setOrderType(OrderType.ADD);
-        orderSell.setPrice(10);
+        orderSell.setPrice(20);
         orderSell.setVolume(200);
         orderSell.setAction(Action.SELL);
         dom.add(orderSell);
-        Iterator it = dom.iterator();
-        Order expected = (Order) it.next();
-        assertThat(expected.getPrice(), is(10));
-        assertThat(expected.getVolume(), is(100));
-        assertThat(expected.getAction(), is(Action.SELL));
+        assertThat(dom.getBuyOrders().get(10D), is(orderBuy));
+        assertThat(dom.getSellOrders().get(20D), is(orderSell));
     }
 
     /**
@@ -144,6 +136,7 @@ public class DepthOfMarketTest {
         orderSell.setVolume(100);
         orderSell.setAction(Action.SELL);
         dom.add(orderSell);
-        assertThat(dom.getOrdersSizeInDom(), is(0));
+        assertThat(dom.getBuyOrders().size(), is(0));
+        assertThat(dom.getSellOrders().size(), is(0));
     }
 }

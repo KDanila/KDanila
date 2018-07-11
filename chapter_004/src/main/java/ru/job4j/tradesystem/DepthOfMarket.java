@@ -1,6 +1,10 @@
 package ru.job4j.tradesystem;
 
-import java.util.*;
+
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Depth of market class.
@@ -15,9 +19,15 @@ public class DepthOfMarket {
      * id.
      */
     private int id;
+    /**
+     * Buy orders.
+     */
+    private Map<Double, Order> buyOrders = new TreeMap<>(Comparator.naturalOrder());
 
-    Map<Double, Order> buyOrders = new TreeMap<>(Comparator.naturalOrder());
-    Map<Double, Order> sellOrders = new TreeMap<>(Comparator.reverseOrder());
+    /**
+     * Sell orders.
+     */
+    private Map<Double, Order> sellOrders = new TreeMap<>(Comparator.reverseOrder());
 
     /**
      * Constructor.
@@ -34,119 +44,113 @@ public class DepthOfMarket {
      * @param order - to add.
      * @throws RuntimeException - exception.
      */
-    /*public void add(Order order) throws RuntimeException {
-        OrderType orderType = order.getOrderType();
-        // Берем код эмитента и если нет такого стакана заявок - создаем.
-        if (this.id == 0) {
-            this.id = order.getBook();
-        }
-        //По типу заявки выполняем действие.
-        if (orderType == OrderType.DELETE) {
-            Order orderToRemove = findById(order.getId());
-            if (orderToRemove != null) {
-                this.orders.remove(orderToRemove.getId());
-            } else {
-                throw new RuntimeException("Can't delete order");
-            }
-        } else if (orderType == OrderType.ADD) {
-            if (findById(order.getId()) == null) {
-                addOrder(order);
-            }
-        }
-    }*/
     public void add(Order order) {
-        OrderType orderType = order.getOrderType();
-        // Берем код эмитента и если нет такого стакана заявок - создаем.
-        if (this.id == 0) {
-            this.id = order.getBook();
-        }
-        //По типу заявки выполняем действие.
-        if (orderType == OrderType.DELETE) {
+        //1.Проверяем на тип ордера, если закрываем то ищем по таблицам и удаляем от туда.
+        if (order.getOrderType() == OrderType.DELETE) {
             if (order.getAction() == Action.BUY) {
-                this.buyOrders.remove(order);
-            } else if ((order.getAction() == Action.SELL)) {
-                this.sellOrders.remove(order);
-            } else {
-                throw new RuntimeException("This order doesn't exist");
-            }
-
-        } else if (orderType == OrderType.ADD) {
-            if (order.getAction() == Action.BUY) {
-                if (!this.buyOrders.containsKey(order)) {
-                    firstEnty(order);
-                }
-            } else if(order.getAction() == Action.SELL){
-                if (!this.sellOrders.containsKey(order)) {
-                    firstEnty(order);
+                boolean isDelete = buyOrders.remove(order.getPrice(), order);
+                //Если нет такого ордера выкидываем ошибку.
+                if (!isDelete) {
+                    throw new RuntimeException("Can't delete order. Order doesn't exist");
                 }
             } else {
-                throw new RuntimeException("Order has no action");
+                boolean isDelete = sellOrders.remove(order.getPrice(), order);
+                if (!isDelete) {
+                    throw new RuntimeException("Can't delete order. Order doesn't exist");
+                }
             }
         } else {
-            throw new RuntimeException("Order has no order type");
+            //Если тип ордера на добавление, то проверяем на покупку или продажу.
+            firstEnty(order);
         }
-            /*if (findById(order.getId()) == null) {
-                addOrder(order);
-            }*/
     }
 
 
-
     /**
-     * addOrder method.
+     * FirstEnty method.
      * Adding in dom set.
      *
      * @param order - order to add.
      */
     private void firstEnty(Order order) {
-
-        if(order.getAction()==Action.BUY){
-
-
-        }
-
-        /*Order toModerate = null;
-        Order toDeleteFirst = null;
-        Order toDeleteSecond = null;
-        boolean isEqualVolume = false;
-        for (Order ord : this.orders.values()) {
-            //Смотрим первую возможность добавляем на покупку, если есть на продажу в стакане, и цена покупки выше, чем цена продажи
-            if (order.getAction() == Action.BUY
-                    && ord.getAction() == Action.SELL
-                    && order.getPrice() > ord.getPrice()
-                    ||
-                    order.getAction() == Action.SELL
-                            && ord.getAction() == Action.BUY
-                            && order.getPrice() < ord.getPrice()) {
-                //Проверяем на разницу объемов.
-                if (order.getVolume() > ord.getVolume()) {
-                    toModerate = order;
-                    toDeleteFirst = ord;
-                    toModerate.setVolume(order.getVolume() - ord.getVolume());
-                    break;
-                } else if (order.getVolume() < ord.getVolume()) {
-                    toModerate = ord;
-                    toDeleteFirst = order;
-                    toModerate.setVolume(ord.getVolume() - order.getVolume());
-                    break;
+        if (order.getAction() == Action.SELL) {
+            //Проверяем есть ли цена выше в buy ордерах
+            Iterator it = buyOrders.values().iterator();
+            if (!it.hasNext()) {
+                sellOrders.put(order.getPrice(), order);
+            }
+            while (it.hasNext()) {
+                Order ord = (Order) it.next();
+                if (order.getPrice() < ord.getPrice()) {
+                    int buyVolume = ord.getVolume();
+                    int sellVolume = order.getVolume();
+                    if (buyVolume == sellVolume) {
+                        buyOrders.remove(ord.getPrice(), ord);
+                        break;
+                    } else if (buyVolume > sellVolume) {
+                        buyOrders.get(ord.getPrice()).setVolume(buyVolume - sellVolume);
+                        break;
+                    } else if (sellVolume > buyVolume) {
+                        order.setVolume(sellVolume - buyVolume);
+                    }
                 } else {
-                    toDeleteFirst = order;
-                    toDeleteSecond = ord;
-                    isEqualVolume = true;
+                    sellOrders.put(order.getPrice(), order);
                     break;
                 }
             }
+        } else {
+            //Проверяем есть ли цена нижу в sell ордерах.
+            Iterator it = sellOrders.values().iterator();
+            if (!it.hasNext()) {
+                buyOrders.put(order.getPrice(), order);
+            }
+            while (it.hasNext()) {
+                Order ord = (Order) it.next();
+                if (order.getPrice() > ord.getPrice()) {
+                    int buyVolume = order.getVolume();
+                    int sellVolume = ord.getVolume();
+                    if (buyVolume == sellVolume) {
+                        sellOrders.remove(ord.getPrice(), ord);
+                        break;
+                    } else if (buyVolume < sellVolume) {
+                        sellOrders.get(ord.getPrice()).setVolume(buyVolume - sellVolume);
+                        break;
+                    } else if (sellVolume < buyVolume) {
+                        order.setVolume(buyVolume - sellVolume);
+                    }
+                } else {
+                    buyOrders.put(order.getPrice(), order);
+                    break;
+                }
+            }
+
         }
-        if (toDeleteFirst != null) {
-            this.orders.remove(toDeleteFirst.getId());
-        }
-        if (toDeleteSecond != null) {
-            this.orders.remove(toDeleteSecond.getId());
-        }
-        if (toModerate != null) {
-            this.orders.put(toModerate.getId(), toModerate);
-        } else if (!isEqualVolume) {
-            this.orders.put(order.getId(), order);
-        }*/
+    }
+
+    @Override
+    public String toString() {
+        return "DepthOfMarket{"
+                + "id=" + id
+                + ", buyOrders=" + buyOrders
+                + ", sellOrders=" + sellOrders
+                + '}';
+    }
+
+    /**
+     * Buy orders getter.
+     *
+     * @return - map.
+     */
+    public Map<Double, Order> getBuyOrders() {
+        return buyOrders;
+    }
+
+    /**
+     * Sell orders getter.
+     *
+     * @return - map.
+     */
+    public Map<Double, Order> getSellOrders() {
+        return sellOrders;
     }
 }

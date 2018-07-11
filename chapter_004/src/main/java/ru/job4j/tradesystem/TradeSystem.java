@@ -1,7 +1,8 @@
 package ru.job4j.tradesystem;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TradeSystem.
@@ -12,9 +13,9 @@ import java.util.List;
  */
 public class TradeSystem {
     /**
-     * List of Depth of Markets.
+     * Map of Depth of Markets.
      */
-    private List<DepthOfMarket> domArray = new ArrayList<DepthOfMarket>();
+    private Map<Integer, DepthOfMarket> domArray = new HashMap<>();
 
     /**
      * Add order method.
@@ -23,29 +24,13 @@ public class TradeSystem {
      */
     public void addOrder(Order order) {
         int book = order.getBook();
-        if (domArray == null || foundEmitentByID(book) == null) {
-            domArray.add(new DepthOfMarket(book));
+        if (!domArray.containsKey(book)) {
+            DepthOfMarket dom = new DepthOfMarket(book);
+            dom.add(order);
+            domArray.put(book, dom);
         } else {
-            foundEmitentByID(book).add(order);
+            domArray.get(book).add(order);
         }
-
-    }
-
-    /**
-     * Found emitent by ID method.
-     *
-     * @param book - int.
-     * @return Depth of Market.
-     */
-    private DepthOfMarket foundEmitentByID(int book) {
-        DepthOfMarket dom = null;
-        for (DepthOfMarket temp : domArray) {
-            if (temp.getId() == book) {
-                dom = temp;
-                break;
-            }
-        }
-        return dom;
     }
 
     /**
@@ -54,6 +39,6 @@ public class TradeSystem {
      * @return - list of depth of market.
      */
     public List<DepthOfMarket> getDomArray() {
-        return domArray;
+        return (List<DepthOfMarket>) domArray.values();
     }
 }
