@@ -1,4 +1,4 @@
-package ru.job4j.multithreads;
+/*package ru.job4j.multithreads;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,4 +19,4 @@ public class MainTestMethod {
         Thread.sleep(1000);
         System.out.println(ps.result());
     }
-}
+}*/

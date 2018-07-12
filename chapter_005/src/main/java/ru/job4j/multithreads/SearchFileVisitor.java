@@ -1,10 +1,8 @@
 package ru.job4j.multithreads;
 
 import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
-import java.nio.file.PathMatcher;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
@@ -53,7 +51,7 @@ public class SearchFileVisitor extends SimpleFileVisitor<Path> {
         Path name = file.getFileName();
         String n = name.toString();
         for (String s : this.exts) {
-            if(n.endsWith(s)){
+            if (n.endsWith(s)) {
                 this.files.add(file.toAbsolutePath().toString());
             }
         }
