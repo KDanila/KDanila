@@ -21,10 +21,7 @@ public class NonBlocking {
      * @param model - base type.
      */
     public void add(Base model) {
-        int currentVersion = model.getVersion();
         data.putIfAbsent(model.hashCode(), model);
-        checkActualInformation(model.getVersion(), currentVersion);
-        model.modifyVersion();
     }
 
     /**
@@ -33,14 +30,15 @@ public class NonBlocking {
      * @param model - base type.
      */
     public void update(Base model) {
-        int currentVersion = model.getVersion();
         data.computeIfPresent(model.getId(), (id, base) -> {
             if (base.getVersion() == model.getVersion()) {
                 base.setName(model.getName());
+                model.modifyVersion();
+            } else {
+                throw new OptimisticException("Version is not same!");
             }
             return model;
         });
-        checkActualInformation(model.getVersion(), currentVersion);
         model.modifyVersion();
     }
 
@@ -51,20 +49,5 @@ public class NonBlocking {
      */
     public void delete(Base model) {
         data.remove(model.hashCode(), model);
-        model.modifyVersion();
-    }
-
-    /**
-     * Check actual information method.
-     * If entries was modified method throws OptimisticException.
-     *
-     * @param version - previous version.
-     * @param currentVersion - current version.
-     * @throws OptimisticException - oe.
-     */
-    public void checkActualInformation(int version, int currentVersion) throws OptimisticException {
-        if (version != currentVersion) {
-            throw new OptimisticException("Version is not same!");
-        }
     }
 }
