@@ -4,6 +4,8 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,6 +39,7 @@ public class ParallelSearch {
     /**
      * Флаг для блокирования потока начала поиска файлов.
      */
+    @GuardedBy("this")
     private volatile boolean finish = false;
 
     /**
@@ -71,32 +74,40 @@ public class ParallelSearch {
      */
     public void init() throws InterruptedException {
         Thread search = new Thread(() -> {
-            Path startPath = Paths.get(root);
-            String pattern = "regex:\\S+\\.txt";
-            try {
-                Files.walkFileTree(startPath, new SearchFileVisitor(pattern, files));
-                //  finish = true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        Thread read = new Thread(() -> {
-            // while (finish) {
-            for (String s : files) {
+            synchronized (this) {
+                Path startPath = Paths.get(root);
                 try {
-                    List<String> temp = Files.readAllLines(Paths.get(s));
-                    if (findText(temp, text)) {
-                        paths.add(Paths.get(s).toString());
-                    }
-
+                    Files.walkFileTree(startPath, new SearchFileVisitor(exts, files));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                this.finish = true;
+                notifyAll();
             }
-            //}
+        });
+        Thread read = new Thread(() -> {
+            synchronized (this) {
+                while (!finish) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                for (String s : files) {
+                    try {
+                        List<String> temp = Files.readAllLines(Paths.get(s));
+                        if (findText(temp, text)) {
+                            paths.add(Paths.get(s).toString());
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         });
         search.start();
-        search.join();
         read.start();
     }
 

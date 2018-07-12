@@ -28,7 +28,6 @@ public class IntegerProducer implements Runnable {
     @Override
     public void run() {
         for (int i = 0; i < 20; i++) {
-
             try {
                 sbq.offer(i);
                 Thread.sleep(400);

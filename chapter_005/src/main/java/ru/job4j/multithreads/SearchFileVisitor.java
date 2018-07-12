@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -21,7 +22,7 @@ public class SearchFileVisitor extends SimpleFileVisitor<Path> {
     /**
      * Matcher.
      */
-    private PathMatcher matcher;
+    private List<String> exts;
     /**
      * Files.
      */
@@ -30,16 +31,12 @@ public class SearchFileVisitor extends SimpleFileVisitor<Path> {
     /**
      * Constructor.
      *
-     * @param matcher - matcher(regex).
-     * @param files   - Queue of files.
+     * @param exts  - exts of files.
+     * @param files - Queue of files.
      */
-    public SearchFileVisitor(String matcher, Queue<String> files) {
-        try {
-            this.matcher = FileSystems.getDefault().getPathMatcher(matcher);
-            this.files = files;
-        } catch (IllegalArgumentException iae) {
-            System.out.println("Illegal Argeument Exception");
-        }
+    public SearchFileVisitor(List<String> exts, Queue<String> files) {
+        this.exts = exts;
+        this.files = files;
     }
 
     /**
@@ -54,9 +51,13 @@ public class SearchFileVisitor extends SimpleFileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         Path name = file.getFileName();
-        if (matcher.matches(name)) {
-            this.files.add(file.toAbsolutePath().toString());
+        String n = name.toString();
+        for (String s : this.exts) {
+            if(n.endsWith(s)){
+                this.files.add(file.toAbsolutePath().toString());
+            }
         }
+
         return FileVisitResult.CONTINUE;
     }
 }
