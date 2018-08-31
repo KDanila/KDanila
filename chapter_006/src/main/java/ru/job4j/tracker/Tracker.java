@@ -191,11 +191,6 @@ public class Tracker {
      * Creating table in database, if it's doesn't exist.
      */
     private void createTableInDB() {
-        try {
-            conn = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
-        }
         Statement st = null;
         try {
             st = conn.createStatement();
@@ -212,7 +207,7 @@ public class Tracker {
 
     /**
      * checkTableInDB method.
-     *
+     * <p>
      * checking table in database.
      *
      * @return true if db existing.
@@ -220,7 +215,6 @@ public class Tracker {
     private boolean checkTableInDB() {
         boolean isExist = false;
         try {
-            conn = DriverManager.getConnection(url, username, password);
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM pg_catalog.pg_tables;");
             while (rs.next()) {
@@ -238,14 +232,8 @@ public class Tracker {
 
     /**
      * creatDB method.
-     *
      */
     private void createDB() {
-        try {
-            conn = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
-        }
         Statement st = null;
         try {
             st = conn.createStatement();
@@ -264,7 +252,6 @@ public class Tracker {
     private boolean checkDB() {
         boolean isExist = false;
         try {
-            conn = DriverManager.getConnection(url, username, password);
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("SELECT datname FROM pg_database");
             while (rs.next()) {
