@@ -9,11 +9,11 @@ type_id integer references type(id),
 expired_date timestamp,
 price decimal );
 
---insert into type
---values (3,'Вода');
+insert into type
+values (3,'Вода');
 
---insert into product
---values (7, 'мороженное пер.', 2, '1999-01-08', 90.0);
+insert into product
+values (7, 'мороженное пер.', 2, '1999-01-08', 90.0);
 
 --1. Написать запрос получение всех продуктов с типом "СЫР"
 select* from product
@@ -36,16 +36,15 @@ inner join type t on t.id = p.type_id
 group by t.name order by t.name;
 
 --6. Написать запрос получение всех продуктов с типом "СЫР" и "МОЛОКО"
-select* from product
-where type_id = (select id from type where name = 'Сыр') 
-or type_id = (select id from type where name = 'Молоко') ;
+--select* from product
+--where type_id = (select id from type where name = 'Сыр') 
+--or type_id = (select id from type where name = 'Молоко') ;
 
 --7. Написать запрос, который выводит тип продуктов, которых осталось меньше 10 штук.  
-
---select type_id, sum(ammount) from product group by type_id ;
-
---select * from product 
---where type_id in (select type_id, summ(ammount))
+select t.name, sum(ammount) from product p 
+inner join type t on t.id = p.type_id 
+group by t.name 
+having sum(ammount)>10 ;
 
 --8. Вывести все продукты и их тип.
 select p.name,t.name,p.type_id from product p inner join type t on p.type_id= t.id;
