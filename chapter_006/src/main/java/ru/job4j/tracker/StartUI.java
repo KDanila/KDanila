@@ -35,6 +35,7 @@ public class StartUI {
      */
     public void init() {
         Tracker tracker = this.tracker;
+        tracker.connectingToDB();
         MenuTracker menu = new MenuTracker(this.input, tracker);
         menu.fillAction();
         int key;

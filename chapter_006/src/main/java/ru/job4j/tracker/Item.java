@@ -1,5 +1,8 @@
 package ru.job4j.tracker;
 
+import java.sql.Timestamp;
+import java.util.Random;
+
 /**
  * Item класс.
  *
@@ -8,6 +11,12 @@ package ru.job4j.tracker;
  * @since 0.1
  */
 public class Item {
+
+
+    /**
+     * Переменная для генерации уникального id.
+     */
+    public static final Random RN = new Random(1000);
     /**
      * name - имя заявки.
      */
@@ -16,19 +25,22 @@ public class Item {
      * description - описание заявки.
      */
     private String description;
+
     /**
      * create - время создания в милисекундах.
      */
-    private long create;
+    private Timestamp createTime;
     /**
      * id - идентификационный номер заявки.
      */
-    private String id;
+    private int id;
 
     /**
      * Пустой конструктор.
      */
     public Item() {
+        setId(generateId());
+        this.createTime = new Timestamp(System.currentTimeMillis());
     }
 
     /**
@@ -36,12 +48,26 @@ public class Item {
      *
      * @param name        - имя.
      * @param description - описание.
-     * @param create      - ид.
      */
-    public Item(String name, String description, long create) {
+    public Item(String name, String description) {
+        this();
         this.name = name;
         this.description = description;
-        this.create = create;
+    }
+
+    /**
+     * Overload constructor. Создан для считывания с базы.
+     *
+     * @param id - id.
+     * @param name - name.
+     * @param description -description.
+     * @param timestamp - timestamp.
+     */
+    public Item(int id, String name, String description, Timestamp timestamp) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.createTime = timestamp;
     }
 
     /**
@@ -49,7 +75,7 @@ public class Item {
      *
      * @return id - ид.
      */
-    public String getId() {
+    public int getId() {
         return this.id;
     }
 
@@ -65,7 +91,7 @@ public class Item {
     /**
      * @param id -ид.
      */
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -88,5 +114,25 @@ public class Item {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+
+    /**
+     * Метод генерирует уникальный ключ для заявки.
+     *
+     * @return Уникальный ключ.
+     */
+    int generateId() {
+        return Math.abs((int)(System.currentTimeMillis() + RN.nextInt()));
+    }
+
+
+    /**
+     * GetCreateTime method.
+     *
+     * @return
+     */
+    public Timestamp getCreateTime() {
+        return createTime;
     }
 }

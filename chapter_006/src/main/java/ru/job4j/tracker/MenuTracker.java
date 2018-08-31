@@ -25,10 +25,6 @@ public class MenuTracker {
      * actions - массив возможных действий.
      */
     private BaseAction[] actions = new BaseAction[7];
-    /**
-     * possibleVariety - массив возможных значений.
-     */
-    private int[] possibleVariety;
 
     /**
      * Конструктор.
@@ -128,7 +124,7 @@ class AddItem extends BaseAction {
     public void execute(Input input, Tracker tracker) {
         String name = input.ask("Enter task's name: ");
         String desc = input.ask("Enter task's desc: ");
-        tracker.add(new Item(name, desc, 1));
+        tracker.add(new Item(name, desc));
     }
 }
 
@@ -177,7 +173,7 @@ class EditItem extends BaseAction {
     @Override
     public void execute(Input input, Tracker tracker) {
         String id = input.ask("Введите номер id редактируемой заявки: ");
-        Item item = tracker.findById(id);
+        Item item = tracker.findById(Integer.valueOf(id));
         item.setName(input.ask("Введите новое имя заявки :"));
         item.setDescription(input.ask("Введите новое описание заявки :"));
         tracker.update(item);
@@ -204,7 +200,7 @@ class DeleteItem extends BaseAction {
     @Override
     public void execute(Input input, Tracker tracker) {
         String id = input.ask("Введите номер id удаляемой заявки: ");
-        Item item = tracker.findById(id);
+        Item item = tracker.findById(Integer.valueOf(id));
         tracker.delete(item);
     }
 }
@@ -228,11 +224,10 @@ class FindItemByID extends BaseAction {
     @Override
     public void execute(Input input, Tracker tracker) {
         String id = input.ask("Введите номер id искомой заявки: ");
-        Item item = tracker.findById(id);
+        Item item = tracker.findById(Integer.valueOf(id));
         System.out.println("Имя: " + item.getName() + " Описание: " + item.getDescription() + " id: " + item.getId());
 
     }
-
 }
 
 /**
@@ -279,5 +274,4 @@ class EndAction extends BaseAction {
     public void execute(Input input, Tracker tracker) {
 
     }
-
 }
