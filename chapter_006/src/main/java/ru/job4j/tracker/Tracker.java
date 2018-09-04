@@ -15,11 +15,22 @@ import java.util.List;
  * @since 0.1
  */
 public class Tracker {
-
-    //todo reading from file;
-    String url = "jdbc:postgresql://localhost:5432/umlclient";
-    String username = "postgres";
-    String password = "6799963";
+    /**
+     * Settings.
+     */
+    Settings set = new Settings();
+    /**
+     * url.
+     */
+    String url = set.getUrl();
+    /**
+     * username.
+     */
+    String username = set.getLogin();
+    /**
+     * password.
+     */
+    String password = set.getPassword();
     /**
      * Connection. toDB.
      */
@@ -29,10 +40,6 @@ public class Tracker {
      */
     private static final Logger log = LoggerFactory.getLogger(SQLException.class);
 
-    /**
-     * Указатель ячейки для новой заявки.
-     */
-    private int position = 0;
     /**
      * Name of database.
      */
@@ -47,13 +54,13 @@ public class Tracker {
      */
     void connectingToDB() {
         try {
-            conn = DriverManager.getConnection(url, username, password);
+            this.conn = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         } finally {
-            if (conn != null) {
+            if (this.conn == null) {
                 try {
-                    conn.close();
+                    this.conn.close();
                 } catch (SQLException e) {
                     log.error(e.getMessage(), e);
                 }

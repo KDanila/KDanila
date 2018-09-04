@@ -1,0 +1,84 @@
+package ru.job4j.tracker;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+/**
+ * Settings класс.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1
+ */
+public class Settings {
+    /**
+     * FileInputStream.
+     */
+    FileInputStream fis;
+    /**
+     * property.
+     */
+    Properties property = new Properties();
+    /**
+     * url.
+     */
+    private String url;
+    /**
+     * login.
+     */
+    private String login;
+    /**
+     * password.
+     */
+    private String password;
+
+    /**
+     * Constructor.
+     */
+    public Settings() {
+        try {
+            fis = new FileInputStream("C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\tracker\\config.properties");
+            property.load(fis);
+            this.url = property.getProperty("host");
+            this.login = property.getProperty("username");
+            this.password = property.getProperty("password");
+        } catch (IOException e) {
+            System.err.println("ОШИБКА: Файл свойств отсуствует!");
+        } finally {
+            try {
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Getter.
+     *
+     * @return url.
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * Getter.
+     *
+     * @return login.
+     */
+    public String getLogin() {
+        return login;
+    }
+
+    /**
+     * Getter.
+     *
+     * @return pasword.
+     */
+    public String getPassword() {
+        return password;
+    }
+
+}
