@@ -36,9 +36,9 @@ public class Settings {
     /**
      * Constructor.
      */
-    public Settings() {
+    public Settings(String path) {
         try {
-            fis = new FileInputStream("C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\tracker\\config.properties");
+            fis = new FileInputStream(path);
             property.load(fis);
             this.url = property.getProperty("host");
             this.login = property.getProperty("username");

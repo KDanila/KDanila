@@ -18,7 +18,7 @@ public class Tracker {
     /**
      * Settings.
      */
-    Settings set = new Settings();
+    Settings set = new Settings("C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\tracker\\config.properties");
     /**
      * url.
      */
@@ -201,7 +201,6 @@ public class Tracker {
         Statement st = null;
         try {
             st = conn.createStatement();
-            //todo создать таблицу в ту же базу данных.
             st.executeQuery("CREATE TABLE tracker ( id integer primary key," +
                     "name varchar(15), " +
                     "description varchar(50)," +
