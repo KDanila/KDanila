@@ -1,10 +1,17 @@
 package ru.job4j.xml;
 
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class StoreXML {
@@ -16,29 +23,12 @@ public class StoreXML {
     }
 
 
-/*
 
     public static void main(String[] args) throws JAXBException {
-        List<Entry> list = new ArrayList<>();
-        List<Field> fields = new ArrayList<>();
-        fields.add(new Field(0));
-        fields.add(new Field(0));
-        fields.add(new Field(0));
-        list.add(new Entry(fields));
-        fields.add(new Field(1));
-        fields.add(new Field(1));
-        fields.add(new Field(1));
-        list.add(new Entry(fields));
-        JAXBContext jaxbContext = JAXBContext.newInstance(Entries.class);
-        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        jaxbMarshaller.marshal(
-                new Entries(list),
-                new File("C:\\Projects\\KDanila\\chapter_006\\src\\test" +
-                        "\\java\\ru\\job4j\\xml\\data.xml")
-        );
+        File st =  new File("C:\\Projects\\KDanila\\chapter_006\\src\\test" +
+                        "\\java\\ru\\job4j\\xml\\data.xml");
+        new StoreXML(st).fieldSum(st);
     }
-*/
 
 
     public void save(List<Entry> list) throws JAXBException {
@@ -52,7 +42,20 @@ public class StoreXML {
     }
     //todo sax parser.
     public int fieldSum(File target){
-
+        int fieldSum = 0;
+        SAXParserFactory spf = SAXParserFactory.newInstance();
+        spf.setNamespaceAware(true);
+        SAXParser saxParser = null;
+        Handler handler = new Handler();
+        try {
+            saxParser = spf.newSAXParser();
+            saxParser.parse(target, handler);
+        } catch (ParserConfigurationException | IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+        return fieldSum;
     }
     /*
     SAXParser saxParser = spf.newSAXParser();
