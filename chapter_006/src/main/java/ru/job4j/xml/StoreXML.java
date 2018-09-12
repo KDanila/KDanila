@@ -55,7 +55,7 @@ public class StoreXML {
         } catch (SAXException e) {
             e.printStackTrace();
         }
-        return fieldSum;
+        return handler.getFieldSum();
     }
     /*
     SAXParser saxParser = spf.newSAXParser();
