@@ -58,10 +58,10 @@ public class Item {
     /**
      * Overload constructor. Создан для считывания с базы.
      *
-     * @param id - id.
-     * @param name - name.
+     * @param id          - id.
+     * @param name        - name.
      * @param description -description.
-     * @param timestamp - timestamp.
+     * @param timestamp   - timestamp.
      */
     public Item(int id, String name, String description, Timestamp timestamp) {
         this.id = id;
@@ -123,14 +123,14 @@ public class Item {
      * @return Уникальный ключ.
      */
     int generateId() {
-        return Math.abs((int)(System.currentTimeMillis() + RN.nextInt()));
+        return Math.abs((int) (System.currentTimeMillis() + RN.nextInt()));
     }
 
 
     /**
      * GetCreateTime method.
      *
-     * @return
+     * @return TimeStamp -ts.
      */
     public Timestamp getCreateTime() {
         return createTime;

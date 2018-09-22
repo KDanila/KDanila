@@ -10,23 +10,23 @@ public class StoreSQL {
     /**
      * Settings.
      */
-    Settings set = new Settings("C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\xml\\config.properties");
+    private Settings set = new Settings("C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\xml\\config.properties");
     /**
      * url.
      */
-    String url = set.getUrl();
+    private String url = set.getUrl();
     /**
      * username.
      */
-    String username = set.getLogin();
+    private String username = set.getLogin();
     /**
      * password.
      */
-    String password = set.getPassword();
+    private String password = set.getPassword();
     /**
      * Connection. toDB.
      */
-    Connection conn = null;
+    private Connection conn = null;
     /**
      * Logger.
      */

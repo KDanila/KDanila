@@ -1,7 +1,6 @@
 package ru.job4j.xml;
 
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -14,20 +13,21 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * StoreXML class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1
+ */
 public class StoreXML {
-
+    /**
+     * File
+     */
     private File storeInXML = null;
 
     StoreXML(File target) {
         this.storeInXML = target;
-    }
-
-
-
-    public static void main(String[] args) throws JAXBException {
-        File st =  new File("C:\\Projects\\KDanila\\chapter_006\\src\\test" +
-                        "\\java\\ru\\job4j\\xml\\data.xml");
-        new StoreXML(st).fieldSum(st);
     }
 
 
@@ -40,13 +40,12 @@ public class StoreXML {
                 this.storeInXML
         );
     }
-    //todo sax parser.
-    public int fieldSum(File target){
-        int fieldSum = 0;
+
+    public int fieldSum(File target) {
+        Handler handler = new Handler();
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
         SAXParser saxParser = null;
-        Handler handler = new Handler();
         try {
             saxParser = spf.newSAXParser();
             saxParser.parse(target, handler);
