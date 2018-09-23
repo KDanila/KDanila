@@ -4,6 +4,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.print.attribute.IntegerSyntax;
+
 public class Handler extends DefaultHandler {
 
 
@@ -13,9 +15,9 @@ public class Handler extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         this.element = qName;
-        if(qName.equals("value")) {
-
-        }
+        System.out.println("getQName "+attributes.getQName(0));
+        System.out.println("getValue "+attributes.getValue(0));
+        this.fieldSum+= Integer.valueOf(attributes.getValue(0));
     }
 
     @Override
@@ -24,7 +26,7 @@ public class Handler extends DefaultHandler {
         if(str.contains("<")||element==null){
             return;
         }
-        if(str.equals("value")){
+        if(str.equals("entries")){
             this.fieldSum+=Integer.valueOf(str);
         }
     }
