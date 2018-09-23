@@ -22,25 +22,6 @@ public class StoreXML {
     }
 
 
-
-    public static void main(String[] args) throws JAXBException {
-        File st =  new File("C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\xml\\result.xml");
-        Handler handler = new Handler();
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-        SAXParser saxParser = null;
-        try {
-            saxParser = spf.newSAXParser();
-            saxParser.parse(st, handler);
-        } catch (ParserConfigurationException | IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        }
-        handler.getFieldSum();
-    }
-
-
     public void save(List<Entry> list) throws JAXBException {
         JAXBContext jaxbContext = JAXBContext.newInstance(Entries.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -50,13 +31,11 @@ public class StoreXML {
                 this.storeInXML
         );
     }
-    //todo sax parser.
     public int fieldSum(File target){
-        int fieldSum = 0;
+        Handler handler = new Handler();
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
         SAXParser saxParser = null;
-        Handler handler = new Handler();
         try {
             saxParser = spf.newSAXParser();
             saxParser.parse(target, handler);
