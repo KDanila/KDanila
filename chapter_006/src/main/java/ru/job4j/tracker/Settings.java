@@ -42,7 +42,7 @@ public class Settings {
         try {
             fis = new FileInputStream(path);
             property.load(fis);
-            this.url = property.getProperty("host");
+            this.url = property.getProperty("jdbc.url");
             this.login = property.getProperty("username");
             this.password = property.getProperty("password");
         } catch (IOException e) {

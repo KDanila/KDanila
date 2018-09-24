@@ -22,15 +22,25 @@ import java.util.List;
  */
 public class StoreXML {
     /**
-     * File
+     * File.
      */
     private File storeInXML = null;
 
+    /**
+     * Constructor.
+     *
+     * @param target - target.
+     */
     StoreXML(File target) {
         this.storeInXML = target;
     }
 
-
+    /**
+     * Save method.
+     *
+     * @param list - of Entry to construct XML file.
+     * @throws JAXBException - exception.
+     */
     public void save(List<Entry> list) throws JAXBException {
         JAXBContext jaxbContext = JAXBContext.newInstance(Entries.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -41,6 +51,12 @@ public class StoreXML {
         );
     }
 
+    /**
+     * fieldSum method. Counting sum href number from result xml.
+     *
+     * @param target - target file in xml.
+     * @return - field sum.
+     */
     public int fieldSum(File target) {
         Handler handler = new Handler();
         SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -56,72 +72,138 @@ public class StoreXML {
         }
         return handler.getFieldSum();
     }
-    /*
-    SAXParser saxParser = spf.newSAXParser();
-XMLReader xmlReader = saxParser.getXMLReader();
-xmlReader.setContentHandler(new SAXLocalNameCount());
-xmlReader.parse(convertToFileURL(filename));
-     */
 
+    /**
+     * Entries element.
+     */
     @XmlRootElement
     static class Entries {
+        /**
+         * entry.
+         */
         private List<Entry> entry;
 
-        public Entries() {
+        /**
+         * Constructor.
+         */
+        Entries() {
         }
 
-        public Entries(List<Entry> entry) {
+        /**
+         * Constructor.
+         *
+         * @param entry - entry list.
+         */
+        Entries(List<Entry> entry) {
             this.entry = entry;
         }
 
+        /**
+         * Getter.
+         *
+         * @return entry list.
+         */
         public List<Entry> getEntry() {
             return entry;
         }
 
+        /**
+         * Setter.
+         *
+         * @param entry - entry list.
+         */
         public void setEntry(List<Entry> entry) {
             this.entry = entry;
         }
     }
 
+    /**
+     * Entry class.
+     */
     @XmlRootElement
     static class Entry {
+        /**
+         * Field.
+         */
         private List<Field> field;
 
+        /**
+         * Getter.
+         *
+         * @return field List.
+         */
         public List<Field> getFields() {
             return field;
         }
 
+        /**
+         * Setter.
+         *
+         * @param fields - fields.
+         */
         public void setFields(List<Field> fields) {
             this.field = fields;
         }
 
+        /**
+         * Constructor.
+         */
         Entry() {
 
         }
 
+        /**
+         * Constructor.
+         *
+         * @param fields - list fields.
+         */
         Entry(List<Field> fields) {
             this.field = fields;
         }
 
     }
 
+    /**
+     * Field class.
+     */
     @XmlRootElement
     static class Field {
-        public int getValue() {
-            return value;
-        }
-
-        public void setValue(int value) {
-            this.value = value;
-        }
-
+        /**
+         * value.
+         */
         private int value;
 
+        /**
+         * Constructor.
+         */
         Field() {
 
         }
 
-        public Field(int value) {
+        /**
+         * Constructor.
+         *
+         * @param value - int.
+         */
+        Field(int value) {
+            this.value = value;
+        }
+
+        /**
+         * Getter.
+         *
+         * @return value.
+         */
+        public int getValue() {
+            return value;
+        }
+
+        /**
+         * Setter.
+         *
+         * @param value - int.
+         */
+        public void setValue(int value) {
             this.value = value;
         }
     }

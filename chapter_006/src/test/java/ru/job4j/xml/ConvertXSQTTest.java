@@ -6,11 +6,23 @@ import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
 
+/**
+ * ConvertXSQTTest class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1
+ */
 public class ConvertXSQTTest {
-
+    /**
+     * ConverXSQT test.
+     *
+     * @throws IOException          - ex.
+     * @throws TransformerException - ex.
+     */
     @Test
     public void convertXSQTTest() throws IOException, TransformerException {
         ConvertXSQT cc = new ConvertXSQT();
