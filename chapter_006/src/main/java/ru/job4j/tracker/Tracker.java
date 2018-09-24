@@ -3,7 +3,12 @@ package ru.job4j.tracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,27 +23,27 @@ public class Tracker {
     /**
      * Settings.
      */
-    Settings set = new Settings("C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\tracker\\config.properties");
+    private Settings set = new Settings("C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\tracker\\config.properties");
     /**
      * url.
      */
-    String url = set.getUrl();
+    private String url = set.getUrl();
     /**
      * username.
      */
-    String username = set.getLogin();
+    private String username = set.getLogin();
     /**
      * password.
      */
-    String password = set.getPassword();
+    private String password = set.getPassword();
     /**
      * Connection. toDB.
      */
-    Connection conn = null;
+    private Connection conn = null;
     /**
      * Logger.
      */
-    private static final Logger log = LoggerFactory.getLogger(SQLException.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SQLException.class);
 
     /**
      * Name of database.
@@ -56,13 +61,13 @@ public class Tracker {
         try {
             this.conn = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         } finally {
             if (this.conn == null) {
                 try {
                     this.conn.close();
                 } catch (SQLException e) {
-                    log.error(e.getMessage(), e);
+                    LOGGER.error(e.getMessage(), e);
                 }
             }
         }
@@ -78,7 +83,6 @@ public class Tracker {
      * Метод public Item add(Item) добавляет заявку, переданную в аргументах в массив заявок this.items.
      *
      * @param item - заявка.
-     * @return item - заявка.
      */
     public void add(Item item) {
         try (PreparedStatement ps = conn.prepareStatement("insert into tracker values(?,?,?,?)")) {
@@ -98,8 +102,8 @@ public class Tracker {
      * @param item - текущая заявка.
      */
     public void update(Item item) {
-        try (PreparedStatement ps = conn.prepareStatement("" +
-                "update tracker set name=?,description =?,expired_date =? where id = ?")) {
+        try (PreparedStatement ps = conn.prepareStatement("update tracker set name=?,description =?,expired_date =?"
+                + " where id = ?")) {
             ps.setString(1, item.getName());
             ps.setString(2, item.getDescription());
             ps.setTimestamp(3, item.getCreateTime());
@@ -201,13 +205,13 @@ public class Tracker {
         Statement st = null;
         try {
             st = conn.createStatement();
-            st.executeQuery("CREATE TABLE tracker ( id integer primary key," +
-                    "name varchar(15), " +
-                    "description varchar(50)," +
-                    "expired_date timestamp)");
+            st.executeQuery("CREATE TABLE tracker ( id integer primary key,"
+                    + "name varchar(15), "
+                    + "description varchar(50),"
+                    + "expired_date timestamp)");
             st.close();
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -231,7 +235,7 @@ public class Tracker {
             rs.close();
             st.close();
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
         return isExist;
     }
@@ -268,7 +272,7 @@ public class Tracker {
             rs.close();
             st.close();
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
         return isExist;
     }

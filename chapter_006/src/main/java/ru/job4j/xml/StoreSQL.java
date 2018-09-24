@@ -4,8 +4,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.tracker.Settings;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Savepoint;
+import java.sql.Statement;
 
+
+/**
+ * StoreSQL class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1
+ */
 public class StoreSQL {
     /**
      * Settings.
@@ -30,7 +44,7 @@ public class StoreSQL {
     /**
      * Logger.
      */
-    private static final Logger log = LoggerFactory.getLogger(SQLException.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SQLException.class);
 
     /**
      * Name of database.
@@ -43,27 +57,39 @@ public class StoreSQL {
 
     /**
      * Connecting to DB method.
+     * <p>
+     * Create new table in any occasion. If table already exist method
+     * delete it and create new. AutoCommit is disabled.
      */
     void connectingToDB() {
         try {
+            this.conn.setAutoCommit(false);
+            Savepoint save = conn.setSavepoint();
             this.conn = DriverManager.getConnection(url, username, password);
+            if (this.checkTableInDB()) {
+                deleteTableInDb();
+            }
+            this.createTableInDB();
+            if (checkTableInDB()) {
+                conn.rollback();
+            }
+            this.conn.commit();
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         } finally {
             if (this.conn == null) {
                 try {
                     this.conn.close();
                 } catch (SQLException e) {
-                    log.error(e.getMessage(), e);
+                    LOGGER.error(e.getMessage(), e);
                 }
             }
         }
-        if (this.checkTableInDB()) {
-            deleteTableInDb();
-        }
-        this.createTableInDB();
     }
 
+    /**
+     * deleteTableInDB.
+     */
     private void deleteTableInDb() {
         Statement st = null;
         try {
@@ -71,7 +97,7 @@ public class StoreSQL {
             st.executeQuery("DROP TABLE entry ");
             st.close();
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -87,7 +113,7 @@ public class StoreSQL {
             st.executeQuery("CREATE TABLE entry (field integer)");
             st.close();
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -111,11 +137,16 @@ public class StoreSQL {
             rs.close();
             st.close();
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
         return isExist;
     }
 
+    /**
+     * generate method.
+     *
+     * @param n - number of values to insert.
+     */
     public void generate(int n) {
         for (int i = 0; i < n; i++) {
             try (PreparedStatement ps = conn.prepareStatement("insert into entry values(?)")) {
