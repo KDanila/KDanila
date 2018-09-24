@@ -15,11 +15,11 @@ public class Settings {
     /**
      * FileInputStream.
      */
-    FileInputStream fis;
+    private FileInputStream fis;
     /**
      * property.
      */
-    Properties property = new Properties();
+    private Properties property = new Properties();
     /**
      * url.
      */
@@ -35,6 +35,8 @@ public class Settings {
 
     /**
      * Constructor.
+     *
+     * @param path - string.
      */
     public Settings(String path) {
         try {

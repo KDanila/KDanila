@@ -1,5 +1,11 @@
 package ru.job4j.siteparsing;
-
+/**
+ * HTMLParser class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.0
+ */
 public class HTMLParser {
     //todo jsoap
     //todo read DOM

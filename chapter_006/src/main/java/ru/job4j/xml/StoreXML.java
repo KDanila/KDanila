@@ -13,8 +13,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * StoreXML class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1
+ */
 public class StoreXML {
-
+    /**
+     * File
+     */
     private File storeInXML = null;
 
     StoreXML(File target) {
@@ -31,7 +40,8 @@ public class StoreXML {
                 this.storeInXML
         );
     }
-    public int fieldSum(File target){
+
+    public int fieldSum(File target) {
         Handler handler = new Handler();
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);

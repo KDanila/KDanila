@@ -5,7 +5,6 @@ import org.junit.Test;
 import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
