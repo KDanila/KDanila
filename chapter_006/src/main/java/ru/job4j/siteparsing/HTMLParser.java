@@ -4,6 +4,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +19,7 @@ import java.util.List;
  * @version $Id$
  * @since 0.1.0
  */
-public class HTMLParser {
+public class HTMLParser implements Job {
 
     //todo jsoap
 
@@ -43,6 +46,20 @@ public class HTMLParser {
             }
         }
         lineClasses.forEach(System.out::println);
+    }
+
+    public void startParsing() {
+/*        4. Система должна собирать данные только про вакансии java. учесть что JavaScript не подходит. как и Java Script.
+        5. Данные должны храниться в базе данных.
+        6. Учесть дубликаты.
+        7. Учитывать время последнего запуска. если это первый запуск. то нужно собрать все объявления с начало года.
+        8. в системе не должно быть вывода, либо ввода информации. все настройки должны быть в файле. app.properties.
+*/
+    }
+
+    @Override
+    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        this.startParsing();
     }
 
     static class Line {
