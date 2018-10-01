@@ -19,7 +19,7 @@ import java.util.List;
  * @version $Id$
  * @since 0.1.0
  */
-public class HTMLParser implements Job {
+public class HTMLParser {
 
     //todo jsoap
 
@@ -57,10 +57,6 @@ public class HTMLParser implements Job {
 */
     }
 
-    @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        this.startParsing();
-    }
 
     static class Line {
         @Override

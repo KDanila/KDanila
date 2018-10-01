@@ -2,9 +2,11 @@ package ru.job4j.siteparsing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.job4j.tracker.Settings;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Properties;
 
 
 /**
@@ -18,19 +20,24 @@ public class StoreSQL {
     /**
      * Settings.
      */
-    private Settings set = new Settings("C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\siteparsing\\config.properties");
+    //
+    private Properties settings = new Properties();
     /**
      * url.
      */
-    private String url = set.getUrl();
+    private String url;
     /**
      * username.
      */
-    private String username = set.getLogin();
+    private String username;
     /**
      * password.
      */
-    private String password = set.getPassword();
+    private String password;
+    /**
+     * table name.
+     */
+    private String tablename;
     /**
      * Connection. toDB.
      */
@@ -39,15 +46,23 @@ public class StoreSQL {
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(SQLException.class);
-
     /**
      * Name of database.
      */
-    private final String dbName = "trackerdb";
-    /**
-     * Name of table.
-     */
-    private final String dbTableName = "sql_ru_java_vacancy_database";
+    private final String dbName;
+
+    public StoreSQL(String path) {
+        try {
+            settings.load(new FileInputStream(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.url = settings.getProperty("host");
+        this.username = settings.getProperty("jdbc.username");
+        this.password = settings.getProperty("jdbc.password");
+        this.tablename = settings.getProperty("jdbc.tablename");
+        this.dbName = settings.getProperty("jdbc.DBname");
+    }
 
     /**
      * Connecting to DB method.
@@ -57,20 +72,14 @@ public class StoreSQL {
      */
     void connectingToDB() {
         try {
-            this.conn.setAutoCommit(false);
-            Savepoint save = conn.setSavepoint();
             this.conn = DriverManager.getConnection(url, username, password);
             if (!this.checkTableInDB()) {
                 this.createTableInDB();
             }
-            if (checkTableInDB()) {
-                conn.rollback();
-            }
-            this.conn.commit();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         } finally {
-            if (this.conn == null) {
+            if (this.conn != null) {
                 try {
                     this.conn.close();
                 } catch (SQLException e) {
@@ -89,7 +98,12 @@ public class StoreSQL {
         Statement st = null;
         try {
             st = conn.createStatement();
-            st.executeQuery("CREATE TABLE entry (field integer)");
+            st.executeQuery("CREATE TABLE sql_ru (id serial,\n" +
+                    "Thema VARCHAR(30),\n" +
+                    "Author VARCHAR(30),\n" +
+                    "tAnswer VARCHAR(30),\n" +
+                    "tViews Integer,\n" +
+                    "Data VARCHAR(20))");
             st.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
@@ -109,8 +123,9 @@ public class StoreSQL {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM pg_catalog.pg_tables;");
             while (rs.next()) {
-                if (rs.getString("tablename").equals(dbTableName)) {
-                    return true;
+                if (rs.getString("tablename").equals(this.dbName)) {
+                    isExist = true;
+                    break;
                 }
             }
             rs.close();
@@ -123,18 +138,19 @@ public class StoreSQL {
 
     /**
      * generate method.
-     *
-     * @param n - number of values to insert.
      */
-    //todo Верную database
-    public void generate(int n) {
-        for (int i = 0; i < n; i++) {
-            try (PreparedStatement ps = conn.prepareStatement("insert into entry values(?)")) {
-                ps.setInt(1, i);
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+    public void insert(String thema, String author, String answer, int views, String data) {
+        String request = "insert into sql_ru (thema,author,answer,views,data) values(?,?,?,?,?)";
+        try (PreparedStatement ps = conn.prepareStatement(request)) {
+            ps.setString(1, thema);
+            ps.setString(2, author);
+            ps.setString(3, answer);
+            ps.setInt(4, views);
+            ps.setString(5, data);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
         }
     }
 }
+
