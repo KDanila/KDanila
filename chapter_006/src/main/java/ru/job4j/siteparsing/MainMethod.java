@@ -10,15 +10,17 @@ public class MainMethod {
     }
 
 
-    void trigger(HTMLParser htmlParser){
+    void trigger(HTMLParser htmlParser) {
 
     }
 
     public static void main(String[] args) {
         String path = "C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\siteparsing\\config.properties";
-        StoreSQL storeSQL = new StoreSQL(path);
-        storeSQL.connectingToDB();
-        // new HTMLParser().startParsing();
+        //StoreSQL storeSQL = new StoreSQL(path);
+        //storeSQL.connectingToDB();
+        HTMLParser htmlParser = new HTMLParser(path);
+        htmlParser.startParsing();
+        System.out.println(htmlParser);
     }
 
 

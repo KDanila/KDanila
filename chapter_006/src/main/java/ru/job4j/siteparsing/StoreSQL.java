@@ -55,9 +55,9 @@ public class StoreSQL {
         try {
             settings.load(new FileInputStream(path));
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
-        this.url = settings.getProperty("host");
+        this.url = settings.getProperty("jdbc.url");
         this.username = settings.getProperty("jdbc.username");
         this.password = settings.getProperty("jdbc.password");
         this.tablename = settings.getProperty("jdbc.tablename");
@@ -95,17 +95,16 @@ public class StoreSQL {
      * Creating table in database, if it's doesn't exist.
      */
     private void createTableInDB() {
-        Statement st = null;
         try {
-            st = conn.createStatement();
-            st.executeQuery("CREATE TABLE sql_ru (id serial,\n" +
-                    "Thema VARCHAR(30),\n" +
-                    "Author VARCHAR(30),\n" +
-                    "tAnswer VARCHAR(30),\n" +
-                    "tViews Integer,\n" +
-                    "Data VARCHAR(20))");
-            st.close();
-        } catch (SQLException e) {
+            Statement st = conn.createStatement();
+            String request = "CREATE TABLE "+this.tablename+" (id serial,\n" +
+                    "                Thema VARCHAR(30),\n" +
+                    "                Author VARCHAR(30),\n" +
+                    "                Answer VARCHAR(30),\n" +
+                    "                Views Integer,\n" +
+                    "                Data VARCHAR(20))";
+            ResultSet rs = st.executeQuery(request);
+        }catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
     }
@@ -123,7 +122,7 @@ public class StoreSQL {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM pg_catalog.pg_tables;");
             while (rs.next()) {
-                if (rs.getString("tablename").equals(this.dbName)) {
+                if (rs.getString("tablename").equals(this.tablename)) {
                     isExist = true;
                     break;
                 }

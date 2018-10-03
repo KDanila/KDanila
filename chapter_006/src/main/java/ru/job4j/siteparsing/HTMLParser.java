@@ -4,13 +4,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * HTMLParser class.
@@ -21,11 +20,22 @@ import java.util.List;
  */
 public class HTMLParser {
 
-    //todo jsoap
+    private Set<Line> lineSet = new HashSet<>();
 
-    //todo read DOM
+    private Properties properties = new Properties();
 
-    public static void main(String[] args) throws IOException {
+    private String url;
+
+    public HTMLParser(String path) {
+        try {
+            properties.load(new FileInputStream(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.url = properties.getProperty("site.url");
+    }
+
+    /*public static void main(String[] args) throws IOException {
         String url = "http://www.sql.ru/forum/job-offers/";
         Document doc = Jsoup.connect(url).get();
         List<Line> lineClasses = new ArrayList<>();
@@ -37,24 +47,63 @@ public class HTMLParser {
         for (int i = 0; i < line.size() - 6; i++) {
             if (i % 6 != 0) {
                 lineClasses.add(new Line(line.get(i).text(),
-                        line.get(i+1).text(),
-                        line.get(i+2).text(),
-                        line.get(i+3).text(),
-                        line.get(i+4).text()));
-                i+=5;
-                //System.out.println(line.get(i).text());
+                        line.get(i + 1).text(),
+                        line.get(i + 2).text(),
+                        line.get(i + 3).text(),
+                        line.get(i + 4).text()));
+                i += 5;
+                System.out.println(line.get(i).text());
             }
         }
         lineClasses.forEach(System.out::println);
     }
-
+*/
     public void startParsing() {
+        Document doc = connectToSite();
+        parseSite(doc);
+
 /*        4. Система должна собирать данные только про вакансии java. учесть что JavaScript не подходит. как и Java Script.
         5. Данные должны храниться в базе данных.
         6. Учесть дубликаты.
         7. Учитывать время последнего запуска. если это первый запуск. то нужно собрать все объявления с начало года.
         8. в системе не должно быть вывода, либо ввода информации. все настройки должны быть в файле. app.properties.
 */
+    }
+
+    private void parseSite(Document doc) {
+        Element table = doc.select("table[class = forumTable]").first();
+        Elements lines = table.select("tr");
+        Elements line = lines.select("td");
+        for (int i = 0; i < line.size() - 6; i++) {
+            if (i % 6 != 0) {
+                this.lineSet.add(new Line(line.get(i).text(),
+                        line.get(i + 1).text(),
+                        line.get(i + 2).text(),
+                        line.get(i + 3).text(),
+                        line.get(i + 4).text()));
+                i += 5;
+            }
+        }
+    }
+
+    private Document connectToSite() {
+        //String url = "http://www.sql.ru/forum/job-offers/";
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(url).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return doc;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Line line : this.lineSet) {
+            sb.append(line.getTheme());
+        }
+        return sb.toString();
     }
 
 
