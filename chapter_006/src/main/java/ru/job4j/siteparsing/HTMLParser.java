@@ -59,8 +59,14 @@ public class HTMLParser {
     }
 */
     public void startParsing() {
-        Document doc = connectToSite();
-        parseSite(doc);
+        String currentUrl = this.url;
+        Document doc = connectToSite(currentUrl);
+        int counter = 0;
+        while (isNotBlankPage(doc)) {
+            parseSite(doc);
+            doc = connectToSite(currentUrl.concat(String.valueOf(counter++)));
+        }
+
 
 /*        4. Система должна собирать данные только про вакансии java. учесть что JavaScript не подходит. как и Java Script.
         5. Данные должны храниться в базе данных.
@@ -70,23 +76,36 @@ public class HTMLParser {
 */
     }
 
+    private boolean isNotBlankPage(Document document) {
+        Element table = document.select("table[class = forumTable]").first();
+        Elements lines = table.select("tr");
+        Elements line = lines.select("td");
+        return line.size() == 18 ? false : true;
+    }
+
     private void parseSite(Document doc) {
         Element table = doc.select("table[class = forumTable]").first();
         Elements lines = table.select("tr");
+        //System.out.println(lines);
         Elements line = lines.select("td");
         for (int i = 0; i < line.size() - 6; i++) {
             if (i % 6 != 0) {
-                this.lineSet.add(new Line(line.get(i).text(),
-                        line.get(i + 1).text(),
-                        line.get(i + 2).text(),
-                        line.get(i + 3).text(),
-                        line.get(i + 4).text()));
-                i += 5;
+                String tempName = line.get(i).text();
+                if (tempName.contains("Java") ||
+                        tempName.contains("JavaScript") ||
+                        tempName.contains("Java Script")) {
+                    this.lineSet.add(new Line(line.get(i).text(),
+                            line.get(i + 1).text(),
+                            line.get(i + 2).text(),
+                            line.get(i + 3).text(),
+                            line.get(i + 4).text()));
+                    i += 5;
+                }
             }
         }
     }
 
-    private Document connectToSite() {
+    private Document connectToSite(String url) {
         //String url = "http://www.sql.ru/forum/job-offers/";
         Document doc = null;
         try {

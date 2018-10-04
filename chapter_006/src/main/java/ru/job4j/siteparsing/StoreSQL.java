@@ -16,7 +16,8 @@ import java.util.Properties;
  * @version $Id$
  * @since 0.1
  */
-public class StoreSQL {
+public class
+StoreSQL {
     /**
      * Settings.
      */
