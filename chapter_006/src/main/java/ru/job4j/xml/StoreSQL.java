@@ -61,11 +61,11 @@ public class StoreSQL {
      * Create new table in any occasion. If table already exist method
      * delete it and create new. AutoCommit is disabled.
      */
-    void connectingToDB() {
-        try {
-            this.conn.setAutoCommit(false);
+    void connectingToDB() throws SQLException {
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
             Savepoint save = conn.setSavepoint();
-            this.conn = DriverManager.getConnection(url, username, password);
+            this.conn = conn;
+            this.conn.setAutoCommit(false);
             if (this.checkTableInDB()) {
                 deleteTableInDb();
             }
@@ -75,27 +75,18 @@ public class StoreSQL {
             }
             this.conn.commit();
         } catch (SQLException e) {
+            this.conn.rollback();
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            if (this.conn == null) {
-                try {
-                    this.conn.close();
-                } catch (SQLException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
-            }
         }
     }
+
 
     /**
      * deleteTableInDB.
      */
     private void deleteTableInDb() {
-        Statement st = null;
-        try {
-            st = conn.createStatement();
+        try(Statement st = conn.createStatement()) {
             st.executeQuery("DROP TABLE entry ");
-            st.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -107,11 +98,8 @@ public class StoreSQL {
      * Creating table in database, if it's doesn't exist.
      */
     private void createTableInDB() {
-        Statement st = null;
-        try {
-            st = conn.createStatement();
+        try (Statement st = conn.createStatement()) {
             st.executeQuery("CREATE TABLE entry (field integer)");
-            st.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -126,16 +114,13 @@ public class StoreSQL {
      */
     private boolean checkTableInDB() {
         boolean isExist = false;
-        try {
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM pg_catalog.pg_tables;");
+        try (Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery("SELECT * FROM pg_catalog.pg_tables;")) {
             while (rs.next()) {
                 if (rs.getString("tablename").equals(dbTableName)) {
                     return true;
                 }
             }
-            rs.close();
-            st.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
