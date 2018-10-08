@@ -26,9 +26,12 @@ public class HTMLParser {
 
     private String url;
 
-    public HTMLParser(String path) {
+    private StoreSQL storeSQL;
+
+    public HTMLParser(String path, StoreSQL storeSQL) {
         try {
             properties.load(new FileInputStream(path));
+            this.storeSQL = storeSQL;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,12 +62,12 @@ public class HTMLParser {
     }
 */
     public void startParsing() {
-        String currentUrl = this.url;
-        Document doc = connectToSite(currentUrl);
-        int counter = 0;
+        this.storeSQL.connectingToDB();
+        Document doc = connectToSite(this.url);
+        int counter = 1;
         while (isNotBlankPage(doc)) {
             parseSite(doc);
-            doc = connectToSite(currentUrl.concat(String.valueOf(counter++)));
+            doc = connectToSite(this.url.concat(String.valueOf(counter++)));
         }
 
 
@@ -88,18 +91,25 @@ public class HTMLParser {
         Elements lines = table.select("tr");
         //System.out.println(lines);
         Elements line = lines.select("td");
-        for (int i = 0; i < line.size() - 6; i++) {
+        for (int i = 0; i < line.size() - 4; i++) {
             if (i % 6 != 0) {
                 String tempName = line.get(i).text();
-                if (tempName.contains("Java") ||
-                        tempName.contains("JavaScript") ||
-                        tempName.contains("Java Script")) {
-                    this.lineSet.add(new Line(line.get(i).text(),
+                if (tempName.contains("Java") &&
+                        !tempName.contains("JavaScript") &&
+                        !tempName.contains("Java Script")) {
+/*                    this.lineSet.add(new Line(line.get(i).text(),
                             line.get(i + 1).text(),
                             line.get(i + 2).text(),
                             line.get(i + 3).text(),
                             line.get(i + 4).text()));
+                    */
+                    storeSQL.insert(line.get(i).text(),
+                            line.get(i + 1).text(),
+                            line.get(i + 2).text(),
+                            Integer.valueOf(line.get(i + 3).text()),
+                            line.get(i + 4).text());
                     i += 5;
+
                 }
             }
         }
@@ -121,6 +131,9 @@ public class HTMLParser {
         StringBuilder sb = new StringBuilder();
         for (Line line : this.lineSet) {
             sb.append(line.getTheme());
+            sb.append("\t");
+            sb.append(line.getDate());
+            sb.append("\n");
         }
         return sb.toString();
     }

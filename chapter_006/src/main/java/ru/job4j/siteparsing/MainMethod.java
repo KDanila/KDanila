@@ -16,9 +16,8 @@ public class MainMethod {
 
     public static void main(String[] args) {
         String path = "C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\siteparsing\\config.properties";
-        //StoreSQL storeSQL = new StoreSQL(path);
-        //storeSQL.connectingToDB();
-        HTMLParser htmlParser = new HTMLParser(path);
+        StoreSQL storeSQL = new StoreSQL(path);
+        HTMLParser htmlParser = new HTMLParser(path,storeSQL);
         htmlParser.startParsing();
         System.out.println(htmlParser);
     }
