@@ -24,6 +24,9 @@ public class HTMLParser {
 
     private Properties properties = new Properties();
 
+
+
+
     private String url;
 
     private StoreSQL storeSQL;
