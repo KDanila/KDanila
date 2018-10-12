@@ -24,7 +24,7 @@ public class StoreSQL {
     /**
      * Settings.
      */
-    private Settings set = new Settings("C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\xml\\config.properties");
+    private Settings set = new Settings("chapter_006/src/main/resource/configTracker.properties");
     /**
      * url.
      */

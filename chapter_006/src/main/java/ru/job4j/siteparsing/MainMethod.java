@@ -63,7 +63,7 @@ public class MainMethod implements Job {
      */
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        String path = "C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\siteparsing\\config.properties";
+        String path = "chapter_006/src/main/resource/configSqRuParser.properties";
         StoreSQL storeSQL = new StoreSQL(path);
         HTMLParser htmlParser = new HTMLParser(path, storeSQL);
         htmlParser.startParsing();
