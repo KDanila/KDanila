@@ -60,6 +60,8 @@ public class StoreSQL {
      * <p>
      * Create new table in any occasion. If table already exist method
      * delete it and create new. AutoCommit is disabled.
+     *
+     * @throws SQLException - sqlex.
      */
     void connectingToDB() throws SQLException {
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
@@ -85,7 +87,7 @@ public class StoreSQL {
      * deleteTableInDB.
      */
     private void deleteTableInDb() {
-        try(Statement st = conn.createStatement()) {
+        try (Statement st = conn.createStatement()) {
             st.executeQuery("DROP TABLE entry ");
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);

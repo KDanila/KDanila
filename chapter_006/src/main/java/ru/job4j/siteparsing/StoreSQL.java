@@ -5,7 +5,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Properties;
 
 
@@ -16,31 +22,29 @@ import java.util.Properties;
  * @version $Id$
  * @since 0.1
  */
-public class
-StoreSQL {
+public class StoreSQL implements AutoCloseable {
     /**
      * Settings.
      */
-    //
-    private Properties settings = new Properties();
+    private final Properties settings = new Properties();
     /**
      * url.
      */
-    private String url;
+    private final String url;
     /**
      * username.
      */
-    private String username;
+    private final String username;
     /**
      * password.
      */
-    private String password;
+    private final String password;
     /**
      * table name.
      */
-    private String tablename;
+    private final String tablename;
     /**
-     * Connection. toDB.
+     * connection.
      */
     private Connection conn = null;
     /**
@@ -48,10 +52,15 @@ StoreSQL {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(SQLException.class);
     /**
-     * Name of database.
+     * name of database.
      */
     private final String dbName;
 
+    /**
+     * Constructor.
+     *
+     * @param path - properties.
+     */
     public StoreSQL(String path) {
         try {
             settings.load(new FileInputStream(path));
@@ -62,7 +71,7 @@ StoreSQL {
         this.username = settings.getProperty("jdbc.username");
         this.password = settings.getProperty("jdbc.password");
         this.tablename = settings.getProperty("jdbc.tablename");
-        this.dbName = settings.getProperty("jdbc.DBname");
+        this.dbName = settings.getProperty("jdbc.tablename");
     }
 
     /**
@@ -71,6 +80,7 @@ StoreSQL {
      * Create new table in any occasion. If table already exist method
      * delete it and create new. AutoCommit is disabled.
      */
+
     void connectingToDB() {
         try {
             this.conn = DriverManager.getConnection(url, username, password);
@@ -79,14 +89,6 @@ StoreSQL {
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            if (this.conn != null) {
-                try {
-                    this.conn.close();
-                } catch (SQLException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
-            }
         }
     }
 
@@ -98,14 +100,14 @@ StoreSQL {
     private void createTableInDB() {
         try {
             Statement st = conn.createStatement();
-            String request = "CREATE TABLE "+this.tablename+" (id serial,\n" +
-                    "                Thema VARCHAR(30),\n" +
-                    "                Author VARCHAR(30),\n" +
-                    "                Answer VARCHAR(30),\n" +
-                    "                Views Integer,\n" +
-                    "                Data VARCHAR(20))";
+            String request = "CREATE TABLE " + this.tablename + " (id serial,\n"
+                    + "                Thema text,\n"
+                    + "                Author text,\n"
+                    + "                Answer text,\n"
+                    + "                Views Integer,\n"
+                    + "                data TimeStamp )";
             ResultSet rs = st.executeQuery(request);
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
     }
@@ -119,17 +121,14 @@ StoreSQL {
      */
     private boolean checkTableInDB() {
         boolean isExist = false;
-        try {
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM pg_catalog.pg_tables;");
+        try (Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery("SELECT * FROM pg_catalog.pg_tables;")) {
             while (rs.next()) {
                 if (rs.getString("tablename").equals(this.tablename)) {
                     isExist = true;
                     break;
                 }
             }
-            rs.close();
-            st.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -137,20 +136,63 @@ StoreSQL {
     }
 
     /**
-     * generate method.
+     * Insert method.
+     *
+     * @param thema - thema.
+     * @param author - author.
+     * @param answer - answer.
+     * @param views - views.
+     * @param data - data.
+     * @throws SQLException - sqlex.
      */
-    public void insert(String thema, String author, String answer, int views, String data) {
+    public void insert(String thema, String author, String answer, int views, Timestamp data) throws SQLException {
+        this.conn.setAutoCommit(false);
+        //this.conn.setSavepoint();
         String request = "insert into sql_ru (thema,author,answer,views,data) values(?,?,?,?,?)";
         try (PreparedStatement ps = conn.prepareStatement(request)) {
             ps.setString(1, thema);
             ps.setString(2, author);
             ps.setString(3, answer);
             ps.setInt(4, views);
-            ps.setString(5, data);
+            ps.setTimestamp(5, data);
             ps.executeUpdate();
+            this.conn.commit();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+            this.conn.rollback();
+        }
+    }
+
+    /**
+     * Get Last Date from sql database.
+     *
+     * @return LastVacancyDate
+     */
+    public Timestamp getLastDate() {
+        Timestamp lastDate = null;
+        String request = "select max(data) from " + this.tablename;
+        try (Statement st = this.conn.createStatement()) {
+            try (ResultSet rs = st.executeQuery(request)) {
+                if (rs != null) {
+                    while (rs.next()) {
+                        lastDate = rs.getTimestamp("max");
+                    }
+                }
+            }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
+        return lastDate;
+    }
+
+    /**
+     * AutoClosable.
+     *
+     * @throws Exception - e.
+     */
+    @Override
+    public void close() throws Exception {
+        this.conn.close();
     }
 }
 

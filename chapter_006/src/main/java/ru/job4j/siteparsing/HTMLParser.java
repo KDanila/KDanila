@@ -4,10 +4,20 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
@@ -19,18 +29,41 @@ import java.util.Set;
  * @since 0.1.0
  */
 public class HTMLParser {
-
-    private Set<Line> lineSet = new HashSet<>();
-
+    /**
+     * job offers set.
+     */
+    private Set<JobOffer> jobOfferSet = new HashSet<>();
+    /**
+     * properties of parsing.
+     */
     private Properties properties = new Properties();
-
-
-
-
+    /**
+     * parsing state. while true parsing is going.
+     */
+    private boolean parsingState = true;
+    /**
+     * site to parse.
+     */
     private String url;
-
+    /**
+     * databse.
+     */
     private StoreSQL storeSQL;
+    /**
+     * data format from site.
+     */
+    private final SimpleDateFormat format = new SimpleDateFormat("d MMM yy, HH:mm", new Locale("ru", "RU"));
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(HTMLParser.class);
 
+    /**
+     * Constructor.
+     *
+     * @param path     - properties settings.
+     * @param storeSQL - database.
+     */
     public HTMLParser(String path, StoreSQL storeSQL) {
         try {
             properties.load(new FileInputStream(path));
@@ -41,47 +74,35 @@ public class HTMLParser {
         this.url = properties.getProperty("site.url");
     }
 
-    /*public static void main(String[] args) throws IOException {
-        String url = "http://www.sql.ru/forum/job-offers/";
-        Document doc = Jsoup.connect(url).get();
-        List<Line> lineClasses = new ArrayList<>();
-        Element table = doc.select("table[class = forumTable]").first();
-        Elements lines = table.select("tr");
-        //System.out.println(lines);
-        Elements line = lines.select("td");
-        //  System.out.println(line);
-        for (int i = 0; i < line.size() - 6; i++) {
-            if (i % 6 != 0) {
-                lineClasses.add(new Line(line.get(i).text(),
-                        line.get(i + 1).text(),
-                        line.get(i + 2).text(),
-                        line.get(i + 3).text(),
-                        line.get(i + 4).text()));
-                i += 5;
-                System.out.println(line.get(i).text());
-            }
-        }
-        lineClasses.forEach(System.out::println);
-    }
-*/
+    /**
+     * startParsing() method.
+     * <p>
+     * Checking last date from database and if it is lower then current parsing continue.
+     */
     public void startParsing() {
         this.storeSQL.connectingToDB();
         Document doc = connectToSite(this.url);
         int counter = 1;
-        while (isNotBlankPage(doc)) {
-            parseSite(doc);
+        Timestamp lastDate = this.storeSQL.getLastDate();
+        if (lastDate == null) {
+            lastDate = this.setInitialDate();
+        }
+        while (isNotBlankPage(doc) && parsingState) {
+            parseSite(doc, lastDate);
             doc = connectToSite(this.url.concat(String.valueOf(counter++)));
         }
-
-
-/*        4. Система должна собирать данные только про вакансии java. учесть что JavaScript не подходит. как и Java Script.
-        5. Данные должны храниться в базе данных.
-        6. Учесть дубликаты.
-        7. Учитывать время последнего запуска. если это первый запуск. то нужно собрать все объявления с начало года.
-        8. в системе не должно быть вывода, либо ввода информации. все настройки должны быть в файле. app.properties.
-*/
+        insertJobOffersInDatabase();
     }
 
+    /**
+     * isNotBlankPage() method.
+     * <p>
+     * Checking page. The blank page has size = 18. At each site from 666 to up at sql.ru
+     * are the moderator topic.
+     *
+     * @param document - jsoap document.
+     * @return boolean - true if not blank.
+     */
     private boolean isNotBlankPage(Document document) {
         Element table = document.select("table[class = forumTable]").first();
         Elements lines = table.select("tr");
@@ -89,37 +110,61 @@ public class HTMLParser {
         return line.size() == 18 ? false : true;
     }
 
-    private void parseSite(Document doc) {
+    /**
+     * parseSite() method.
+     * <p>
+     * parsing site by jsoub library.
+     *
+     * @param doc      - jsoup doc.
+     * @param lastDate - last date from sql database.
+     */
+    private void parseSite(Document doc, Timestamp lastDate) {
         Element table = doc.select("table[class = forumTable]").first();
         Elements lines = table.select("tr");
-        //System.out.println(lines);
         Elements line = lines.select("td");
-        for (int i = 0; i < line.size() - 4; i++) {
+        for (int i = 19; i < line.size() - 4; i = i + 6) {
             if (i % 6 != 0) {
-                String tempName = line.get(i).text();
-                if (tempName.contains("Java") &&
-                        !tempName.contains("JavaScript") &&
-                        !tempName.contains("Java Script")) {
-/*                    this.lineSet.add(new Line(line.get(i).text(),
-                            line.get(i + 1).text(),
-                            line.get(i + 2).text(),
-                            line.get(i + 3).text(),
-                            line.get(i + 4).text()));
-                    */
-                    storeSQL.insert(line.get(i).text(),
+                Timestamp ts = parseDate(line.get(i + 4).text());
+                if (ts.compareTo(lastDate) <= 0) {
+                    this.parsingState = false;
+                    break;
+                }
+                String tempName = line.get(i).text().toLowerCase();
+                if (tempName.contains("java")
+                        && !tempName.contains("javascript")
+                        && !tempName.contains("java script")) {
+                    this.jobOfferSet.add(new JobOffer(line.get(i).text(),
                             line.get(i + 1).text(),
                             line.get(i + 2).text(),
                             Integer.valueOf(line.get(i + 3).text()),
-                            line.get(i + 4).text());
-                    i += 5;
-
+                            ts));
                 }
             }
         }
     }
 
+    /**
+     * insertJobOffersInDatabase() method.
+     * <p>
+     * from jobOfferSet ----> SQL database.
+     */
+    private void insertJobOffersInDatabase() {
+        for (JobOffer jo : this.jobOfferSet) {
+            try {
+                storeSQL.insert(jo.getTheme(), jo.getAuthor(), jo.getAnswers(), jo.getViews(), jo.getDate());
+            } catch (SQLException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
+        }
+    }
+
+    /**
+     * connectToSite() method.
+     *
+     * @param url - url.
+     * @return json document.
+     */
     private Document connectToSite(String url) {
-        //String url = "http://www.sql.ru/forum/job-offers/";
         Document doc = null;
         try {
             doc = Jsoup.connect(url).get();
@@ -129,35 +174,95 @@ public class HTMLParser {
         return doc;
     }
 
+    /**
+     * override() method.
+     *
+     * @return String.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Line line : this.lineSet) {
-            sb.append(line.getTheme());
+        for (JobOffer jobOffer : this.jobOfferSet) {
+            sb.append(jobOffer.getTheme());
             sb.append("\t");
-            sb.append(line.getDate());
+            sb.append(jobOffer.getDate());
             sb.append("\n");
         }
         return sb.toString();
     }
 
+    /**
+     * Date To Current Year.
+     *
+     * @return Timestamp.
+     */
+    private Timestamp setInitialDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(LocalDate.now().getYear(), 0, 1, 0, 0, 0);
+        return new Timestamp(calendar.getTimeInMillis());
+    }
 
-    static class Line {
-        @Override
-        public String toString() {
-            return "author='" + author + '\'' +
-                    ", date='" + date + '\'' +
-                    '}';
+    /**
+     * Parsing Date.
+     *
+     * @param date - job offer date from site.
+     * @return timestamp.
+     */
+    public Timestamp parseDate(String date) {
+        Calendar calendar = Calendar.getInstance();
+        if (date.contains("сегодня")) {
+            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(date.substring(9, 11)));
+            calendar.set(Calendar.MINUTE, Integer.parseInt(date.substring(12, 14)));
+        } else if (date.contains("вчера")) {
+            calendar.add(Calendar.DATE, -1);
+            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(date.substring(7, 9)));
+            calendar.set(Calendar.MINUTE, Integer.parseInt(date.substring(10, 12)));
+        } else {
+            try {
+                calendar.setTime(format.parse(date));
+            } catch (ParseException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
         }
+        return new Timestamp(calendar.getTimeInMillis());
+    }
 
-        //Тема	Автор	Ответов	Просм.	Дата
+    /**
+     * Inner Class.
+     */
+    static class JobOffer {
+
+        /**
+         * theme.
+         */
         private final String theme;
+        /**
+         * author.
+         */
         private final String author;
+        /**
+         * answers.
+         */
         private final String answers;
-        private final String views;
-        private final String date;
+        /**
+         * views.
+         */
+        private final int views;
+        /**
+         * date.
+         */
+        private final Timestamp date;
 
-        public Line(String theme, String author, String answers, String views, String date) {
+        /**
+         * Constructor.
+         *
+         * @param theme   - theme.
+         * @param author  - author.
+         * @param answers - answers.
+         * @param views   - views.
+         * @param date    - date.
+         */
+        JobOffer(String theme, String author, String answers, int views, Timestamp date) {
             this.theme = theme;
             this.author = author;
             this.answers = answers;
@@ -166,24 +271,93 @@ public class HTMLParser {
         }
 
 
+        /**
+         * Getter.
+         *
+         * @return theme.
+         */
         public String getTheme() {
             return theme;
         }
 
+        /**
+         * Getter.
+         *
+         * @return author.
+         */
         public String getAuthor() {
             return author;
         }
 
+        /**
+         * Getter.
+         *
+         * @return answers.
+         */
         public String getAnswers() {
             return answers;
         }
 
-        public String getViews() {
+        /**
+         * Getter.
+         *
+         * @return views
+         */
+        public int getViews() {
             return views;
         }
 
-        public String getDate() {
+        /**
+         * Getter.
+         *
+         * @return timestamp.
+         */
+        public Timestamp getDate() {
             return date;
+        }
+
+        /**
+         * equals() method.
+         *
+         * @param o - object.
+         * @return boolean - equals.
+         */
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            JobOffer jobOffer = (JobOffer) o;
+            return views == jobOffer.views
+                    && Objects.equals(theme, jobOffer.theme)
+                    && Objects.equals(author, jobOffer.author)
+                    && Objects.equals(answers, jobOffer.answers)
+                    && Objects.equals(date, jobOffer.date);
+        }
+
+        /**
+         * hashCode().
+         *
+         * @return hash.
+         */
+        @Override
+        public int hashCode() {
+            return Objects.hash(theme, author, answers, views, date);
+        }
+
+        /**
+         * override() method.
+         *
+         * @return String.
+         */
+        @Override
+        public String toString() {
+            return "author='" + author + '\''
+                    + ", date='" + date + '\''
+                    + '}';
         }
 
     }
