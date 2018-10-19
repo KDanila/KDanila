@@ -7,22 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-/**
- * UserServlet class.
- *
- * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
- * @version $Id$
- * @since 0.1.0
- */
-public class UserServlet extends HttpServlet {
+public class UserCreateServlet extends HttpServlet {
 
+    private final ValidateService validateService;
 
-
-
-
-
-    /*
-     */
+    public UserCreateServlet() {
+        this.validateService = ValidateService.getInstance();
+    }
 
     /**
      * Метод doGet - должен отдавать список всех пользователей в системе.
@@ -35,7 +26,14 @@ public class UserServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("text/html");
         PrintWriter writer = new PrintWriter(res.getOutputStream());
-        writer.append(ValidateService.getInstance().findAll().toString());
+        writer.append(
+                "   <h1>Создание нового пользователя</h1>" +
+                        "<form action ='" + req.getContextPath() + "/create' method ='post'>" +
+                        "   <input type = 'text' name = 'name'/>" +
+                        "   <input type = 'text' name = 'login'/>" +
+                        "   <input type = 'text' name = 'email'/> " +
+                        "   <input type ='submit' name = 'submit'>" +
+                        "   </form>");
         writer.flush();
     }
 
@@ -63,19 +61,20 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
-        String action = req.getParameter("action");
-        User u = new User.UserBuilder(name).build();
-        DispatchPattern dp = new DispatchPattern();
-        dp.init();
-        dp.action(() -> Action.StoreAction.valueOf(action), ValidateService.getInstance(), u);
-/*        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append(" action: " + action);
-        writer.append(" user: " + u);
-        writer.append(" validate serv: " + ValidateService.getInstance().findAll());
-        dp.action(()->Action.StoreAction.UPDATE,ValidateService.getInstance(),new User.UserBuilder("TEST").build());
-        writer.append("\n"+"va11"+ ValidateService.getInstance().findAll());
+        String login = req.getParameter("login");
+        String email = req.getParameter("email");
+        User user = new User.UserBuilder(name).login(login).email(email).build();
+        this.validateService.add(user);/*
+        resp.setContentType("text/html");
+        PrintWriter writer = new PrintWriter(resp.getOutputStream());
+        writer.append(user.toString());
         writer.flush();*/
     }
 }
+/*
+UserCreateServlet
 
+- doGet URL /create - Открывает форму для создания нового пользователя.
 
+- doPost - / - сохраняет пользователя.
+ */
