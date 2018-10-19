@@ -37,7 +37,12 @@ id=1 - по ключу мы удаляем пользователя.
  */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        String login = req.getParameter("login");
+        String action = req.getParameter("action");
+        PrintWriter writer = new PrintWriter(resp.getOutputStream());
+        writer.append("login: " + login);
+        writer.append(" action: " + action);
+        writer.flush();
     }
 }
 

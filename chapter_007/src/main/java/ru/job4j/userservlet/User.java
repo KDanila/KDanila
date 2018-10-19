@@ -34,16 +34,6 @@ public class User {
         return new Random().nextInt(10000);
     }
 
-    public static void main(String[] args) {
-        //   System.out.println(new User("1").generateId());
-        Clock clock = Clock.system(ZoneId.of("Europe/Moscow"));
-        ZonedDateTime zdt = ZonedDateTime.now(clock);
-        ZonedDateTime zdt2 = ZonedDateTime.of(2015, 1, 10, 15, 0, 0, 0, ZoneId.of("Europe/Moscow"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:dd z", Locale.forLanguageTag("RU"));
-        System.out.println(zdt2.format(formatter));
-
-        System.out.println(new UserBuilder("FirstPlayer").email("sas@asd.ru").login("sldas").createDate(zdt2).build());
-    }
 
     @Override
     public String toString() {
