@@ -7,37 +7,64 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class UserServlet extends HttpServlet {
-/*
-Метод doGet - должен отдавать список всех пользователей в системе.
-
-Метод doPost - должен  уметь делать три вещи, создавать пользователя,
-обновлять поля пользователя, удалять пользователя.
+/**
+ * UserServlet class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.0
  */
+public class UserServlet extends HttpServlet {
+    /**
+     * Метод doGet - должен отдавать список всех пользователей в системе.
+     *
+     * @param req - request.
+     * @param res - response.
+     * @throws IOException - ioex.
+     */
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        res.setContentType("text/html");
         PrintWriter writer = new PrintWriter(res.getOutputStream());
-        writer.append("hello world");
+        writer.append(ValidateService.getInstance().findAll().toString());
         writer.flush();
     }
-/*
-Создание нового пользователя.
-action=add - ключ указывает какое действие выполнить. у нас будут три ключа add,
-update, delete. их мы должно обработать в doPost.
-name=petr - ключ указывает имя пользователя.
-на стороне сервера мы извлекаем эти данные с помощью метода request.getParameter("action")
-Обновление пользователя.
-action=update
-id=1 - первичный ключ - генерируется один раз. по нему мы будем искать пользователя в коллекции.
-name=ivan - новое имя.
-Удаление пользователя.
-action=delete
-id=1 - по ключу мы удаляем пользователя.
- */
+
+    /**
+     * Метод doPost - должен  уметь делать три вещи, создавать пользователя,
+     * обновлять поля пользователя, удалять пользователя.
+     * Создание нового пользователя.
+     * action=add - ключ указывает какое действие выполнить. у нас будут три ключа add,
+     * update, delete. их мы должно обработать в doPost.
+     * name=petr - ключ указывает имя пользователя.
+     * на стороне сервера мы извлекаем эти данные с помощью метода request.getParameter("action")
+     * Обновление пользователя.
+     * action=update
+     * id=1 - первичный ключ - генерируется один раз. по нему мы будем искать пользователя в коллекции.
+     * name=ivan - новое имя.
+     * Удаление пользователя.
+     * action=delete
+     * id=1 - по ключу мы удаляем пользователя.
+     *
+     * @param req  - request.
+     * @param resp - response.
+     * @throws ServletException - servlet excep.
+     * @throws IOException      - io excep.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        String name = req.getParameter("name");
+        String action = req.getParameter("action");
+        User u = new User.UserBuilder(name).build();
+        DispatchPattern dp = new DispatchPattern();
+        dp.init();
+        dp.action(() -> Action.StoreAction.valueOf(action), ValidateService.getInstance(), u);
+/*        PrintWriter writer = new PrintWriter(resp.getOutputStream());
+        writer.append(" action: " + action);
+        writer.append(" user: " + u);
+        writer.append(" validate serv: " + ValidateService.getInstance().findAll());
+        dp.action(()->Action.StoreAction.UPDATE,ValidateService.getInstance(),new User.UserBuilder("TEST").build());
+        writer.append("\n"+"va11"+ ValidateService.getInstance().findAll());
+        writer.flush();*/
     }
 }
 
