@@ -1,22 +1,44 @@
 package ru.job4j.userservlet;
 
-import java.time.Clock;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.Random;
 
+/**
+ * User class.
+ * <p>
+ * Pattern builder.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.0
+ */
 public class User {
+    /**
+     * id.
+     */
     private final int id;
+    /**
+     * name.
+     */
     private final String name;
+    /**
+     * login.
+     */
     private final String login;
+    /**
+     * email.
+     */
     private final String email;
-
-
+    /**
+     * createDate.
+     */
     private final ZonedDateTime createDate;
 
-
+    /**
+     * User constructor.
+     *
+     * @param userBuilder - userBuilder.
+     */
     public User(UserBuilder userBuilder) {
         this.id = generateId();
         this.name = userBuilder.name;
@@ -26,88 +48,154 @@ public class User {
     }
 
     /**
-     * naive id generator
+     * naive id generator.
      *
-     * @return
+     * @return int.
      */
     private int generateId() {
         return new Random().nextInt(10000);
     }
 
-    public static void main(String[] args) {
-        //   System.out.println(new User("1").generateId());
-        Clock clock = Clock.system(ZoneId.of("Europe/Moscow"));
-        ZonedDateTime zdt = ZonedDateTime.now(clock);
-        ZonedDateTime zdt2 = ZonedDateTime.of(2015, 1, 10, 15, 0, 0, 0, ZoneId.of("Europe/Moscow"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:dd z", Locale.forLanguageTag("RU"));
-        System.out.println(zdt2.format(formatter));
-
-        System.out.println(new UserBuilder("FirstPlayer").email("sas@asd.ru").login("sldas").createDate(zdt2).build());
-    }
-
+    /**
+     * toSting.
+     *
+     * @return String.
+     */
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", login='" + login + '\'' +
-                ", email='" + email + '\'' +
-                ", createDate=" + createDate +
-                '}';
+        return "User{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", login='" + login + '\''
+                + ", email='" + email + '\''
+                + ", createDate=" + createDate
+                + '}';
     }
 
+    /**
+     * Class userBuilder.
+     */
     static class UserBuilder {
+        /**
+         * name.
+         */
         private final String name;
-        public ZonedDateTime createDate;
+        /**
+         * createDate.
+         */
+        private ZonedDateTime createDate;
+        /**
+         * login.
+         */
         private String login;
+        /**
+         * email.
+         */
         private String email;
 
-        public UserBuilder(String name) {
+        /**
+         * constructor.
+         *
+         * @param name - name.
+         */
+        UserBuilder(String name) {
             this.name = name;
         }
 
-
+        /**
+         * login method.
+         *
+         * @param login - string.
+         * @return UserBuilder.
+         */
         UserBuilder login(String login) {
             this.login = login;
             return this;
         }
 
+        /**
+         * email method.
+         *
+         * @param email - string.
+         * @return UserBuilder.
+         */
         UserBuilder email(String email) {
             this.email = email;
             return this;
         }
 
+        /**
+         * createDate method.
+         *
+         * @param date - ZonedDateTime.
+         * @return UserBuilder.
+         */
         UserBuilder createDate(ZonedDateTime date) {
             this.createDate = date;
             return this;
         }
 
+        /**
+         * build method.
+         *
+         * @return User.
+         */
         User build() {
             return new User(this);
         }
 
     }
 
+    /**
+     * Getter.
+     *
+     * @return int.
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Getter.
+     *
+     * @return String.
+     */
     public String getName() {
         return name;
     }
 
-
+    /**
+     * Getter.
+     *
+     * @return String.
+     */
     public String getLogin() {
         return login;
     }
 
+    /**
+     * Getter.
+     *
+     * @return String.
+     */
     public String getEmail() {
         return email;
     }
 
-
+    /**
+     * Getter.
+     *
+     * @return ZonedDateTime.
+     */
     public ZonedDateTime getCreateDate() {
         return createDate;
     }
 
 }
+
+/*
+
+
+
+
+ */
