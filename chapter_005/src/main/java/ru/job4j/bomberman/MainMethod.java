@@ -1,4 +1,4 @@
-/*package ru.job4j.Bomberman;
+/*package ru.job4j.bomberman;
 
 public class MainMethod {
     public static void main(String[] args) {

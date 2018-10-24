@@ -26,9 +26,9 @@ public class ConvertXSQTTest {
     @Test
     public void convertXSQTTest() throws IOException, TransformerException {
         ConvertXSQT cc = new ConvertXSQT();
-        File source = new File("C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\xml\\data.xml");
-        File scheme = new File("C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\xml\\template.xsl");
-        File dest = new File("C:\\Projects\\KDanila\\chapter_006\\src\\main\\java\\ru\\job4j\\xml\\result.xml");
+        File source = new File("src/main/java/ru/job4j/xml/data.xml");
+        File scheme = new File("src/main/java/ru/job4j/xml/template.xsl");
+        File dest = new File("src/main/java/ru/job4j/xml/result.xml");
         dest.createNewFile();
         cc.convert(source, dest, scheme);
         assertThat(true, is(dest.exists()));

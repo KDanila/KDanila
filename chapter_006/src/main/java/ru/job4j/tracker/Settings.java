@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -40,13 +41,14 @@ public class Settings {
      */
     public Settings(String path) {
         try {
-            fis = new FileInputStream(path);
+            File file = new File(path);
+            fis = new FileInputStream(file.getAbsolutePath());
             property.load(fis);
             this.url = property.getProperty("jdbc.url");
             this.login = property.getProperty("username");
             this.password = property.getProperty("password");
         } catch (IOException e) {
-            System.err.println("ОШИБКА: Файл свойств отсуствует!");
+            System.out.println(e.getMessage());
         } finally {
             try {
                 fis.close();
