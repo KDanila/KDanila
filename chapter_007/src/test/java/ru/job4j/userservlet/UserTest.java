@@ -8,13 +8,22 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
 
+/**
+ * UserTest class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.0
+ */
 public class UserTest {
-
+    /**
+     * whenAddNewUserThenCorrectlyDataInObject().
+     */
     @Test
-    public void whenAddNewUserThenCorrectlyDataInObject(){
+    public void whenAddNewUserThenCorrectlyDataInObject() {
         Clock clock = Clock.system(ZoneId.of("Europe/Moscow"));
         //ZonedDateTime zdt = ZonedDateTime.now(clock);
         ZonedDateTime zdt2 = ZonedDateTime.of(2015, 1, 10, 15, 0, 0, 0, ZoneId.of("Europe/Moscow"));

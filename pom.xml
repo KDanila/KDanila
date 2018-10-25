@@ -63,6 +63,7 @@
                     <compilerVersion>1.8</compilerVersion>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
@@ -84,6 +85,7 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <modules>

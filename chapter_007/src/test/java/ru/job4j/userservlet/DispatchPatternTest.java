@@ -2,21 +2,29 @@ package ru.job4j.userservlet;
 
 import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
 
+/**
+ * DispatchPatternTest class.
+ *
+ * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
+ * @version $Id$
+ * @since 0.1.0
+ */
 public class DispatchPatternTest {
-
+    /**
+     * adding user by dispatch pattern.
+     */
     @Test
     public void whenAddUserThenReturnTrue() {
-        Store s = MemoryStore.getInstance();
+        ValidateService vs = ValidateService.getInstance();
         User u = new User.UserBuilder("Name").build();
 
         assertThat(new DispatchPattern().init().action(
                 () -> Action.StoreAction.ADD,
-                s,
-                u)
-                , is(true));
+                vs,
+                u), is(true));
     }
 
 }
