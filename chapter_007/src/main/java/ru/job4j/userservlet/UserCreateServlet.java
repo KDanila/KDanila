@@ -7,21 +7,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-/**
- * UserServlet class.
- *
- * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
- * @version $Id$
- * @since 0.1.0
- */
-public class    UserServlet extends HttpServlet {
-        private final ValidateService validateService ;
+//todo
+public class UserCreateServlet extends HttpServlet {
 
+    private final ValidateService validateService;
 
-    public UserServlet() {
+    public UserCreateServlet() {
         this.validateService = ValidateService.getInstance();
-        //this.validateService.add(new User.UserBuilder("test").build());
     }
+
     /**
      * Метод doGet - должен отдавать список всех пользователей в системе.
      *
@@ -29,15 +23,22 @@ public class    UserServlet extends HttpServlet {
      * @param res - response.
      * @throws IOException - ioex.
      */
-    //todo
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         PrintWriter writer = new PrintWriter(res.getOutputStream());
-       StringBuilder stringBuilder = new StringBuilder("<table>");
-        for(User user:this.validateService.findAll().values()){
-            stringBuilder.append("<tr><td>"+user.getLogin()+"</tr></td>");
-        }
-       stringBuilder.append("</table>");
+        writer.append("<!DOCTYPE html>" +
+                "<html lang=\"en\">" +
+                "<head>" +
+                "    <meta charset=\"UTF-8\">" +
+                "    <title>Title</title>" +
+                "</head>" +
+                "<body>" +
+                "</body>" +
+                "<form action ='" + req.getContextPath() + "/create' method ='post'>" +
+                "Name:<input type = 'text' name = 'login'/>" +
+                "<input type = 'submit'/>" +
+                "</form>" +
+                "</html>");
         writer.flush();
     }
 
@@ -62,23 +63,20 @@ public class    UserServlet extends HttpServlet {
      * @throws ServletException - servlet excep.
      * @throws IOException      - io excep.
      */
-    //todo remove
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
+/*        String name = req.getParameter("name");
         String action = req.getParameter("action");
         User u = new User.UserBuilder(name).build();
         DispatchPattern dp = new DispatchPattern();
         dp.init();
-        dp.action(() -> Action.StoreAction.valueOf(action), ValidateService.getInstance(), u);
-/*        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append(" action: " + action);
-        writer.append(" user: " + u);
-        writer.append(" validate serv: " + ValidateService.getInstance().findAll());
-        dp.action(()->Action.StoreAction.UPDATE,ValidateService.getInstance(),new User.UserBuilder("TEST").build());
-        writer.append("\n"+"va11"+ ValidateService.getInstance().findAll());
-        writer.flush();*/
+        dp.action(() -> Action.StoreAction.valueOf(action), ValidateService.getInstance(), u);*/
     }
 }
+/*
+UserCreateServlet
 
+- doGet URL /create - Открывает форму для создания нового пользователя.
 
+- doPost - / - сохраняет пользователя.
+ */
