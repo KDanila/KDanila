@@ -7,21 +7,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-/**
- * UserServlet class.
- *
- * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
- * @version $Id$
- * @since 0.1.0
- */
-public class    UserServlet extends HttpServlet {
-        private final ValidateService validateService ;
+//todo
+public class UserCreateServlet extends HttpServlet {
 
+    private final ValidateService validateService;
 
-    public UserServlet() {
+    public UserCreateServlet() {
         this.validateService = ValidateService.getInstance();
-        //this.validateService.add(new User.UserBuilder("test").build());
     }
+
     /**
      * Метод doGet - должен отдавать список всех пользователей в системе.
      *
@@ -29,16 +23,38 @@ public class    UserServlet extends HttpServlet {
      * @param res - response.
      * @throws IOException - ioex.
      */
-    //todo
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("text/html");
         PrintWriter writer = new PrintWriter(res.getOutputStream());
-       StringBuilder stringBuilder = new StringBuilder("<table>");
-        for(User user:this.validateService.findAll().values()){
-            stringBuilder.append("<tr><td>"+user.getLogin()+"</tr></td>");
-        }
-       stringBuilder.append("</table>");
+      /*  writer.append("<!DOCTYPE html>" +
+                "<html lang=\"en\">" +
+                "<head>" +
+                "    <meta charset=\"UTF-8\">" +
+                "    <title>Title</title>" +
+                "</head>" +
+                "<body>" +
+                "</body>" +
+                "<form action ='" + req.getContextPath() + "/create' method ='post'>" +
+                "Name:<input type = 'text' name = 'login'/>" +
+                "<input type = 'submit'/>" +
+                "</form>" +
+                "</html>");*/
+        writer.append("<table width=\"100%\" border=\"1\">");
+
+        writer.append(
+                "   <caption>Создание нового пользователя</caption>" +
+                        "   <tr>" +
+                        "    </th><th>Имя</th><th>Логин</th><th>email</th><th>&nbsp;" +
+                        "   </tr>" +
+                        "   <tr>" +
+                        "   <td>name: <input type = 'text' name = 'name'/></td>" +
+                        "   <td>login: <input type = 'text' login = 'login'/> </td>" +
+                        "   <td>email: <input type = 'text' email = 'email'/></td> " +
+                        "<td><form action ='" + req.getContextPath() + "/create' method ='post'>" +
+                        "<input type ='submit'></td>" +
+                        "   </tr>");
+        writer.append("</table>");
         writer.flush();
     }
 
@@ -63,23 +79,29 @@ public class    UserServlet extends HttpServlet {
      * @throws ServletException - servlet excep.
      * @throws IOException      - io excep.
      */
-    //todo remove
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String name = req.getParameter("name");
-        String action = req.getParameter("action");
-        User u = new User.UserBuilder(name).build();
-        DispatchPattern dp = new DispatchPattern();
-        dp.init();
-        dp.action(() -> Action.StoreAction.valueOf(action), ValidateService.getInstance(), u);
-/*        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append(" action: " + action);
-        writer.append(" user: " + u);
-        writer.append(" validate serv: " + ValidateService.getInstance().findAll());
-        dp.action(()->Action.StoreAction.UPDATE,ValidateService.getInstance(),new User.UserBuilder("TEST").build());
-        writer.append("\n"+"va11"+ ValidateService.getInstance().findAll());
-        writer.flush();*/
+        String login = req.getParameter("login");
+        String email = req.getParameter("email");
+       // String action = req.getParameter("action");
+        User u = new User.UserBuilder(name).login(login).email(email).build();
+        resp.setContentType("text/html");
+        PrintWriter writer = new PrintWriter(resp.getOutputStream());
+        writer.append(u.toString());
+        writer.append(req.getAuthType());
+        writer.append(req.getPathInfo());
+        writer.append(req.getQueryString());
+        writer.append(req.getServletPath());
+        writer.flush();
+
     }
 }
+/*
+UserCreateServlet
 
+- doGet URL /create - Открывает форму для создания нового пользователя.
 
+- doPost - / - сохраняет пользователя.
+ */
