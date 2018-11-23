@@ -40,21 +40,14 @@ public class UserCreateServlet extends HttpServlet {
                 "<input type = 'submit'/>" +
                 "</form>" +
                 "</html>");*/
-        writer.append("<table width=\"100%\" border=\"1\">");
-
         writer.append(
                 "   <caption>Создание нового пользователя</caption>" +
-                        "   <tr>" +
-                        "    </th><th>Имя</th><th>Логин</th><th>email</th><th>&nbsp;" +
-                        "   </tr>" +
-                        "   <tr>" +
-                        "   <td>name: <input type = 'text' name = 'name'/></td>" +
-                        "   <td>login: <input type = 'text' login = 'login'/> </td>" +
-                        "   <td>email: <input type = 'text' email = 'email'/></td> " +
-                        "<td><form action ='" + req.getContextPath() + "/create' method ='post'>" +
-                        "<input type ='submit'></td>" +
-                        "   </tr>");
-        writer.append("</table>");
+                        "<form action ='" + req.getContextPath() + "/create' method ='post'>" +
+                        "   <input type = 'text' name = 'name'/>" +
+                        "   <input type = 'text' name = 'login'/>" +
+                        "   <input type = 'text' name = 'email'/> " +
+                        "   <input type ='submit' name = 'submit'>" +
+                        "   </form>");
         writer.flush();
     }
 
@@ -85,7 +78,7 @@ public class UserCreateServlet extends HttpServlet {
         String name = req.getParameter("name");
         String login = req.getParameter("login");
         String email = req.getParameter("email");
-       // String action = req.getParameter("action");
+        // String action = req.getParameter("action");
         User u = new User.UserBuilder(name).login(login).email(email).build();
         resp.setContentType("text/html");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
