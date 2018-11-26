@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-//todo
 public class UserCreateServlet extends HttpServlet {
 
     private final ValidateService validateService;
@@ -27,21 +26,8 @@ public class UserCreateServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("text/html");
         PrintWriter writer = new PrintWriter(res.getOutputStream());
-      /*  writer.append("<!DOCTYPE html>" +
-                "<html lang=\"en\">" +
-                "<head>" +
-                "    <meta charset=\"UTF-8\">" +
-                "    <title>Title</title>" +
-                "</head>" +
-                "<body>" +
-                "</body>" +
-                "<form action ='" + req.getContextPath() + "/create' method ='post'>" +
-                "Name:<input type = 'text' name = 'login'/>" +
-                "<input type = 'submit'/>" +
-                "</form>" +
-                "</html>");*/
         writer.append(
-                "   <caption>Создание нового пользователя</caption>" +
+                "   <h1>Создание нового пользователя</h1>" +
                         "<form action ='" + req.getContextPath() + "/create' method ='post'>" +
                         "   <input type = 'text' name = 'name'/>" +
                         "   <input type = 'text' name = 'login'/>" +
@@ -74,21 +60,15 @@ public class UserCreateServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String name = req.getParameter("name");
         String login = req.getParameter("login");
         String email = req.getParameter("email");
-        // String action = req.getParameter("action");
-        User u = new User.UserBuilder(name).login(login).email(email).build();
+        User user = new User.UserBuilder(name).login(login).email(email).build();
+        this.validateService.add(user);/*
         resp.setContentType("text/html");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append(u.toString());
-        writer.append(req.getAuthType());
-        writer.append(req.getPathInfo());
-        writer.append(req.getQueryString());
-        writer.append(req.getServletPath());
-        writer.flush();
-
+        writer.append(user.toString());
+        writer.flush();*/
     }
 }
 /*

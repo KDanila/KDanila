@@ -14,14 +14,15 @@ import java.io.PrintWriter;
  * @version $Id$
  * @since 0.1.0
  */
-public class    UserServlet extends HttpServlet {
-        private final ValidateService validateService ;
+public class UserServlet extends HttpServlet {
+    private final ValidateService validateService;
 
 
     public UserServlet() {
         this.validateService = ValidateService.getInstance();
         //this.validateService.add(new User.UserBuilder("test").build());
     }
+
     /**
      * Метод doGet - должен отдавать список всех пользователей в системе.
      *
@@ -34,11 +35,25 @@ public class    UserServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("text/html");
         PrintWriter writer = new PrintWriter(res.getOutputStream());
-       StringBuilder stringBuilder = new StringBuilder("<table>");
-        for(User user:this.validateService.findAll().values()){
-            stringBuilder.append("<tr><td>"+user.getLogin()+"</tr></td>");
+        StringBuilder stringBuilder = new StringBuilder("<table style='width:100%'>");
+        for (User user : this.validateService.findAll().values()) {
+            stringBuilder.append("<tr>" +
+                    "<td>" + user.getId() + "</td>" +
+                    "<td>" + user.getLogin() + "</td>" +
+                    "<td>" + user.getName() + "</td>" +
+                    "<td>" +
+                    "<form name = 'update' action ='" + req.getContextPath() + "/update' method ='post'> " +
+                    "   <input type ='submit' name = 'submit'></form>" +
+                    "</td>" +
+                    "<td>" +
+                    "<form name = 'delete' action ='" + req.getContextPath() + "/user' method ='post'>" +
+                    "   <input type ='submit' name = 'submit'>" +
+                    "</form>" +
+                    "</td>" +
+                    "</tr>");
         }
-       stringBuilder.append("</table>");
+        stringBuilder.append("</table>");
+        writer.append(stringBuilder);
         writer.flush();
     }
 
