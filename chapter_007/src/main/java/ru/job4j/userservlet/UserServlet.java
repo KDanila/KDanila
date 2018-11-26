@@ -42,12 +42,14 @@ public class UserServlet extends HttpServlet {
                     "<td>" + user.getLogin() + "</td>" +
                     "<td>" + user.getName() + "</td>" +
                     "<td>" +
-                    "<form name = 'update' action ='" + req.getContextPath() + "/update' method ='post'> " +
-                    "   <input type ='submit' name = 'submit'></form>" +
+                    //todo
+                    "<form name = 'update' action ='" + req.getContextPath() + "/update method ='get'> " +
+                    "   <input type='button' value='update'>" +
+                    "</form>" +
                     "</td>" +
                     "<td>" +
                     "<form name = 'delete' action ='" + req.getContextPath() + "/user' method ='post'>" +
-                    "   <input type ='submit' name = 'submit'>" +
+                    "   <input type ='submit' name = 'delete'>" +
                     "</form>" +
                     "</td>" +
                     "</tr>");
