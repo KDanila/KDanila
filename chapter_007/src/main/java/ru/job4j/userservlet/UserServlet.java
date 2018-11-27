@@ -44,7 +44,8 @@ public class UserServlet extends HttpServlet {
                     "<td>" +
                     //todo
                     "<form name = 'update' action ='" + req.getContextPath() + "/update method ='get'> " +
-                    "   <input type='button' value='update'>" +
+                    "   <input type='submit' value='update'>" +
+                    "   <input type='hidden' name = 'id' value='"+user.getId()+"'>" +
                     "</form>" +
                     "</td>" +
                     "<td>" +
@@ -56,6 +57,8 @@ public class UserServlet extends HttpServlet {
         }
         stringBuilder.append("</table>");
         writer.append(stringBuilder);
+
+
         writer.flush();
     }
 
