@@ -30,7 +30,6 @@ public class UserServlet extends HttpServlet {
      * @param res - response.
      * @throws IOException - ioex.
      */
-    //todo
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("text/html");
@@ -43,22 +42,21 @@ public class UserServlet extends HttpServlet {
                     "<td>" + user.getName() + "</td>" +
                     "<td>" +
                     //todo
-                    "<form name = 'update' action ='" + req.getContextPath() + "/update method ='get'> " +
+                    "<form name = 'update' action ='" + req.getContextPath() + "/update method ='post'> " +
                     "   <input type='submit' value='update'>" +
                     "   <input type='hidden' name = 'id' value='"+user.getId()+"'>" +
                     "</form>" +
                     "</td>" +
                     "<td>" +
                     "<form name = 'delete' action ='" + req.getContextPath() + "/user' method ='post'>" +
-                    "   <input type ='submit' name = 'delete'>" +
+                    "   <input type ='submit' value = 'delete'>" +
+                    "   <input type='hidden' name = 'id' value='"+user.getId()+"'>" +
                     "</form>" +
                     "</td>" +
                     "</tr>");
         }
         stringBuilder.append("</table>");
         writer.append(stringBuilder);
-
-
         writer.flush();
     }
 
@@ -83,15 +81,19 @@ public class UserServlet extends HttpServlet {
      * @throws ServletException - servlet excep.
      * @throws IOException      - io excep.
      */
-    //todo remove
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        String action = req.getParameter("action");
-        User u = new User.UserBuilder(name).build();
+        String id = req.getParameter("id");
+        Action.StoreAction action = Action.StoreAction.DELETE;
+
+
+        User u = this.validateService.findById(Integer.parseInt(id));
         DispatchPattern dp = new DispatchPattern();
         dp.init();
-        dp.action(() -> Action.StoreAction.valueOf(action), ValidateService.getInstance(), u);
+        dp.action(() -> action, ValidateService.getInstance(), u);
+
+
+
 /*        PrintWriter writer = new PrintWriter(resp.getOutputStream());
         writer.append(" action: " + action);
         writer.append(" user: " + u);
