@@ -15,14 +15,13 @@ import java.io.PrintWriter;
  * @since 0.1.0
  */
 public class UserServlet extends HttpServlet {
+    private final ValidateService validateService;
 
 
-
-
-
-
-    /*
-     */
+    public UserServlet() {
+        this.validateService = ValidateService.getInstance();
+        //this.validateService.add(new User.UserBuilder("test").build());
+    }
 
     /**
      * Метод doGet - должен отдавать список всех пользователей в системе.
@@ -35,7 +34,29 @@ public class UserServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("text/html");
         PrintWriter writer = new PrintWriter(res.getOutputStream());
-        writer.append(ValidateService.getInstance().findAll().toString());
+        StringBuilder stringBuilder = new StringBuilder("<table style='width:100%'>");
+        for (User user : this.validateService.findAll().values()) {
+            stringBuilder.append("<tr>" +
+                    "<td>" + user.getId() + "</td>" +
+                    "<td>" + user.getLogin() + "</td>" +
+                    "<td>" + user.getName() + "</td>" +
+                    "<td>" +
+                    //todo
+                    "<form name = 'update' action ='" + req.getContextPath() + "/update method ='post'> " +
+                    "   <input type='submit' value='update'>" +
+                    "   <input type='hidden' name = 'id' value='"+user.getId()+"'>" +
+                    "</form>" +
+                    "</td>" +
+                    "<td>" +
+                    "<form name = 'delete' action ='" + req.getContextPath() + "/user' method ='post'>" +
+                    "   <input type ='submit' value = 'delete'>" +
+                    "   <input type='hidden' name = 'id' value='"+user.getId()+"'>" +
+                    "</form>" +
+                    "</td>" +
+                    "</tr>");
+        }
+        stringBuilder.append("</table>");
+        writer.append(stringBuilder);
         writer.flush();
     }
 
@@ -62,12 +83,17 @@ public class UserServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        String action = req.getParameter("action");
-        User u = new User.UserBuilder(name).build();
+        String id = req.getParameter("id");
+        Action.StoreAction action = Action.StoreAction.DELETE;
+
+
+        User u = this.validateService.findById(Integer.parseInt(id));
         DispatchPattern dp = new DispatchPattern();
         dp.init();
-        dp.action(() -> Action.StoreAction.valueOf(action), ValidateService.getInstance(), u);
+        dp.action(() -> action, ValidateService.getInstance(), u);
+
+
+
 /*        PrintWriter writer = new PrintWriter(resp.getOutputStream());
         writer.append(" action: " + action);
         writer.append(" user: " + u);
