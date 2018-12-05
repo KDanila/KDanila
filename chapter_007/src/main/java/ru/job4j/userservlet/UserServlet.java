@@ -34,6 +34,9 @@ public class UserServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("text/html");
         PrintWriter writer = new PrintWriter(res.getOutputStream());
+        this.validateService.add(new User.UserBuilder("As").login("Asterot").build());
+        this.validateService.add(new User.UserBuilder("Bars").login("BBBAsterot").build());
+        this.validateService.add(new User.UserBuilder("SSSSSAs").login("SSSSSSSSAsterot").build());
         StringBuilder stringBuilder = new StringBuilder("<table style='width:100%'>");
         for (User user : this.validateService.findAll().values()) {
             stringBuilder.append("<tr>" +
@@ -41,16 +44,13 @@ public class UserServlet extends HttpServlet {
                     "<td>" + user.getLogin() + "</td>" +
                     "<td>" + user.getName() + "</td>" +
                     "<td>" +
-                    //todo
-                    "<form name = 'update' action ='" + req.getContextPath() + "/update method ='post'> " +
+                    "<form name = 'update' action ='" + req.getContextPath() + "/update" + "?id={" + user.getId() + "} method ='get'> " +
                     "   <input type='submit' value='update'>" +
-                    "   <input type='hidden' name = 'id' value='"+user.getId()+"'>" +
-                    "</form>" +
                     "</td>" +
                     "<td>" +
                     "<form name = 'delete' action ='" + req.getContextPath() + "/user' method ='post'>" +
                     "   <input type ='submit' value = 'delete'>" +
-                    "   <input type='hidden' name = 'id' value='"+user.getId()+"'>" +
+                    "   <input type='hidden' name = 'id' value='" + user.getId() + "'>" +
                     "</form>" +
                     "</td>" +
                     "</tr>");
