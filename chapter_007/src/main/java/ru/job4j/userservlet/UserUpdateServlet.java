@@ -21,25 +21,43 @@ public class UserUpdateServlet extends HttpServlet {
 
         resp.setContentType("text/html");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
+
+        //todo id =null? what the hell?
         String id = req.getParameter("id");
+        PrintWriter pw = new PrintWriter(resp.getOutputStream());
+        pw.append(id);
+        pw.append(req.getContextPath());
+        pw.append(req.getPathInfo());
+        pw.append(req.getServletPath());
+        pw.flush();
+/*
         User user = this.validateService.findById(Integer.parseInt(id));
-        //todo add form
+
         StringBuilder stringBuilder = new StringBuilder("<table style='width:100%'>");
         stringBuilder.append("<tr>" +
                 "<td>" + user.getId() + "</td>" +
                 "<td>" + user.getLogin() + "</td>" +
                 "<td>" + user.getName() + "</td>" +
-               // "<td>" +
+                "<td>"+
+                "<form name = 'update' action ='" + req.getContextPath() + "/update' method ='post'>" +
+                "   <input type ='submit' value = 'update'>" +
+                "   <input type='hidden' name = 'id' value='" + user.getId() + "'>" +
+                "</form>" +
+                "</td>" +
                 "</table>");
-        writer.append(stringBuilder);
-        writer.flush();
+*/
     }
 
 
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //super.doPost(req, resp);
+        String id = req.getParameter("id");
+        Action.StoreAction action = Action.StoreAction.UPDATE;
+        User u = this.validateService.findById(Integer.parseInt(id));
+        DispatchPattern dp = new DispatchPattern();
+        dp.init();
+        dp.action(() -> action, ValidateService.getInstance(), u);
     }
 }
 /*

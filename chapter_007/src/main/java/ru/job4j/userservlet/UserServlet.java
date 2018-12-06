@@ -46,6 +46,7 @@ public class UserServlet extends HttpServlet {
                     "<td>" +
                     "<form name = 'update' action ='" + req.getContextPath() + "/update" + "?id={" + user.getId() + "} method ='get'> " +
                     "   <input type='submit' value='update'>" +
+                    "</form>"+
                     "</td>" +
                     "<td>" +
                     "<form name = 'delete' action ='" + req.getContextPath() + "/user' method ='post'>" +
@@ -85,14 +86,12 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         Action.StoreAction action = Action.StoreAction.DELETE;
-
-
         User u = this.validateService.findById(Integer.parseInt(id));
         DispatchPattern dp = new DispatchPattern();
         dp.init();
         dp.action(() -> action, ValidateService.getInstance(), u);
-
-
+        //pw.append(u.toString());
+        //pw.flush();
 
 /*        PrintWriter writer = new PrintWriter(resp.getOutputStream());
         writer.append(" action: " + action);
