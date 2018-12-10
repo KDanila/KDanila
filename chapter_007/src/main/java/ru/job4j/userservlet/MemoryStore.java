@@ -57,7 +57,8 @@ public class MemoryStore implements Store {
      */
     @Override
     public boolean update(User user) {
-        this.USERS.put(user.getId(), user);
+        User u = new User.UserBuilder(user.getName()).login(user.getLogin()).email(user.getEmail()).build();
+        this.USERS.replace(user.getId(), u);
         return true;
     }
 

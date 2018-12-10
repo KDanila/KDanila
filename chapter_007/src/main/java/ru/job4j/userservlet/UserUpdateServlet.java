@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-//todo
 public class UserUpdateServlet extends HttpServlet {
 
     private final ValidateService validateService;
@@ -18,52 +17,39 @@ public class UserUpdateServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         resp.setContentType("text/html");
-        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-
-        //todo id =null? what the hell?
-        String id = req.getParameter("id");
+        int id = Integer.parseInt(req.getParameter("id"));
         PrintWriter pw = new PrintWriter(resp.getOutputStream());
-        pw.append(id);
-        pw.append(req.getContextPath());
-        pw.append(req.getPathInfo());
-        pw.append(req.getServletPath());
+        pw.append("<h1>Обновить данные пользователя</h1>" +
+                "<form action ='" + req.getContextPath() + "/update' method ='post'>" +
+                "<input type = 'text' name = 'id' value =" + id + ">" +
+                "<input type = 'text' name = 'name' value =" + this.validateService.findById(id).getName() + ">" +
+                "<input type = 'text' name = 'login'value =" + this.validateService.findById(id).getLogin() + ">" +
+                "<input type = 'text' name = 'email'value =" + this.validateService.findById(id).getEmail() + ">" +
+                "<input type ='submit' name = 'submit'>" +
+                "</form>");
         pw.flush();
-/*
-        User user = this.validateService.findById(Integer.parseInt(id));
-
-        StringBuilder stringBuilder = new StringBuilder("<table style='width:100%'>");
-        stringBuilder.append("<tr>" +
-                "<td>" + user.getId() + "</td>" +
-                "<td>" + user.getLogin() + "</td>" +
-                "<td>" + user.getName() + "</td>" +
-                "<td>"+
-                "<form name = 'update' action ='" + req.getContextPath() + "/update' method ='post'>" +
-                "   <input type ='submit' value = 'update'>" +
-                "   <input type='hidden' name = 'id' value='" + user.getId() + "'>" +
-                "</form>" +
-                "</td>" +
-                "</table>");
-*/
     }
-
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         Action.StoreAction action = Action.StoreAction.UPDATE;
+        String name = req.getParameter("name");
+        String login = req.getParameter("login");
+        String email = req.getParameter("email");
+        User user = new User.UserBuilder(name).login(login).email(email).build();
         User u = this.validateService.findById(Integer.parseInt(id));
+        PrintWriter pw = new PrintWriter(resp.getOutputStream());
+        pw.append(u.toString());
+        pw.append("id "+id);
+        this.validateService.update(u);
+        pw.append(u.toString());
+        pw.append("id "+id);
+        pw.flush();
+        /*
         DispatchPattern dp = new DispatchPattern();
         dp.init();
-        dp.action(() -> action, ValidateService.getInstance(), u);
+        dp.action(() -> action, ValidateService.getInstance(), u);*/
     }
 }
-/*
-UserUpdateServlet
-
-- doGet URL /edit?id={userId} - открывает форму для редактирования с заполенными полями.
-
-- doPost - / - сохраняет пользователя.
- */
