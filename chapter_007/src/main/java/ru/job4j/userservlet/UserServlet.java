@@ -88,6 +88,7 @@ public class UserServlet extends HttpServlet {
         DispatchPattern dp = new DispatchPattern();
         dp.init();
         dp.action(() -> action, ValidateService.getInstance(), u);
+        resp.sendRedirect(String.format("%s/index.jsp", req.getContextPath()));
     }
 }
 

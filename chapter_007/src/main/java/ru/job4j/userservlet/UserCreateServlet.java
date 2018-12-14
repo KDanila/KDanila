@@ -1,5 +1,7 @@
 package ru.job4j.userservlet;
 
+import com.sun.javafx.binding.StringFormatter;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -64,11 +66,8 @@ public class UserCreateServlet extends HttpServlet {
         String login = req.getParameter("login");
         String email = req.getParameter("email");
         User user = new User.UserBuilder(name).login(login).email(email).build();
-        this.validateService.add(user);/*
-        resp.setContentType("text/html");
-        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append(user.toString());
-        writer.flush();*/
+        this.validateService.add(user);
+        resp.sendRedirect(String.format("%s/index.jsp",req.getContextPath()));
     }
 }
 /*

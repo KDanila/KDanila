@@ -20,15 +20,16 @@ public class User {
     /**
      * name.
      */
-    private final String name;
+    private String name;
     /**
      * login.
      */
-    private final String login;
+    private String login;
+
     /**
      * email.
      */
-    private final String email;
+    private String email;
     /**
      * createDate.
      */
@@ -71,6 +72,7 @@ public class User {
                 + ", createDate=" + createDate
                 + '}';
     }
+
 
     /**
      * Class userBuilder.
@@ -190,6 +192,19 @@ public class User {
     public ZonedDateTime getCreateDate() {
         return createDate;
     }
+
+    public void setName(String name) {
+        this.name =  name;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 
 }
 

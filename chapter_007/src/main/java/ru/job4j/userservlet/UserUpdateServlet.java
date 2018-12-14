@@ -22,7 +22,7 @@ public class UserUpdateServlet extends HttpServlet {
         PrintWriter pw = new PrintWriter(resp.getOutputStream());
         pw.append("<h1>Обновить данные пользователя</h1>" +
                 "<form action ='" + req.getContextPath() + "/update' method ='post'>" +
-                "<input type = 'text' name = 'id' value =" + id + ">" +
+            //    "<input type = 'text' name = 'id' value =" + id + ">" +
                 "<input type = 'text' name = 'name' value =" + this.validateService.findById(id).getName() + ">" +
                 "<input type = 'text' name = 'login'value =" + this.validateService.findById(id).getLogin() + ">" +
                 "<input type = 'text' name = 'email'value =" + this.validateService.findById(id).getEmail() + ">" +
@@ -37,19 +37,11 @@ public class UserUpdateServlet extends HttpServlet {
         Action.StoreAction action = Action.StoreAction.UPDATE;
         String name = req.getParameter("name");
         String login = req.getParameter("login");
-        String email = req.getParameter("email");
-        User user = new User.UserBuilder(name).login(login).email(email).build();
-        User u = this.validateService.findById(Integer.parseInt(id));
-        PrintWriter pw = new PrintWriter(resp.getOutputStream());
-        pw.append(u.toString());
-        pw.append("id "+id);
-        this.validateService.update(u);
-        pw.append(u.toString());
-        pw.append("id "+id);
-        pw.flush();
-        /*
-        DispatchPattern dp = new DispatchPattern();
-        dp.init();
-        dp.action(() -> action, ValidateService.getInstance(), u);*/
+        String email = req.getParameter("email"); User user = this.validateService.findById(Integer.parseInt(id));
+        user.setName(name);
+        user.setLogin(login);
+        user.setEmail(email);
+        this.validateService.update(user);
+        resp.sendRedirect(String.format("%s/index.jsp", req.getContextPath()));
     }
 }

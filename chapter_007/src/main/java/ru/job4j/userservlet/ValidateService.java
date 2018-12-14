@@ -94,7 +94,7 @@ public class ValidateService {
      *
      * @return Map.
      */
-    Map<Integer, User> findAll() {
+    public Map<Integer, User> findAll() {
         return this.store.findAll();
     }
 
