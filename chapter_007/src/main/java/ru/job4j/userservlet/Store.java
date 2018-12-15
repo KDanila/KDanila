@@ -9,14 +9,14 @@ import java.util.Map;
  * @version $Id$
  * @since 0.1.0
  */
-public interface Store {
+public interface Store<U> {
     /**
      * add method.
      *
      * @param user - user
      * @return boolean.
      */
-    boolean add(User user);
+    boolean add(U user);
 
     /**
      * update method.
@@ -24,7 +24,7 @@ public interface Store {
      * @param user - user
      * @return boolean.
      */
-    boolean update(User user);
+    boolean update(U user);
 
     /**
      * delete method.
@@ -32,14 +32,14 @@ public interface Store {
      * @param user - user
      * @return boolean.
      */
-    boolean delete(User user);
+    boolean delete(U user);
 
     /**
      * findAll method.
      *
      * @return Map.
      */
-    Map<Integer, User> findAll();
+    Map<Integer, U> findAll();
 
     /**
      * findById method.
@@ -47,5 +47,5 @@ public interface Store {
      * @param id - int.
      * @return - User.
      */
-    User findById(int id);
+    U findById(int id);
 }

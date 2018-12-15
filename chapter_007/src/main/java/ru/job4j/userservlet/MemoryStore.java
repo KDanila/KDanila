@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version $Id$
  * @since 0.1.0
  */
-public class MemoryStore implements Store {
+public class MemoryStore implements Store<User> {
     /**
      * users hashmap.
      */
@@ -33,7 +33,7 @@ public class MemoryStore implements Store {
      *
      * @return Store.
      */
-    public static Store getInstance() {
+    public static Store<User> getInstance() {
         return MEMORY_STORE;
     }
 
