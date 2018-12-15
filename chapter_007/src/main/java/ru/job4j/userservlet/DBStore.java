@@ -5,12 +5,12 @@ import java.util.Map;
 import java.sql.Connection;
 import java.sql.Statement;
 import org.apache.commons.dbcp2.BasicDataSource;
-
+//TODO sql DB store
 public class DBStore implements Store<User> {
     private static final BasicDataSource SOURCE = new BasicDataSource();
-    private static DbStore INSTANCE = new DbStore();
+    private static DBStore INSTANCE = new DBStore();
 
-    public DbStore() {
+    public DBStore() {
         SOURCE.setUrl("...");
         SOURCE.setUsername("...");
         SOURCE.setPassword("...");
@@ -19,12 +19,12 @@ public class DBStore implements Store<User> {
         SOURCE.setMaxOpenPreparedStatements(100);
     }
 
-    public static DbStore getInstance() {
+    public static DBStore getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public User add(User model) {
+    public boolean add(User user) {
         try (Connection connection = SOURCE.getConnection();
              Statement st = connection.prepareStatement("...")
         ) {
@@ -32,11 +32,7 @@ public class DBStore implements Store<User> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
-    }
-    @Override
-    public boolean add(User user) {
-        return false;
+        return true;
     }
 
     @Override
@@ -59,3 +55,4 @@ public class DBStore implements Store<User> {
         return null;
     }
 }
+

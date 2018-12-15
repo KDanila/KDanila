@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * UserServlet class.
@@ -20,7 +19,6 @@ public class UserServlet extends HttpServlet {
 
     public UserServlet() {
         this.validateService = ValidateService.getInstance();
-        //this.validateService.add(new User.UserBuilder("test").build());
     }
 
     /**
@@ -31,34 +29,10 @@ public class UserServlet extends HttpServlet {
      * @throws IOException - ioex.
      */
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        res.setContentType("text/html");
-        PrintWriter writer = new PrintWriter(res.getOutputStream());
-        StringBuilder stringBuilder = new StringBuilder("<table style='width:100%'>");
-        for (User user : this.validateService.findAll().values()) {
-            stringBuilder.append("<tr>" +
-                    "<td>" + user.getId() + "</td>" +
-                    "<td>" + user.getLogin() + "</td>" +
-                    "<td>" + user.getName() + "</td>" +
-                    "<td>" +
-                    "<form name = 'update' action ='" + req.getContextPath() + "/update' method ='get'> " +
-                    "<input type='submit' value='update'>" +
-                    "<input type = 'hidden' name ='id' value='" + user.getId() + "'>"+
-                    "</form>"+
-                    "</td>" +
-                    "<td>" +
-                    "<form name = 'delete' action ='" + req.getContextPath() + "/user' method ='post'>" +
-                    "   <input type ='submit' value = 'delete'>" +
-                    "   <input type='hidden' name = 'id' value='" + user.getId() + "'>" +
-                    "</form>" +
-                    "</td>" +
-                    "</tr>");
-        }
-        stringBuilder.append("</table>");
-        writer.append(stringBuilder);
-        writer.flush();
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        req.setAttribute("users", this.validateService.findAll().values());
+        req.getRequestDispatcher("/WEB-INF/Views/UsersView.jsp").forward(req,res);
     }
-
     /**
      * Метод doPost - должен  уметь делать три вещи, создавать пользователя,
      * обновлять поля пользователя, удалять пользователя.
@@ -88,7 +62,7 @@ public class UserServlet extends HttpServlet {
         DispatchPattern dp = new DispatchPattern();
         dp.init();
         dp.action(() -> action, ValidateService.getInstance(), u);
-        resp.sendRedirect(String.format("%s/index.jsp", req.getContextPath()));
+        resp.sendRedirect(String.format("%s/", req.getContextPath()));
     }
 }
 
