@@ -16,7 +16,7 @@ public class User {
     /**
      * id.
      */
-    private final int id;
+    private int id;
     /**
      * name.
      */
@@ -203,6 +203,9 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 
 
