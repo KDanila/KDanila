@@ -16,7 +16,6 @@ import java.io.IOException;
 public class UserServlet extends HttpServlet {
     private final ValidateService validateService;
 
-
     public UserServlet() {
         this.validateService = ValidateService.getInstance();
     }

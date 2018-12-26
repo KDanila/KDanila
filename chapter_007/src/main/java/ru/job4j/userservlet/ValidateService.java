@@ -26,6 +26,7 @@ public class ValidateService {
      * private constructor.
      */
     private ValidateService() {
+        store.add(new User.UserBuilder("admin").login("admin").password("admin").build());
     }
 
     /**
@@ -45,22 +46,33 @@ public class ValidateService {
      */
     boolean add(User user) {
         boolean isExist = isUserExist(user);
-        if (!isExist) {
+        boolean isUnique = isUserUnique(user);
+        if (!isExist && !isUnique) {
             this.store.add(user);
         }
         return isExist;
     }
 
+    public boolean isUserUnique(User user) {
+        String login = user.getLogin();
+        String email = user.getEmail();
+        if (login == null || email == null) {
+            return false;
+        }
+        return this.findAll().values().stream().anyMatch(u-> u.equals(user));
+    }
+
     /**
      * update method.
      *
+     * @param id
      * @param user - user.
      * @return boolean.
      */
-    boolean update(User user) {
+    boolean update(String id, User user) {
         boolean isExist = isUserExist(user);
         if (!isExist) {
-            this.store.update(user);
+            this.store.update(id,user);
         }
         return isExist;
     }
@@ -77,6 +89,15 @@ public class ValidateService {
             this.store.delete(user);
         }
         return isExist;
+    }
+
+    /**
+     * @param login
+     * @param password
+     * @return
+     */
+    public boolean isAccessAllowed(String login, String password) {
+        return this.store.isAccessAllowed(login, password);
     }
 
     /**
@@ -106,5 +127,14 @@ public class ValidateService {
      */
     User findById(int id) {
         return this.store.findById(id);
+    }
+    /**
+     * findByLogin method.
+     *
+     * @param login - String.
+     * @return - User.
+     */
+    User findByLogin(String login) {
+        return this.store.findByLogin(login);
     }
 }

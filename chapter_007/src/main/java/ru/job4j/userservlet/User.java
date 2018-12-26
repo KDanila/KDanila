@@ -1,7 +1,8 @@
 package ru.job4j.userservlet;
 
 import java.time.ZonedDateTime;
-import java.util.Random;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * User class.
@@ -16,7 +17,12 @@ public class User {
     /**
      * id.
      */
-    private int id;
+    private AtomicInteger id;
+
+
+    private String password;
+
+    private static AtomicInteger counter = new AtomicInteger(0);
     /**
      * name.
      */
@@ -41,20 +47,12 @@ public class User {
      * @param userBuilder - userBuilder.
      */
     public User(UserBuilder userBuilder) {
-        this.id = generateId();
+        this.id= new AtomicInteger(counter.getAndIncrement());
         this.name = userBuilder.name;
         this.login = userBuilder.login;
         this.email = userBuilder.email;
+        this.password = userBuilder.password;
         this.createDate = userBuilder.createDate;
-    }
-
-    /**
-     * naive id generator.
-     *
-     * @return int.
-     */
-    private int generateId() {
-        return new Random().nextInt(10000);
     }
 
     /**
@@ -69,8 +67,24 @@ public class User {
                 + ", name='" + name + '\''
                 + ", login='" + login + '\''
                 + ", email='" + email + '\''
+                + ", password='" + password + '\''
                 + ", createDate=" + createDate
                 + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return name.equals(user.name) &&
+                login.equals(user.login) &&
+                email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, login, email);
     }
 
 
@@ -95,6 +109,8 @@ public class User {
          */
         private String email;
 
+        private String password;
+
         /**
          * constructor.
          *
@@ -102,6 +118,16 @@ public class User {
          */
         UserBuilder(String name) {
             this.name = name;
+        }
+
+        /**
+         * constructor.
+         *
+         * @param password - name.
+         */
+        UserBuilder password(String password) {
+            this.password = password;
+            return this;
         }
 
         /**
@@ -154,7 +180,7 @@ public class User {
      * @return int.
      */
     public int getId() {
-        return id;
+        return id.get();
     }
 
     /**
@@ -194,7 +220,7 @@ public class User {
     }
 
     public void setName(String name) {
-        this.name =  name;
+        this.name = name;
     }
 
     public void setLogin(String login) {
@@ -204,16 +230,15 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public void setId(int id) {
-        this.id = id;
+        this.id.set(id);
     }
 
-
+    public void setPassword(String password){
+        this.password = password;
+    }
+    public String getPassword() {
+        return password;
+    }
 }
-
-/*
-
-
-
-
- */

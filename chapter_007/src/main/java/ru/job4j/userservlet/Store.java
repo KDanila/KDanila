@@ -21,10 +21,12 @@ public interface Store<U> {
     /**
      * update method.
      *
+     *
+     * @param id
      * @param user - user
      * @return boolean.
      */
-    boolean update(U user);
+    boolean update(String id, U user);
 
     /**
      * delete method.
@@ -48,4 +50,15 @@ public interface Store<U> {
      * @return - User.
      */
     U findById(int id);
+
+    /**
+     * isAccessAllowed method.
+     *
+     * @param login - login.
+     * @param password - password.
+     * @return - return true - if access allowed for this user.
+     */
+    boolean isAccessAllowed(String login, String password);
+
+    U findByLogin(String login);
 }

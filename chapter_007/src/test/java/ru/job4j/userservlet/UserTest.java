@@ -36,4 +36,14 @@ public class UserTest {
         assertThat(user.getName(), is("FirstPlayer"));
     }
 
+    @Test
+    public void whenAddUserTheCorretlyGenerateId(){
+        User user1 = new User.UserBuilder("!").build();
+        User user2 = new User.UserBuilder("!!").build();
+        User user3 = new User.UserBuilder("!!!").build();
+        System.out.println(user1.getId());
+        System.out.println(user2.getId());
+        System.out.println(user3.getId());
+    }
+
 }

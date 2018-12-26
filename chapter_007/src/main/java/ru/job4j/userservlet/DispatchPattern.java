@@ -48,7 +48,7 @@ public class DispatchPattern {
      */
     public BiFunction<ValidateService, User, Boolean> toUpdate() {
         return (validateService, user) -> {
-            validateService.update(user);
+            //validateService.update(user);
             return true;
         };
     }

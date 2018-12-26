@@ -1,6 +1,7 @@
 package ru.job4j.userservlet;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -46,19 +47,26 @@ public class MemoryStore implements Store<User> {
     @Override
     public boolean add(User user) {
         this.USERS.put(user.getId(), user);
+        System.out.println(this.findAll().values());
         return true;
     }
 
     /**
      * update method.
      *
+     *
+     * @param id
      * @param user - user
      * @return boolean.
      */
     @Override
-    public boolean update(User user) {
-        User u = new User.UserBuilder(user.getName()).login(user.getLogin()).email(user.getEmail()).build();
-        this.USERS.replace(user.getId(), u);
+    public boolean update(String id, User user) {
+        User toUpdate = this.findById(Integer.valueOf(id));
+        Objects.requireNonNull(toUpdate);
+        toUpdate.setName(user.getName());
+        toUpdate.setLogin(user.getLogin());
+        toUpdate.setEmail(user.getEmail());
+        this.USERS.put(Integer.valueOf(id),toUpdate);
         return true;
     }
 
@@ -93,5 +101,18 @@ public class MemoryStore implements Store<User> {
     @Override
     public User findById(int id) {
         return this.USERS.get(id);
+    }
+
+    @Override
+    public boolean isAccessAllowed(String login, String password) {
+        return this.USERS.values().stream()
+                .peek(System.out::println)
+                .anyMatch(user -> user.getLogin().equals(login) &&
+                        user.getPassword().equals(password));
+    }
+
+    @Override
+    public User findByLogin(String login) {
+        return this.USERS.values().stream().filter(u->u.getLogin().equals(login)).findFirst().get();
     }
 }

@@ -52,9 +52,18 @@ public class UserCreateServlet extends HttpServlet {
         String name = req.getParameter("name");
         String login = req.getParameter("login");
         String email = req.getParameter("email");
-        User user = new User.UserBuilder(name).login(login).email(email).build();
-        this.validateService.add(user);
-        resp.sendRedirect(String.format("%s/",req.getContextPath()));
+        boolean unique = this.validateService
+                .findAll()
+                .values()
+                .stream()
+                .filter(u->u.getEmail()!=null)
+                .noneMatch(u -> u.getEmail().equals(email)
+                        || u.getLogin().equals(login));
+        if(unique) {
+            User user = new User.UserBuilder(name).login(login).email(email).build();
+            this.validateService.add(user);
+        }
+        resp.sendRedirect(String.format("%s/", req.getContextPath()));
     }
 }
 /*

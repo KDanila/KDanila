@@ -13,6 +13,10 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <filter>
+        <filter-name>AuthentificationFilter</filter-name>
+        <filter-class>ru.job4j.userservlet.AuthentificationFilter</filter-class>
+    </filter>
     <servlet>
         <servlet-name>UserCreateServlet</servlet-name>
         <servlet-class>ru.job4j.userservlet.UserCreateServlet</servlet-class>
@@ -40,6 +44,14 @@
         </init-param>
         <load-on-startup>3</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>AuthenticationServlet</servlet-name>
+        <servlet-class>ru.job4j.userservlet.AuthenticationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthenticationServlet</servlet-name>
+        <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EchoServlet</servlet-name>
         <url-pattern>/echo</url-pattern>
@@ -56,5 +68,9 @@
         <servlet-name>UserUpdateServlet</servlet-name>
         <url-pattern>/update</url-pattern>
     </servlet-mapping>
+    <filter-mapping>
+        <filter-name>AuthentificationFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
 </web-app>
 

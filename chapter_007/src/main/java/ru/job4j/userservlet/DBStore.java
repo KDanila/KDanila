@@ -1,9 +1,6 @@
 package ru.job4j.userservlet;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.util.*;
 
@@ -17,31 +14,19 @@ public class DBStore implements Store<User> {
 
     private static DBStore INSTANCE = new DBStore();
 
-    /**
-     * FileInputStream.
-     */
-    private FileInputStream fis;
-
-    private Connection connection = null;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SQLException.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DBStore.class);
 
     private Properties property = new Properties();
 
     private String dbTableName;
     private String dbName;
+    private String name;
+    private String password;
 
-    public DBStore() {
-
-    }
-
-    public DBStore(String path) {
-        File file = new File(path);
-        try {
-            this.fis = new FileInputStream(file.getAbsolutePath());
-            property.load(fis);
-        } catch (FileNotFoundException e) {
-            LOGGER.error(e.getMessage(), e);
+    private DBStore() {
+        try (InputStream resStream = getClass().getClassLoader().getResourceAsStream(
+                "configDbStore.properties")) {
+            property.load(resStream);
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -54,11 +39,13 @@ public class DBStore implements Store<User> {
         SOURCE.setMaxOpenPreparedStatements(100);
         this.dbTableName = property.getProperty("jdbc.tablename");
         this.dbName = property.getProperty("jdbc.DBname");
+        this.name = property.getProperty("jdbc.username");
+        this.password = property.getProperty("jdbc.password");
         initDataBase();
     }
 
     private void initDataBase() {
-        try {
+        /*try {
             this.connection = SOURCE.getConnection();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
@@ -70,13 +57,13 @@ public class DBStore implements Store<User> {
                     LOGGER.error(e.getMessage(), e);
                 }
             }
-        }
-        if (!checkDB()) {
-            createDB();
-        }
-        if (!checkTableInDB()) {
-            createTableInDB();
-        }
+        }*/
+//        if (!checkDB()) {
+//            createDB();
+//        }
+//        if (!checkTableInDB()) {
+//            createTableInDB();
+//        }
     }
 
 
@@ -84,9 +71,20 @@ public class DBStore implements Store<User> {
         return INSTANCE;
     }
 
+    public Connection getConnection() {
+        Connection connection = null;
+        try {
+            connection = SOURCE.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return connection;
+    }
+
     @Override
     public boolean add(User user) {
-        try (PreparedStatement ps = connection.prepareStatement("insert into tracker values(?,?,?)")) {
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement("insert into tracker values(?,?,?)")) {
             ps.setInt(1, user.getId());
             ps.setString(2, user.getName());
             ps.setString(3, user.getEmail());
@@ -97,11 +95,16 @@ public class DBStore implements Store<User> {
         }
         return false;
     }
-
+//todo
     @Override
+    public boolean update(String id, User user) {
+        return false;
+    }
+
+/*
     public boolean update(User user) {
-        try (PreparedStatement ps = connection.prepareStatement("update ? set name=?,email =?"
-                + " where id = ?")) {
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement("update ? set name=?,email =? where id = ?")) {
             ps.setString(1, dbTableName);
             ps.setString(2, user.getName());
             ps.setString(3, user.getEmail());
@@ -113,10 +116,12 @@ public class DBStore implements Store<User> {
         }
         return false;
     }
+*/
 
     @Override
     public boolean delete(User user) {
-        try (PreparedStatement ps = connection.prepareStatement("delete from ? where id=?")) {
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement("delete from ? where id=?")) {
             ps.setString(1, dbTableName);
             ps.setInt(2, user.getId());
             ps.executeUpdate();
@@ -132,7 +137,8 @@ public class DBStore implements Store<User> {
         Map<Integer, User> toReturn = new HashMap<>();
         User temp = null;
         int idUser;
-        try (PreparedStatement ps = connection.prepareStatement("SELECT*FROM ?")) {
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement("SELECT*FROM ?")) {
             ps.setString(1, dbTableName);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -152,7 +158,8 @@ public class DBStore implements Store<User> {
     @Override
     public User findById(int id) {
         User toReturn = null;
-        try (PreparedStatement ps = connection.prepareStatement("SELECT*FROM ?")) {
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement("SELECT*FROM ?")) {
             ps.setString(1, dbTableName);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -161,7 +168,6 @@ public class DBStore implements Store<User> {
                     toReturn = new User.UserBuilder(rs.getString("name"))
                             .email(rs.getString("email"))
                             .build();
-
                 }
             }
         } catch (SQLException e) {
@@ -170,6 +176,16 @@ public class DBStore implements Store<User> {
         toReturn.setId(id);
         return toReturn;
     }
+//todo
+    @Override
+    public boolean isAccessAllowed(String login, String password) {
+        return false;
+    }
+//todo
+    @Override
+    public User findByLogin(String login) {
+        return null;
+    }
 
     /**
      * createTableInDB method.
@@ -177,7 +193,8 @@ public class DBStore implements Store<User> {
      * Creating table in database, if it's doesn't exist.
      */
     private void createTableInDB() {
-        try (Statement st = connection.createStatement()) {
+        try (Connection connection = SOURCE.getConnection();
+             Statement st = connection.createStatement()) {
             st.executeQuery("CREATE TABLE tracker ( id integer primary key,"
                             + "name varchar(15), "
                             + "email varchar(50),"
@@ -197,7 +214,7 @@ public class DBStore implements Store<User> {
      */
     private boolean checkTableInDB() {
         boolean isExist = false;
-        try {
+        try (Connection connection = SOURCE.getConnection()) {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM pg_catalog.pg_tables;");
             while (rs.next()) {
@@ -218,7 +235,7 @@ public class DBStore implements Store<User> {
      */
     private void createDB() {
         Statement st = null;
-        try {
+        try (Connection connection = SOURCE.getConnection()) {
             st = connection.createStatement();
             st.executeQuery("CREATE DATABASE trackerdb");
             st.close();
@@ -232,9 +249,10 @@ public class DBStore implements Store<User> {
      *
      * @return true if DB is existing.
      */
+    //todo UnsupportedOperationException: Not supported by BasicDataSource  ---> correct.
     private boolean checkDB() {
         boolean isExist = false;
-        try {
+        try (Connection connection = SOURCE.getConnection(name, password)) {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("SELECT datname FROM pg_database");
             while (rs.next()) {
