@@ -3,7 +3,6 @@ package ru.job4j.userservlet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * MemoryStore class.
