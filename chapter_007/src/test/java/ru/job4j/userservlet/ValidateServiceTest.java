@@ -50,9 +50,13 @@ public class ValidateServiceTest {
         validateService.add(user2);
         user1.setEmail("1");
         user1.setLogin("1");
+        System.out.println(user1);
+        System.out.println(user2);
         user2.setEmail("2");
         user2.setLogin("2");
         validateService.update(String.valueOf(user1.getId()),user2);
+        System.out.println(user1);
+        System.out.println(user2);
         assertThat(user1.getName(), is(validateService.findById(user2.getId()).getName()));
     }
 
