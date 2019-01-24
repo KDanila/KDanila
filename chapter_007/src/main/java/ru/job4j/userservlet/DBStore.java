@@ -176,6 +176,11 @@ id name email login password
     public boolean isAccessAllowed(String login, String password) {
         return false;
     }
+//todo
+    @Override
+    public User findByLogin(String login) {
+        return null;
+    }
 
     //todo
     @Override
