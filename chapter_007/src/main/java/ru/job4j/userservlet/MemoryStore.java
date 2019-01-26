@@ -46,8 +46,7 @@ public class MemoryStore implements Store<User> {
      */
     @Override
     public boolean add(User user) {
-        this.USERS.put(user.getId(), user);
-        System.out.println(this.findAll().values());
+        this.USERS.putIfAbsent(user.getId(), user);
         return true;
     }
 
@@ -106,7 +105,7 @@ public class MemoryStore implements Store<User> {
     @Override
     public boolean isAccessAllowed(String login, String password) {
         return this.USERS.values().stream()
-                .peek(System.out::println)
+                //.peek(System.out::println)
                 .anyMatch(user -> user.getLogin().equals(login) &&
                         user.getPassword().equals(password));
     }

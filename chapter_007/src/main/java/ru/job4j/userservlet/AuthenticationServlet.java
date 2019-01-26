@@ -28,7 +28,6 @@ public class AuthenticationServlet extends HttpServlet {
             session.setAttribute("login", "correct");
             resp.sendRedirect(String.format("%s/", req.getContextPath()));
         } else {
-            System.out.println("incorrect");
             session.setAttribute("login", "incorrect");
             resp.sendRedirect(String.format("%s/signin", req.getContextPath()));
         }

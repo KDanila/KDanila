@@ -22,6 +22,7 @@ public class User {
 
     private String password;
 
+
     private static AtomicInteger counter = new AtomicInteger(0);
     /**
      * name.
@@ -47,7 +48,7 @@ public class User {
      * @param userBuilder - userBuilder.
      */
     public User(UserBuilder userBuilder) {
-        this.id= new AtomicInteger(counter.getAndIncrement());
+        this.id = new AtomicInteger(counter.getAndIncrement());
         this.name = userBuilder.name;
         this.login = userBuilder.login;
         this.email = userBuilder.email;
@@ -77,8 +78,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return name.equals(user.name) &&
-                login.equals(user.login) &&
+        return login.equals(user.login) &&
                 email.equals(user.email);
     }
 
@@ -235,10 +235,20 @@ public class User {
         this.id.set(id);
     }
 
-    public void setPassword(String password){
+    public void setPassword(String password) {
         this.password = password;
     }
+
     public String getPassword() {
         return password;
     }
+
+    public static int getCounter() {
+        return counter.get();
+    }
+
+    public static void setCounter(int value) {
+        User.counter.set(value);
+    }
+
 }

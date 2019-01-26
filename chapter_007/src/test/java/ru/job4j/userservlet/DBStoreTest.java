@@ -17,7 +17,7 @@ public class DBStoreTest {
     public void whenStringPathCorrectShould(){
         String path = "configDbStore.properties";
         File file = new File(path);
-        System.out.println(file.exists());
+       // System.out.println(file.exists());
     }
 
 }

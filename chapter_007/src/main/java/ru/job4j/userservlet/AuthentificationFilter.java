@@ -22,7 +22,6 @@ public class AuthentificationFilter implements Filter {
             HttpSession session = request.getSession();
             if (session.getAttribute("login") == null ||
                     session.getAttribute("login").equals("incorrect")) {
-                System.out.println("came into session login comparisson");
                 ((HttpServletResponse) response).sendRedirect(String.format("%s/signin", ((HttpServletRequest) request).getContextPath()));
                 return;
             }

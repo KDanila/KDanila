@@ -28,15 +28,8 @@ public class UserUpdateServlet extends HttpServlet {
         String login = req.getParameter("login");
         String email = req.getParameter("email");
 
-        User user = this.validateService.findById(Integer.valueOf(id));
-        user.setName(name);
-        user.setLogin(login);
-        user.setEmail(email);
-
-        boolean isUserAlreadyExist = this.validateService.isUserUnique(user);
-        if (isUserAlreadyExist) {
-            this.validateService.update(id, user);
-        }
+        User user = new User.UserBuilder(name).login(login).email(email).build();
+        this.validateService.update(id, user);
 
         resp.sendRedirect(String.format("%s/", req.getContextPath()));
     }

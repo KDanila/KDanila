@@ -47,8 +47,10 @@ public class ValidateService {
     boolean add(User user) {
         boolean isExist = isUserExist(user);
         boolean isUnique = isUserUnique(user);
-        if (!isExist && !isUnique) {
+        if (!isExist && isUnique) {
             this.store.add(user);
+        } else {
+            User.setCounter(User.getCounter()-1);
         }
         return isExist;
     }
@@ -59,7 +61,7 @@ public class ValidateService {
         if (login == null || email == null) {
             return false;
         }
-        return this.findAll().values().stream().anyMatch(u-> u.equals(user));
+        return !this.findAll().values().stream().anyMatch(u-> u.equals(user));
     }
 
     /**
@@ -71,8 +73,10 @@ public class ValidateService {
      */
     boolean update(String id, User user) {
         boolean isExist = isUserExist(user);
-        if (!isExist) {
+        if (!isExist&&isUserUnique(user)) {
             this.store.update(id,user);
+        } else {
+            User.setCounter(User.getCounter()-1);
         }
         return isExist;
     }
