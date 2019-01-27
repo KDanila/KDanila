@@ -26,7 +26,7 @@ public class ValidateService {
      * private constructor.
      */
     private ValidateService() {
-        store.add(new User.UserBuilder("admin").login("admin").password("admin").build());
+        store.add(new User.UserBuilder("admin").login("admin").email("admin").password("admin").build());
     }
 
     /**
@@ -45,24 +45,9 @@ public class ValidateService {
      * @return boolean.
      */
     boolean add(User user) {
-        boolean isExist = isUserExist(user);
-        boolean isUnique = isUserUnique(user);
-        if (!isExist && isUnique) {
-            this.store.add(user);
-        } else {
-            User.setCounter(User.getCounter()-1);
-        }
-        return isExist;
+        return this.store.add(user);
     }
 
-    public boolean isUserUnique(User user) {
-        String login = user.getLogin();
-        String email = user.getEmail();
-        if (login == null || email == null) {
-            return false;
-        }
-        return !this.findAll().values().stream().anyMatch(u-> u.equals(user));
-    }
 
     /**
      * update method.
@@ -72,13 +57,7 @@ public class ValidateService {
      * @return boolean.
      */
     boolean update(String id, User user) {
-        boolean isExist = isUserExist(user);
-        if (!isExist&&isUserUnique(user)) {
-            this.store.update(id,user);
-        } else {
-            User.setCounter(User.getCounter()-1);
-        }
-        return isExist;
+        return this.store.update(id, user);
     }
 
     /**
@@ -88,11 +67,7 @@ public class ValidateService {
      * @return boolean.
      */
     boolean delete(User user) {
-        boolean isExist = isUserExist(user);
-        if (isExist) {
-            this.store.delete(user);
-        }
-        return isExist;
+        return this.store.delete(user);
     }
 
     /**
@@ -104,15 +79,6 @@ public class ValidateService {
         return this.store.isAccessAllowed(login, password);
     }
 
-    /**
-     * isUserExist method.
-     *
-     * @param user - user.
-     * @return boolean.
-     */
-    private boolean isUserExist(User user) {
-        return this.store.findById(user.getId()) != null;
-    }
 
     /**
      * findAll method.
@@ -132,6 +98,7 @@ public class ValidateService {
     User findById(int id) {
         return this.store.findById(id);
     }
+
     /**
      * findByLogin method.
      *

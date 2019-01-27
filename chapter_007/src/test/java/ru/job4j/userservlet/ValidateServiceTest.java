@@ -16,15 +16,15 @@ public class ValidateServiceTest {
     /**
      * user1.
      */
-    private User user1 = new User.UserBuilder("Artem").build();
+    private User user1 = new User.UserBuilder("Artem").email("1").login("1").email("1111").build();
     /**
      * user2.
      */
-    private User user2 = new User.UserBuilder("Egor").build();
+    private User user2 = new User.UserBuilder("Egor").email("2").login("2").email("2222").build();
     /**
      * user3.
      */
-    private User user3 = new User.UserBuilder("Semen").build();
+    private User user3 = new User.UserBuilder("Semen").email("3").login("3").email("3333").build();
 
     /**
      * whenAddThreeUsersThenCorrect.
@@ -50,13 +50,9 @@ public class ValidateServiceTest {
         validateService.add(user2);
         user1.setEmail("1");
         user1.setLogin("1");
-        System.out.println(user1);
-        System.out.println(user2);
         user2.setEmail("2");
         user2.setLogin("2");
         validateService.update(String.valueOf(user1.getId()),user2);
-        System.out.println(user1);
-        System.out.println(user2);
         assertThat(user1.getName(), is(validateService.findById(user2.getId()).getName()));
     }
 

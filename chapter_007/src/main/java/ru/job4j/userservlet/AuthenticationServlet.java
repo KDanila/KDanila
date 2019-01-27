@@ -9,7 +9,11 @@ import java.io.IOException;
 
 public class AuthenticationServlet extends HttpServlet {
 
-    ValidateService validateService = ValidateService.getInstance();
+    ValidateService validateService;
+
+    AuthenticationServlet(){
+        this.validateService = ValidateService.getInstance();
+    }
 
 
     @Override
@@ -23,11 +27,13 @@ public class AuthenticationServlet extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         HttpSession session = req.getSession();
-        if (this.validateService.findByLogin(login) != null
-                && this.validateService.isAccessAllowed(login, password)) {
+        System.out.println("come into auth servlet");
+        if (this.validateService.isAccessAllowed(login, password)) {
+            System.out.println("login correct");
             session.setAttribute("login", "correct");
             resp.sendRedirect(String.format("%s/", req.getContextPath()));
         } else {
+            System.out.println("login not correct");
             session.setAttribute("login", "incorrect");
             resp.sendRedirect(String.format("%s/signin", req.getContextPath()));
         }
