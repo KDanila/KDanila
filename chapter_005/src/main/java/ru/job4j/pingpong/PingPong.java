@@ -1,3 +1,4 @@
+/*
 package ru.job4j.pingpong;
 
 import javafx.application.Application;
@@ -6,24 +7,30 @@ import javafx.scene.Scene;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+*/
 /**
  * Pin Pong class.
  *
  * @author Kuzmin Danila (mailto:bus1d0@mail.ru)
  * @version $Id$
  * @since 0.1.0
- */
+ *//*
+
 public class PingPong extends Application {
-    /**
+    */
+/**
      * Title name.
-     */
+     *//*
+
     private static final String JOB4J = "Пинг-понг www.job4j.ru";
 
-    /**
+    */
+/**
      * Start method.
      *
      * @param stage - stage.
-     */
+     *//*
+
     @Override
     public void start(Stage stage) {
         int limitX = 500;
@@ -49,3 +56,4 @@ public class PingPong extends Application {
         stage.show();
     }
 }
+*/

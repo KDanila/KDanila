@@ -8,11 +8,7 @@ import java.io.IOException;
 
 public class UserUpdateServlet extends HttpServlet {
 
-    private final ValidateService validateService;
-
-    public UserUpdateServlet() {
-        this.validateService = ValidateService.getInstance();
-    }
+    private final ValidateService validateService = ValidateService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

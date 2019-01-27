@@ -1,8 +1,15 @@
 package ru.job4j.userservlet;
 
-import java.io.*;
-import java.sql.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
@@ -45,25 +52,9 @@ public class DBStore implements Store<User> {
     }
 
     private void initDataBase() {
-        /*try {
-            this.connection = SOURCE.getConnection();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-        } finally {
-            if (this.connection == null) {
-                try {
-                    this.connection.close();
-                } catch (SQLException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
-            }
-        }*/
-//        if (!checkDB()) {
-//            createDB();
-//        }
-//        if (!checkTableInDB()) {
-//            createTableInDB();
-//        }
+        if (!checkTableInDB()) {
+            createTableInDB();
+        }
     }
 
 
@@ -81,13 +72,18 @@ public class DBStore implements Store<User> {
         return connection;
     }
 
+    /*
+    id name email login password
+     */
     @Override
     public boolean add(User user) {
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement ps = connection.prepareStatement("insert into tracker values(?,?,?)")) {
+             PreparedStatement ps = connection.prepareStatement("insert into " + dbTableName + " values(?,?,?,?,?)")) {
             ps.setInt(1, user.getId());
             ps.setString(2, user.getName());
             ps.setString(3, user.getEmail());
+            ps.setString(4, user.getLogin());
+            ps.setString(5, user.getPassword());
             ps.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -95,20 +91,19 @@ public class DBStore implements Store<User> {
         }
         return false;
     }
-//todo
+/*
+id name email login password
+ *///todo
     @Override
     public boolean update(String id, User user) {
-        return false;
-    }
-
-/*
-    public boolean update(User user) {
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement ps = connection.prepareStatement("update ? set name=?,email =? where id = ?")) {
-            ps.setString(1, dbTableName);
-            ps.setString(2, user.getName());
-            ps.setString(3, user.getEmail());
-            ps.setInt(4, user.getId());
+             PreparedStatement ps = connection.prepareStatement("update "+dbTableName+
+                     " set name=?,email =?, login = ?, password = ? where id = ?")) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getLogin());
+            ps.setString(4, user.getPassword());
+            ps.setString(5, id);
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -116,14 +111,12 @@ public class DBStore implements Store<User> {
         }
         return false;
     }
-*/
 
     @Override
     public boolean delete(User user) {
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement ps = connection.prepareStatement("delete from ? where id=?")) {
-            ps.setString(1, dbTableName);
-            ps.setInt(2, user.getId());
+             PreparedStatement ps = connection.prepareStatement("delete from " + dbTableName + " where id=?")) {
+            ps.setInt(1, user.getId());
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -138,14 +131,15 @@ public class DBStore implements Store<User> {
         User temp = null;
         int idUser;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement ps = connection.prepareStatement("SELECT*FROM ?")) {
-            ps.setString(1, dbTableName);
+             PreparedStatement ps = connection.prepareStatement("SELECT*FROM " + dbTableName)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                idUser = rs.getInt("id");
                 temp = new User.UserBuilder(rs.getString("name"))
                         .email(rs.getString("email"))
+                        .login(rs.getString("login"))
+                        .password(rs.getString("password"))
                         .build();
-                idUser = Integer.parseInt(rs.getString("id"));
                 temp.setId(idUser);
                 toReturn.put(idUser, temp);
             }
@@ -159,16 +153,16 @@ public class DBStore implements Store<User> {
     public User findById(int id) {
         User toReturn = null;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement ps = connection.prepareStatement("SELECT*FROM ?")) {
-            ps.setString(1, dbTableName);
+             PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + dbTableName + " where id=?")) {
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                int idTemp = rs.getInt("id");
-                if (idTemp == id) {
-                    toReturn = new User.UserBuilder(rs.getString("name"))
-                            .email(rs.getString("email"))
-                            .build();
-                }
+                toReturn = new User.UserBuilder(rs.getString("name"))
+                        .email(rs.getString("email"))
+                        .login(rs.getString("login"))
+                        .password(rs.getString("password"))
+                        .build();
+                toReturn.setId(rs.getInt("id"));
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
@@ -176,12 +170,14 @@ public class DBStore implements Store<User> {
         toReturn.setId(id);
         return toReturn;
     }
-//todo
+
+    //todo
     @Override
     public boolean isAccessAllowed(String login, String password) {
         return false;
     }
-//todo
+
+    //todo
     @Override
     public User findByLogin(String login) {
         return null;
@@ -192,14 +188,14 @@ public class DBStore implements Store<User> {
      * <p>
      * Creating table in database, if it's doesn't exist.
      */
-    private void createTableInDB() {
-        try (Connection connection = SOURCE.getConnection();
-             Statement st = connection.createStatement()) {
-            st.executeQuery("CREATE TABLE tracker ( id integer primary key,"
-                            + "name varchar(15), "
-                            + "email varchar(50),"
-                    //                 + "expired_date timestamp)");
-            );
+    void createTableInDB() {
+        try (Connection connection = SOURCE.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement("CREATE TABLE " + this.dbTableName + " ( id integer primary key,\n" +
+                    "                            name varchar(15), \n" +
+                    "                            email varchar(50),\n" +
+                    "                            login varchar(50),\n" +
+                    "                            password varchar(50))");
+            ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -212,14 +208,15 @@ public class DBStore implements Store<User> {
      *
      * @return true if db existing.
      */
-    private boolean checkTableInDB() {
+    boolean checkTableInDB() {
         boolean isExist = false;
         try (Connection connection = SOURCE.getConnection()) {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM pg_catalog.pg_tables;");
             while (rs.next()) {
                 if (rs.getString("tablename").equals(dbTableName)) {
-                    return true;
+                    isExist = true;
+                    break;
                 }
             }
             rs.close();
@@ -233,7 +230,7 @@ public class DBStore implements Store<User> {
     /**
      * creatDB method.
      */
-    private void createDB() {
+/*    private void createDB() {
         Statement st = null;
         try (Connection connection = SOURCE.getConnection()) {
             st = connection.createStatement();
@@ -242,15 +239,14 @@ public class DBStore implements Store<User> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * checkDB method.
      *
      * @return true if DB is existing.
      */
-    //todo UnsupportedOperationException: Not supported by BasicDataSource  ---> correct.
-    private boolean checkDB() {
+  /*    private boolean checkDB() {
         boolean isExist = false;
         try (Connection connection = SOURCE.getConnection(name, password)) {
             Statement st = connection.createStatement();
@@ -266,6 +262,6 @@ public class DBStore implements Store<User> {
             LOGGER.error(e.getMessage(), e);
         }
         return isExist;
-    }
+    }*/
 }
 

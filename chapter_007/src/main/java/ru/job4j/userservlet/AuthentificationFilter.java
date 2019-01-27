@@ -22,7 +22,7 @@ public class AuthentificationFilter implements Filter {
             HttpSession session = request.getSession();
             if (session.getAttribute("login") == null ||
                     session.getAttribute("login").equals("incorrect")) {
-                ((HttpServletResponse) response).sendRedirect(String.format("%s/signin", ((HttpServletRequest) request).getContextPath()));
+                ((HttpServletResponse) response).sendRedirect(String.format("%s/signin", ((HttpServletRequest) req).getContextPath()));
                 return;
             }
             chain.doFilter(req, response);

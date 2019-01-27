@@ -9,12 +9,7 @@ import java.io.IOException;
 
 public class AuthenticationServlet extends HttpServlet {
 
-    ValidateService validateService;
-
-    AuthenticationServlet(){
-        this.validateService = ValidateService.getInstance();
-    }
-
+    ValidateService validateService = ValidateService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,7 +22,6 @@ public class AuthenticationServlet extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         HttpSession session = req.getSession();
-        System.out.println("come into auth servlet");
         if (this.validateService.isAccessAllowed(login, password)) {
             System.out.println("login correct");
             session.setAttribute("login", "correct");
