@@ -18,11 +18,6 @@ public class DBStoreTest {
     }
 
     @Test
-    public void whenConcstructObjectOfDbStoreShouldCreateTableAndDb(){
-        assertNotNull(dbStore.getConnection());
-    }
-
-    @Test
     public void whenCreateTableInDbShouldCreateProperly(){
         assertThat(dbStore.checkTableInDB(),is(true));
     }
@@ -52,7 +47,25 @@ public class DBStoreTest {
     public void whenUseUpdateShouldCorrectUpdated(){
         dbStore.add(user1);
         dbStore.add(user2);
-       // dbStore.update(String.valueOf(user1.getId()),user2);
+        dbStore.update(String.valueOf(user1.getId()),user2);
+    }
+
+    @Test
+    public void whenAccessAllowedShouldReturnCorrectValue(){
+        dbStore.add(user1);
+        dbStore.add(user2);
+        boolean stateTrue = dbStore.isAccessAllowed(user1.getLogin(),user1.getPassword());
+        boolean stateFalse = dbStore.isAccessAllowed(user1.getLogin(),user2.getPassword());
+        assertThat(stateTrue,is(true));
+        assertThat(stateFalse,is(false));
+    }
+
+    @Test
+    public void whenUseFindByLoginAndLoginExistShouldReturnCorrectValue(){
+        dbStore.add(user1);
+        dbStore.add(user2);
+        User toCheck = dbStore.findByLogin(user1.getLogin());
+        System.out.println(toCheck.getName());
     }
 
 }

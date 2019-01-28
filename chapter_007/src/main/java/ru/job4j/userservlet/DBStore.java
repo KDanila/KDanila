@@ -15,7 +15,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DBStore implements Store<User> {
+public class DBStore implements Store<User>, AutoCloseable {
 
     private static final BasicDataSource SOURCE = new BasicDataSource();
 
@@ -91,19 +91,20 @@ public class DBStore implements Store<User> {
         }
         return false;
     }
-/*
-id name email login password
- *///todo
+
+    /*
+    id name email login password
+     *///todo
     @Override
     public boolean update(String id, User user) {
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement ps = connection.prepareStatement("update "+dbTableName+
+             PreparedStatement ps = connection.prepareStatement("update " + dbTableName +
                      " set name=?,email =?, login = ?, password = ? where id = ?")) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getLogin());
             ps.setString(4, user.getPassword());
-            ps.setString(5, id);
+            ps.setInt(5, Integer.valueOf(id));
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -171,21 +172,51 @@ id name email login password
         return toReturn;
     }
 
-    //todo
     @Override
     public boolean isAccessAllowed(String login, String password) {
-        return false;
-    }
-//todo
-    @Override
-    public User findByLogin(String login) {
-        return null;
+        String tempLogin;
+        String tempPassword;
+        boolean isAllowed = false;
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement("SELECT*FROM " + dbTableName)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                tempLogin = rs.getString("login");
+                if (tempLogin.equals(login)) {
+                    tempPassword = rs.getString("password");
+                    if (tempPassword.equals(password)) {
+                        isAllowed = true;
+                        break;
+                    }
+                    break;
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return isAllowed;
     }
 
-    //todo
+
     @Override
-    public User findByLogin(String login) {
-        return null;
+    public User findByLogin(String login){
+        User toReturn = null;
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement("SELECT*FROM " + dbTableName+ " WHERE LOGIN = ?")) {
+            ps.setString(1,login);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                toReturn = new User.UserBuilder(rs.getString("name"))
+                        .email(rs.getString("email"))
+                        .login(rs.getString("login"))
+                        .password(rs.getString("password"))
+                        .build();
+                toReturn.setId(rs.getInt("id"));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return toReturn;
     }
 
     /**
@@ -215,8 +246,8 @@ id name email login password
      */
     boolean checkTableInDB() {
         boolean isExist = false;
-        try (Connection connection = SOURCE.getConnection()) {
-            Statement st = connection.createStatement();
+        try (Connection connection = SOURCE.getConnection();
+             Statement st = connection.createStatement()) {
             ResultSet rs = st.executeQuery("SELECT * FROM pg_catalog.pg_tables;");
             while (rs.next()) {
                 if (rs.getString("tablename").equals(dbTableName)) {
@@ -224,12 +255,16 @@ id name email login password
                     break;
                 }
             }
-            rs.close();
-            st.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
         return isExist;
+    }
+
+    //todo
+    @Override
+    public void close() throws Exception {
+
     }
 
     /**

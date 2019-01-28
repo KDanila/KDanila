@@ -135,7 +135,7 @@ public class MemoryStore implements Store<User> {
     @Override
     public boolean isAccessAllowed(String login, String password) {
         return this.USERS.values().stream()
-                .peek(System.out::println)
+       //         .peek(System.out::println)
                 .anyMatch(user -> user.getLogin().equals(login) &&
                         user.getPassword().equals(password));
     }
