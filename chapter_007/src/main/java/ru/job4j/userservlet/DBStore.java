@@ -94,7 +94,7 @@ public class DBStore implements Store<User>, AutoCloseable {
 
     /*
     id name email login password
-     *///todo
+     */
     @Override
     public boolean update(String id, User user) {
         try (Connection connection = SOURCE.getConnection();
@@ -261,10 +261,9 @@ public class DBStore implements Store<User>, AutoCloseable {
         return isExist;
     }
 
-    //todo
     @Override
-    public void close() throws Exception {
-
+    public void close() throws SQLException {
+        SOURCE.close();
     }
 
     /**

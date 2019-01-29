@@ -20,7 +20,8 @@ public class ValidateService {
     /**
      * Store.
      */
-    private final Store<User> store = MemoryStore.getInstance();
+    //private final Store<User> store = MemoryStore.getInstance();
+    private final Store<User> store = DBStore.getInstance();
 
     /**
      * private constructor.

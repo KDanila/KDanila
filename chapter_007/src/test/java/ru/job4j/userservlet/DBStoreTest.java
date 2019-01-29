@@ -65,7 +65,7 @@ public class DBStoreTest {
         dbStore.add(user1);
         dbStore.add(user2);
         User toCheck = dbStore.findByLogin(user1.getLogin());
-        System.out.println(toCheck.getName());
+        assertThat(toCheck.getName(),is(user1.getName()));
     }
 
 }

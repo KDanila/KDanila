@@ -1,11 +1,7 @@
 package ru.job4j.deleteabusewords;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DropAbuseWords {
@@ -19,6 +15,35 @@ public class DropAbuseWords {
      */
 //todo
     void dropAbuses(InputStream in, OutputStream out, String[] abuse) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+            String buf;
+            while ((buf = br.readLine()) != null) {
+                System.out.println(Arrays.toString(buf.split("[`!@$*&^% ]")));
+                Arrays.stream(buf.split("[`!@$*&^% ]"))
+                        .peek(System.out::println)
+                        .filter(x -> {
+                            for (String s : abuse) {
+                                if (s.equals(x)) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }).peek(System.out::println);
+            }
+        /*
+                    .peek(System.out::println)
+                    .filter(x -> {
+                        for (String s : abuse) {
+                            if (s.equals(x)) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }).peek(System.out::println);*/
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         /*Stream<String> abuseStream = Arrays.stream(abuse);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
 

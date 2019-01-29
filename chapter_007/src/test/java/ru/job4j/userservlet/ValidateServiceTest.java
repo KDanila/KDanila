@@ -130,4 +130,11 @@ public class ValidateServiceTest {
         ValidateService validateService = ValidateService.getInstance();
         assertThat(validateService.isAccessAllowed("admin", "admin"), is(true));
     }
+
+    @Test
+    public void whenInitDBStoreShouldAddingAdminAccount() {
+        ValidateService validateService = ValidateService.getInstance();
+        DBStore dbStore = DBStore.getInstance();
+        assertThat(validateService.isAccessAllowed("admin", "admin"), is(true));
+    }
 }
