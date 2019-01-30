@@ -6,6 +6,9 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 public class DropAbuseWordsTest {
 
     private final String[] abuseWords = {
@@ -20,7 +23,7 @@ public class DropAbuseWordsTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         DropAbuseWords dropAbuseWords = new DropAbuseWords();
         dropAbuseWords.dropAbuses(in, out, abuseWords);
-        System.out.println(out);
+        assertThat(out.toString(),is("five seven"));
     }
 
 }

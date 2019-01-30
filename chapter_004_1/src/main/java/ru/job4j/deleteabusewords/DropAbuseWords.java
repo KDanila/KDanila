@@ -2,6 +2,7 @@ package ru.job4j.deleteabusewords;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DropAbuseWords {
@@ -13,64 +14,30 @@ public class DropAbuseWords {
     удалить слова и потом записать. нужно все делать в потоке.
 
      */
-//todo
     void dropAbuses(InputStream in, OutputStream out, String[] abuse) {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
             String buf;
+            Stream<String> lineStream;
+            String outString;
+            //можно ли сразу в поток записывать без outString?
+            //И можно ли как-то через stream api нормально отфильтровать на предмет вхождения слов из массива abuse
+            //без костыля в виде foreach в filter()
             while ((buf = br.readLine()) != null) {
-                System.out.println(Arrays.toString(buf.split("[`!@$*&^% ]")));
-                Arrays.stream(buf.split("[`!@$*&^% ]"))
-                        .peek(System.out::println)
+                lineStream = Arrays.stream(buf.split("[`!@$*&^% ]"));
+                outString = lineStream
                         .filter(x -> {
                             for (String s : abuse) {
                                 if (s.equals(x)) {
-                                    return true;
+                                    return false;
                                 }
                             }
-                            return false;
-                        }).peek(System.out::println);
+                            return true;
+                        })
+                        .collect(Collectors.joining(" "));
+                out.write(outString.getBytes());
             }
-        /*
-                    .peek(System.out::println)
-                    .filter(x -> {
-                        for (String s : abuse) {
-                            if (s.equals(x)) {
-                                return true;
-                            }
-                        }
-                        return false;
-                    }).peek(System.out::println);*/
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        /*Stream<String> abuseStream = Arrays.stream(abuse);
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
-
-        String result = Arrays
-                .stream(abuse.toString().split("\\s+"))
-                .distinct()
-                .collect(Collectors.joining(" "));
-
-        *//*String ss = bufferedReader.lines()
-                .peek(System.out::println)
-                .filter(x ->
-                {
-                    for (String s : abuse) {
-                        if (x.equals(s))
-                            System.out.println("true");{
-                            return true;
-                        }
-                    }
-                    System.out.println("false");
-                    return false;
-                })
-                //.peek(System.out::println)
-                .collect(Collectors.joining());
-        *//*
-        Stream<String> toCheck = Stream.concat(bufferedReader.lines(),
-                abuseStream).
-                .distinct();
-        System.out.println(ss);*/
     }
 }
