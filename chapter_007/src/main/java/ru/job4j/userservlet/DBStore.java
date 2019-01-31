@@ -276,6 +276,11 @@ public class DBStore implements Store<User>, AutoCloseable {
         }
         return isExist;
     }
+//todo
+    @Override
+    public void close() throws Exception {
+
+    }
 
     @Override
     public void close() throws SQLException {
