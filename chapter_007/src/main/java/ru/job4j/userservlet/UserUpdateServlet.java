@@ -25,6 +25,7 @@ public class UserUpdateServlet extends HttpServlet {
         String email = req.getParameter("email");
 
         User user = new User.UserBuilder(name).login(login).email(email).build();
+
         this.validateService.update(id, user);
 
         resp.sendRedirect(String.format("%s/", req.getContextPath()));

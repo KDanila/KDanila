@@ -23,11 +23,9 @@ public class AuthenticationServlet extends HttpServlet {
         String password = req.getParameter("password");
         HttpSession session = req.getSession();
         if (this.validateService.isAccessAllowed(login, password)) {
-            System.out.println("login correct");
             session.setAttribute("login", "correct");
             resp.sendRedirect(String.format("%s/", req.getContextPath()));
         } else {
-            System.out.println("login not correct");
             session.setAttribute("login", "incorrect");
             resp.sendRedirect(String.format("%s/signin", req.getContextPath()));
         }

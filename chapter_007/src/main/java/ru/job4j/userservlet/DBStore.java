@@ -226,11 +226,13 @@ public class DBStore implements Store<User>, AutoCloseable {
      */
     void createTableInDB() {
         try (Connection connection = SOURCE.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("CREATE TABLE " + this.dbTableName + " ( id integer primary key,\n" +
-                    "                            name varchar(15), \n" +
-                    "                            email varchar(50),\n" +
-                    "                            login varchar(50),\n" +
-                    "                            password varchar(50))");
+            PreparedStatement ps = connection.prepareStatement(
+                    "CREATE TABLE users_from_servlet " +
+                            "(id serial unique, name varchar(15), \n" +
+                            "email varchar(50) unique,\n" +
+                            "login varchar(50) unique,\n" +
+                            "password varchar(50));"
+            );
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);

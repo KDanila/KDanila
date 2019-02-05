@@ -46,7 +46,12 @@ public class ValidateService {
      * @return boolean.
      */
     boolean add(User user) {
-        return this.store.add(user);
+        boolean isAdded = this.store.add(user);
+        if (!isAdded) {
+            decreaseId();
+            isAdded = false;
+        }
+        return isAdded;
     }
 
 
@@ -58,7 +63,12 @@ public class ValidateService {
      * @return boolean.
      */
     boolean update(String id, User user) {
-        return this.store.update(id, user);
+        boolean isUpdate = this.store.update(id, user);
+        if (!isUpdate) {
+            decreaseId();
+            isUpdate = false;
+        }
+        return isUpdate;
     }
 
     /**
@@ -68,7 +78,12 @@ public class ValidateService {
      * @return boolean.
      */
     boolean delete(User user) {
-        return this.store.delete(user);
+        boolean isDelete = this.store.delete(user);
+        if (isDelete) {
+            decreaseId();
+            isDelete = false;
+        }
+        return isDelete;
     }
 
     /**
@@ -108,5 +123,11 @@ public class ValidateService {
      */
     User findByLogin(String login) {
         return this.store.findByLogin(login);
+    }
+
+    void decreaseId() {
+        System.out.println(User.getCounter());
+        User.setCounter(User.getCounter() - 1);
+        System.out.println(User.getCounter());
     }
 }
