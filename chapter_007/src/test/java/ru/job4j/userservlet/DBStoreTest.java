@@ -13,59 +13,61 @@ public class DBStoreTest {
 
 
     @Test
-    public void whenGetInstanceOfDbStoreShouldReturnNoNullSatement(){
+    public void whenGetInstanceOfDbStoreShouldReturnNoNullSatement() {
         assertNotNull(dbStore.getConnection());
     }
 
     @Test
-    public void whenCreateTableInDbShouldCreateProperly(){
-        assertThat(dbStore.checkTableInDB(),is(true));
+    public void whenCreateTableInDbShouldCreateProperly() {
+        assertThat(dbStore.checkTableInDB(), is(true));
     }
 
     @Test
-    public void whenAddValuesAndFinByidInTableShouldReturnCirrectUserName(){
+    public void whenAddValuesAndFinByidInTableShouldReturnCirrectUserName() {
         dbStore.add(user1);
-        int id = user1.getId();
-        assertThat(dbStore.findById(id).getName(),is(user1.getName()));
+        int id = dbStore.findByLogin(user1.getLogin()).getId();
+        assertThat(dbStore.findById(id).getName(), is(user1.getName()));
     }
 
     @Test
-    public void whenDeleteUserShouldDeleteUser(){
+    public void whenDeleteUserShouldDeleteUser() {
         dbStore.add(user1);
-        assertThat(dbStore.delete(user1),is(true));
+        assertThat(dbStore.delete(user1), is(true));
     }
 
     @Test
-    public void whenUseFindAllShouldReturnCorrectValue(){
-        dbStore.add(user1);
-        dbStore.add(user2);
-        assertThat(dbStore.findAll().get(user1.getId()).getName(),is(user1.getName()));
-        assertThat(dbStore.findAll().get(user2.getId()).getName(),is(user2.getName()));
-    }
-
-    @Test
-    public void whenUseUpdateShouldCorrectUpdated(){
+    public void whenUseFindAllShouldReturnCorrectValue() {
         dbStore.add(user1);
         dbStore.add(user2);
-        dbStore.update(String.valueOf(user1.getId()),user2);
+        int id1 = dbStore.findByLogin(user1.getLogin()).getId();
+        int id2 = dbStore.findByLogin(user2.getLogin()).getId();
+        assertThat(dbStore.findAll().get(id1).getName(), is(user1.getName()));
+        assertThat(dbStore.findAll().get(id2).getName(), is(user2.getName()));
     }
 
     @Test
-    public void whenAccessAllowedShouldReturnCorrectValue(){
+    public void whenUseUpdateShouldCorrectUpdated() {
         dbStore.add(user1);
         dbStore.add(user2);
-        boolean stateTrue = dbStore.isAccessAllowed(user1.getLogin(),user1.getPassword());
-        boolean stateFalse = dbStore.isAccessAllowed(user1.getLogin(),user2.getPassword());
-        assertThat(stateTrue,is(true));
-        assertThat(stateFalse,is(false));
+        dbStore.update(String.valueOf(user1.getId()), user2);
     }
 
     @Test
-    public void whenUseFindByLoginAndLoginExistShouldReturnCorrectValue(){
+    public void whenAccessAllowedShouldReturnCorrectValue() {
+        dbStore.add(user1);
+        dbStore.add(user2);
+        boolean stateTrue = dbStore.isAccessAllowed(user1.getLogin(), user1.getPassword());
+        boolean stateFalse = dbStore.isAccessAllowed(user1.getLogin(), user2.getPassword());
+        assertThat(stateTrue, is(true));
+        assertThat(stateFalse, is(false));
+    }
+
+    @Test
+    public void whenUseFindByLoginAndLoginExistShouldReturnCorrectValue() {
         dbStore.add(user1);
         dbStore.add(user2);
         User toCheck = dbStore.findByLogin(user1.getLogin());
-        assertThat(toCheck.getName(),is(user1.getName()));
+        assertThat(toCheck.getName(), is(user1.getName()));
     }
 
 }

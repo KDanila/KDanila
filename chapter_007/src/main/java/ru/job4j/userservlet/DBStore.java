@@ -78,18 +78,33 @@ public class DBStore implements Store<User>, AutoCloseable {
     @Override
     public boolean add(User user) {
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement ps = connection.prepareStatement("insert into " + dbTableName + " values(?,?,?,?,?)")) {
-            ps.setInt(1, user.getId());
-            ps.setString(2, user.getName());
-            ps.setString(3, user.getEmail());
-            ps.setString(4, user.getLogin());
-            ps.setString(5, user.getPassword());
+             PreparedStatement ps = connection.prepareStatement(
+                     "insert into " + dbTableName + "(name,email,login,password) values(?,?,?,?)")) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getLogin());
+            ps.setString(4, user.getPassword());
+            setIdUser(user);
             ps.executeUpdate();
             return true;
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
         return false;
+    }
+
+    private void setIdUser(User user) {
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement("select id from " + dbTableName + " where name = ?")) {
+            ps.setString(1, user.getName());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                user.setId(id);
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
 
     /*
@@ -141,7 +156,6 @@ public class DBStore implements Store<User>, AutoCloseable {
                         .login(rs.getString("login"))
                         .password(rs.getString("password"))
                         .build();
-                temp.setId(idUser);
                 toReturn.put(idUser, temp);
             }
         } catch (SQLException e) {
@@ -184,7 +198,7 @@ public class DBStore implements Store<User>, AutoCloseable {
                 tempLogin = rs.getString("login");
                 if (tempLogin.equals(login)) {
                     tempPassword = rs.getString("password");
-                    if (tempPassword.equals(password)) {
+                    if (tempPassword != null && tempPassword.equals(password)) {
                         isAllowed = true;
                         break;
                     }
@@ -199,11 +213,11 @@ public class DBStore implements Store<User>, AutoCloseable {
 
 
     @Override
-    public User findByLogin(String login){
+    public User findByLogin(String login) {
         User toReturn = null;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement ps = connection.prepareStatement("SELECT*FROM " + dbTableName+ " WHERE LOGIN = ?")) {
-            ps.setString(1,login);
+             PreparedStatement ps = connection.prepareStatement("SELECT*FROM " + dbTableName + " WHERE LOGIN = ?")) {
+            ps.setString(1, login);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 toReturn = new User.UserBuilder(rs.getString("name"))

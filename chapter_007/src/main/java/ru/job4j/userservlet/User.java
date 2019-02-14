@@ -17,11 +17,9 @@ public class User {
     /**
      * id.
      */
-    private AtomicInteger id;
-
+    private AtomicInteger id = new AtomicInteger();
 
     private String password;
-
 
     private static AtomicInteger counter = new AtomicInteger(0);
     /**
@@ -48,7 +46,7 @@ public class User {
      * @param userBuilder - userBuilder.
      */
     public User(UserBuilder userBuilder) {
-        this.id = new AtomicInteger(counter.getAndIncrement());
+     //   this.id = new AtomicInteger(counter.getAndIncrement());
         this.name = userBuilder.name;
         this.login = userBuilder.login;
         this.email = userBuilder.email;
