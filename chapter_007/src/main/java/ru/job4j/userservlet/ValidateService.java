@@ -126,8 +126,6 @@ public class ValidateService {
     }
 
     void decreaseId() {
-        System.out.println(User.getCounter());
         User.setCounter(User.getCounter() - 1);
-        System.out.println(User.getCounter());
     }
 }

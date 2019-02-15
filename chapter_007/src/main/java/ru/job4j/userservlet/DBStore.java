@@ -156,6 +156,7 @@ public class DBStore implements Store<User>, AutoCloseable {
                         .login(rs.getString("login"))
                         .password(rs.getString("password"))
                         .build();
+                temp.setId(idUser);
                 toReturn.put(idUser, temp);
             }
         } catch (SQLException e) {
@@ -182,7 +183,6 @@ public class DBStore implements Store<User>, AutoCloseable {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        toReturn.setId(id);
         return toReturn;
     }
 
@@ -241,11 +241,11 @@ public class DBStore implements Store<User>, AutoCloseable {
     void createTableInDB() {
         try (Connection connection = SOURCE.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(
-                    "CREATE TABLE users_from_servlet " +
-                            "(id serial unique, name varchar(15), \n" +
+                    "CREATE TABLE users_from_servlet (id serial unique, name varchar(15),\n" +
                             "email varchar(50) unique,\n" +
                             "login varchar(50) unique,\n" +
-                            "password varchar(50));"
+                            "password varchar(50),\n" +
+                            "primary key(id));"
             );
             ps.executeUpdate();
         } catch (SQLException e) {

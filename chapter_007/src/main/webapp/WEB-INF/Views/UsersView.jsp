@@ -39,6 +39,9 @@
             <c:out value="${user.email}"></c:out>
         </td>
         <td>
+            <c:out value="${user.password}"></c:out>
+        </td>
+        <td>
             <form name='update' action="${pageContext.servletContext.contextPath}/update" method='get'>
                 <input type='submit' value='update'>
                 <input type='hidden' name='id' value="${user.id}">
@@ -57,6 +60,7 @@
             <input type='text' name='name' value="name"/>
             <input type='text' name='login' value="login"/>
             <input type='text' name='email' value="email"/>
+            <input type='text' name='password' value="password"/>
             <input type='submit' name='submit'>
         </form>
     </tr>

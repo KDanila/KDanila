@@ -16,6 +16,7 @@
     <input type='text' name='name' value="${user.name}">
     <input type='text' name='login' value="${user.login}">
     <input type='text' name='email'  value="${user.email}">
+    <input type='text' name='password'  value="${user.password}">
     <input type='hidden' name='id'  value="${user.id}">
     <input type='submit' name='submit'>
 </form>

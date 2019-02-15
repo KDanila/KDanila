@@ -23,8 +23,9 @@ public class UserUpdateServlet extends HttpServlet {
         String name = req.getParameter("name");
         String login = req.getParameter("login");
         String email = req.getParameter("email");
+        String password = req.getParameter("password");
 
-        User user = new User.UserBuilder(name).login(login).email(email).build();
+        User user = new User.UserBuilder(name).login(login).email(email).password(password).build();
 
         this.validateService.update(id, user);
 

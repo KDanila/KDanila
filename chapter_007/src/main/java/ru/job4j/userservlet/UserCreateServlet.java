@@ -52,7 +52,8 @@ public class UserCreateServlet extends HttpServlet {
         String name = req.getParameter("name");
         String login = req.getParameter("login");
         String email = req.getParameter("email");
-        User user = new User.UserBuilder(name).login(login).email(email).build();
+        String password = req.getParameter("password");
+        User user = new User.UserBuilder(name).login(login).email(email).password(password).build();
 
         this.validateService.add(user);
 
